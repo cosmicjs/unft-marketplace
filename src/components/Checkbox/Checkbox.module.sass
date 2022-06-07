@@ -1,0 +1,56 @@
+@import ../../styles/helpers
+
+.checkbox
+    display: inline-block
+    position: relative
+    user-select: none
+    cursor: pointer
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
+
+.input
+    position: absolute
+    top: 0
+    left: 0
+    opacity: 0
+    &:checked + .inner .tick
+        background: $blue
+        border-color: $blue
+        &:before
+            opacity: 1
+
+.inner
+    display: flex
+    &:hover
+        .tick
+            border-color: $blue
+
+.tick
+    position: relative
+    flex-shrink: 0
+    width: 24px
+    height: 24px
+    margin-right: 12px
+    border-radius: 4px
+    border: 2px solid $neutrals6
+    transition: all .2s
+    +dark
+        background: $neutrals2
+        border-color: $neutrals3
+    &:before
+        content: ""
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%,-50%)
+        width: 14px
+        height: 10px
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' fill='none' viewBox='0 0 14 10'%3E%3Cpath fill-rule='evenodd' d='M13.707.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L5 7.586 12.293.293a1 1 0 0 1 1.414 0z' fill='%23fcfcfd'/%3E%3C/svg%3E") no-repeat 50% 50% / 100% auto
+        opacity: 0
+        transition: opacity .2s
+
+.text
+    line-height: calc(24/14)
+    font-weight: 500
+    color: $neutrals2
+    +dark
+        color: $neutrals8

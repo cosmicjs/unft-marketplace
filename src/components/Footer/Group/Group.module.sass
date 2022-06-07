@@ -1,0 +1,63 @@
+@import ../../../styles/helpers
+
+.group
+    flex: 0 0 50%
+    &:first-child
+        padding-right: 16px
+        +m
+            padding-right: 0
+    &:nth-child(2)
+        padding-left: 16px
+        +m
+            padding-left: 0
+    &:not(:last-child)
+        +m
+            border-bottom: 1px solid $neutrals6
+            +dark
+                border-color: $neutrals3
+    &.active
+        +m
+            .head
+                svg
+                    transform: translateY(-50%) rotate(180deg)
+            .menu
+                display: flex
+
+.head
+    margin-bottom: 40px
+    +body-bold-2
+    +t
+        margin-bottom: 32px
+    +m
+        position: relative
+        margin-bottom: 0
+        padding: 32px 32px 32px 0
+        +hairline-2
+    svg
+        display: none
+        +m
+            display: block
+            position: absolute
+            top: 50%
+            right: 10px
+            transform: translateY(-50%)
+            fill: $neutrals4
+            transition: transform .2s
+
+.menu
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+    +m
+        display: none
+        padding-bottom: 32px
+
+.link
+    +button-2
+    color: $neutrals4
+    transition: color .2s
+    &:hover
+        color: $blue
+    &:not(:last-child)
+        margin-bottom: 24px
+

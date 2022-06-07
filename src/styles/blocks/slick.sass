@@ -1,0 +1,267 @@
+.slick-slider
+    position: relative
+    display: block
+    box-sizing: border-box
+    -webkit-user-select: none
+    -moz-user-select: none
+    -ms-user-select: none
+    user-select: none
+    -webkit-touch-callout: none
+    -khtml-user-select: none
+    -ms-touch-action: pan-y
+    touch-action: pan-y
+    -webkit-tap-highlight-color: transparent
+
+.slick-list
+    position: relative
+    display: block
+    overflow: hidden
+    margin: 0
+    padding: 0
+
+    &:focus
+        outline: none
+
+    &.dragging
+        cursor: pointer
+        cursor: hand
+
+.slick-slider
+    .slick-track, .slick-list
+        -webkit-transform: translate3d(0, 0, 0)
+        -moz-transform: translate3d(0, 0, 0)
+        -ms-transform: translate3d(0, 0, 0)
+        -o-transform: translate3d(0, 0, 0)
+        transform: translate3d(0, 0, 0)
+
+.slick-track
+    position: relative
+    top: 0
+    left: 0
+    display: block
+    margin-left: auto
+    margin-right: auto
+
+    &:before
+        display: table
+        content: ''
+
+    &:after
+        display: table
+        content: ''
+        clear: both
+
+.slick-loading .slick-track
+    visibility: hidden
+
+.slick-slide
+    display: none
+    float: left
+    height: 100%
+    min-height: 1px
+
+[dir='rtl'] .slick-slide
+    float: right
+
+.slick-slide
+    img
+        display: block
+        width: 100%
+
+    &.slick-loading img
+        display: none
+
+    &.dragging img
+        pointer-events: none
+
+.slick-initialized .slick-slide
+    display: block
+
+.slick-loading .slick-slide
+    visibility: hidden
+
+.slick-vertical .slick-slide
+    display: block
+    height: auto
+    border: 1px solid transparent
+
+.slick-arrow.slick-hidden
+    display: none
+
+.slick-arrow
+    position: absolute
+    z-index: 2
+    width: 40px
+    height: 40px
+    border-radius: 50%
+    font-size: 0
+    transition: all .2s
+    svg
+        position: relative
+        z-index: 2
+        fill: $neutrals4
+        transition: fill .2s
+    &:hover
+        box-shadow: inset 0 0 0 2px $neutrals6
+    +dark-common
+        &:hover
+            box-shadow: inset 0 0 0 2px $neutrals3
+            svg
+                fill: $neutrals6
+    // &.slick-disabled
+    //     opacity: .7
+
+// creative slider
+.creative-slider
+    position: static
+    .slick-list
+        overflow: visible
+    .slick-slide
+        padding: 0 12px
+        opacity: 0
+        transition: opacity .4s
+        &.slick-active
+            opacity: 1
+    .slick-arrow
+        bottom: 8px
+        background: $neutrals8
+        +dark-common
+            background: transparent
+    .slick-prev
+        right: 324px
+        +d
+            right: 276px
+        +t
+            right: auto
+            left: calc(50% - 56px)
+        +m
+            left: calc(50% - 44px)
+    .slick-next
+        right: 276px
+        +d
+            right: 228px
+        +t
+            right: calc(50% - 56px)
+        +m
+            right: calc(50% - 44px)
+
+// popular slider
+.popular-slider
+    height: 248px
+    +t
+        padding-bottom: 80px
+    +m
+        padding-bottom: 72px
+    .slick-list
+        overflow: visible
+        +s
+            margin: 0 -136px 0 0
+    .slick-track
+        display: flex
+    .slick-slide
+        height: auto
+        padding: 0 16px
+        opacity: 0
+        transition: opacity .4s
+        +m
+            padding: 0 4px
+        &.slick-active
+            opacity: 1
+        & > div
+            display: flex
+            height: 100%
+            flex-grow: 1
+    .slick-arrow
+        top: 50%
+        transform: translateY(-50%)
+        +t
+            top: auto
+            bottom: 0
+            transform: translateY(0)
+    .slick-prev
+        left: -60px
+        +x
+            left: -40px
+        +t
+            left: calc(50% - 56px)
+        +m
+            left: calc(50% - 44px)
+    .slick-next
+        right: -60px
+        +x
+            right: -40px
+        +t
+            right: calc(50% - 56px)
+        +m
+            right: calc(50% - 44px)
+
+// bid slider
+.bid-slider
+    position: static
+    .slick-list
+        overflow: visible
+        +s
+            margin: 0 -215px 0 0
+    .slick-track
+        display: flex
+    .slick-slide
+        height: auto
+        margin: 0 16px
+        opacity: 0
+        transition: opacity .4s
+        +m
+            margin: 0 8px
+        &.slick-active
+            opacity: 1
+        & > div
+            display: flex
+            height: 100%
+            flex-grow: 1
+    .slick-arrow
+        top: 4px
+    .slick-prev
+        right: 48px
+    .slick-next
+        right: 0
+
+// collection slider
+.collection-slider
+    position: static
+    +m
+        padding-bottom: 72px
+    .slick-list
+        overflow: visible
+    .slick-slide
+        padding: 0 16px
+        opacity: 0
+        transition: opacity .4s
+        &.slick-active
+            opacity: 1
+    .slick-arrow
+        top: 4px
+        +m
+            top: auto
+            bottom: 0
+    .slick-prev
+        right: 48px
+        +m
+            right: auto
+            left: calc(50% - 44px)
+    .slick-next
+        right: 0
+        +m
+            right: calc(50% - 44px)
+
+// discover slider
+.discover-slider
+    .slick-list
+        overflow: visible
+        padding-bottom: 72px
+    .slick-slide
+        padding: 0 8px
+    .slick-arrow
+        bottom: 0
+    .slick-prev
+        left: calc(50% - 44px)
+    .slick-next
+        right: calc(50% - 44px)

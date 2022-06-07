@@ -1,0 +1,133 @@
+@import ../../styles/helpers
+
+.footer
+    border-top: 1px solid $neutrals6
+    background-color: $blue-dark
+    color: $white
+    +dark
+        border-color: $neutrals3
+        background-color: $neutrals2
+
+.row
+    display: flex
+    padding: 80px 0 48px
+    border-bottom: 1px solid $neutrals6
+    +t
+        display: block
+    +m
+        padding: 64px 0 48px
+    +dark
+        border-color: $neutrals3
+
+.col
+    &:first-child
+        flex-grow: 1
+        padding-right: 32px
+        +t
+            position: relative
+            margin-bottom: 32px
+            padding: 0
+    &:nth-child(2)
+        display: flex
+        flex-shrink: 0
+        width: 352px
+        +d
+            width: 276px
+        +t
+            width: auto
+            margin-bottom: 32px
+        +m
+            display: block
+            border-width: 1px 0
+            border-style: solid
+            border-color: $neutrals6
+            +dark
+                border-color: $neutrals3
+    &:nth-child(3)
+        flex-shrink: 0
+        width: 384px
+        padding-left: 32px
+        +d
+            width: 304px
+        +t
+            width: 100%
+            padding: 0
+
+.logo
+    display: inline-block
+    margin-bottom: 32px
+    img
+        width: 98px
+
+.cosmic
+    display: inline-block
+    margin-bottom: 32px
+    img
+        width: 98px
+
+.copyright
+    display: flex
+    align-items: center
+    justify-content: center
+
+.powered
+    display: inline-block
+    margin: 0 20px 26px 0
+    font-weight: 600
+    color: $white
+
+.info
+    max-width: 256px
+    +body-1
+    +d
+        font-size: 16px
+
+.version
+    display: flex
+    align-items: center
+    margin-top: 24px
+    +t
+        position: absolute
+        top: 5px
+        right: 0
+        margin: 0
+
+.details
+    margin-right: 16px
+    +caption-2
+    +m
+        margin-right: 10px
+
+.category
+    margin-bottom: 40px
+    +body-bold-2
+    +t
+        margin-block-end: 24px
+
+.text
+    margin-bottom: 24px
+
+.foot
+    display: flex
+    justify-content: space-between
+    padding: 32px 0
+    +caption-2
+    +m
+        display: block
+        padding: 24px 0 32px
+
+.copyright
+    color: $neutrals4
+    +m
+        text-align: center
+
+.note
+    +m
+        display: none
+    a
+        margin-left: 16px
+        font-weight: 600
+        color: $blue
+        transition: color .2s
+        &:hover
+            color: darken($blue, 10)

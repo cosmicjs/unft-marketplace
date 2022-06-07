@@ -1,0 +1,98 @@
+[class^="button"]
+  display: inline-flex
+  justify-content: center
+  align-items: center
+  height: 48px
+  padding: 0 24px
+  background: $blue
+  border-radius: 24px
+  +button-1
+  text-align: center
+  color: $neutrals8
+  transition: all .2s
+  &:hover
+    background: darken($blue, 10)
+  &.disabled
+    opacity: .5
+    pointer-events: none
+  &.done
+    background: $neutrals5
+  &.loading
+    background: darken($blue, 15)
+    font-size: 0
+  &.error
+    box-shadow: 0 0 0 2px $neutrals6 inset
+    background: none
+    color: $pink
+    +dark-common
+      box-shadow: 0 0 0 2px $neutrals4 inset
+  svg
+    fill: $neutrals8
+  &:not([class^="button-circle"])
+    svg
+      &:first-child
+        margin-right: 15px
+      &:last-child
+        margin-left: 15px
+
+.button-stroke
+  background: none
+  box-shadow: 0 0 0 2px $neutrals6 inset
+  color: $neutrals2
+  svg
+    fill: $neutrals2
+    transition: fill .2s
+  &:hover
+    background: $blue
+    box-shadow: 0 0 0 2px $blue inset
+    color: $neutrals8
+    svg
+      fill: $neutrals8
+  +dark-common
+    box-shadow: 0 0 0 2px $neutrals3 inset
+    color: $neutrals8
+    svg
+      fill: $neutrals8
+    &:hover
+      box-shadow: 0 0 0 2px $blue inset
+  
+.button-pink
+  background: $pink
+  &:hover
+    background: darken($pink, 12)
+
+.button-small
+  height: 40px
+  border-radius: 20px
+  padding: 0 16px
+  font-size: 14px
+
+.button-circle-stroke
+  flex: 0 0 48px
+  width: 48px
+  height: 48px
+  padding: 0
+  border-radius: 50%
+  box-shadow: 0 0 0 2px $neutrals6 inset
+  background: transparent
+  transition: all .2s
+  svg
+      fill: $neutrals4
+      transition: fill .2s
+  &:hover
+      background: $blue
+      box-shadow: 0 0 0 2px $blue inset
+      svg
+          fill: $neutrals8
+  +dark-common
+    box-shadow: 0 0 0 2px $neutrals3 inset
+    &:hover
+      background: $neutrals3
+
+.button-circle-stroke.button-small
+  flex: 0 0 40px
+  width: 40px
+  height: 40px
+
+
+

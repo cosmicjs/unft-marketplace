@@ -1,0 +1,173 @@
+// media queries
+=w
+  @media only screen and (max-width: "1419px")
+    @content
+=x
+  @media only screen and (max-width: "1339px")
+    @content
+=d
+  @media only screen and (max-width: "1179px")
+    @content
+=t
+  @media only screen and (max-width: "1023px")
+    @content
+=m
+  @media only screen and (max-width: "767px")
+    @content
+=a
+  @media only screen and (max-width: "639px")
+    @content
+=s
+  @media only screen and (max-width: "474px")
+    @content
+
+// fonts
+=dm-sans
+  font-family: 'DM Sans', sans-serif
+
+=poppins
+  font-family: 'Poppins', sans-serif
+
+// colors
+$white: #ffffff
+$blue: #4437ff
+$blue-light: #4BC9F0
+$blue-dark: #1e1874
+$purple: #9757D7
+$purple-light: #CDB4DB
+$pink: #EF466F
+$green: #45B26B
+$asphalt: #E4D7CF
+$yellow: #FFD166
+
+$neutrals1: #141416
+$neutrals2: #23262F
+$neutrals3: #353945
+$neutrals4: #777E90
+$neutrals5: #B1B5C3
+$neutrals6: #E6E8EC
+$neutrals7: #F4F5F6
+$neutrals8: #FCFCFD
+
+// typography
+=body-1
+  font-size: 24px
+  line-height: calc(32/24)
+  letter-spacing: -.01em
+
+=body-bold-1
+  font-size: 24px
+  line-height: calc(32/24)
+  font-weight: 600
+  letter-spacing: -.01em
+
+=body-2
+  font-size: 16px
+  line-height: calc(24/16)
+
+=body-bold-2
+  font-size: 16px
+  line-height: calc(24/16)
+  font-weight: 500
+
+=caption-1
+  font-size: 14px
+  line-height: calc(24/14)
+
+=caption-bold-1
+  font-size: 14px
+  line-height: calc(24/14)
+  font-weight: 500
+
+=caption-2
+  font-size: 12px
+  line-height: calc(20/12)
+
+=caption-bold-2
+  font-size: 12px
+  line-height: calc(20/12)
+  font-weight: 600
+
+=hairline-1
+  font-size: 16px
+  line-height: 1
+  font-weight: 700
+  text-transform: uppercase
+
+=hairline-2
+  font-size: 12px
+  line-height: 1
+  font-weight: 700
+  text-transform: uppercase
+
+=button-1
+  +dm-sans
+  font-size: 16px
+  font-weight: 700
+  line-height: 1
+
+=button-2
+  +dm-sans
+  font-size: 14px
+  line-height: calc(16/14)
+  font-weight: 700
+
+//triangle
+=arr($width, $height, $bg, $direction)
+  width: 0px
+  height: 0px
+  border-style: solid
+  @if $direction == t
+    border-width: 0 $width / 2 + px $height + px $width / 2 + px
+    border-color: transparent transparent $bg transparent
+  @if $direction == r
+    border-width: $height / 2 + px 0 $height / 2 + px $width + px
+    border-color: transparent transparent transparent $bg
+  @if $direction == b
+    border-width: $height + px $width / 2 + px 0 $width / 2 + px
+    border-color: $bg transparent transparent transparent
+  @if $direction == l
+    border-width: $height / 2 + px $width + px $height / 2 + px 0
+    border-color: transparent $bg transparent transparent
+  @if $direction == tl
+    border-width: $height + px $width + px 0 0
+    border-color: $bg transparent transparent transparent
+  @if $direction == tr
+    border-width: 0 $width + px $height + px 0
+    border-color: transparent $bg transparent transparent
+  @if $direction == br
+    border-width: 0 0 $height + px $width + px
+    border-color: transparent transparent $bg transparent
+  @if $direction == bl
+    border-width: $width + px 0 0 $height + px
+    border-color: transparent transparent transparent $bg
+// example
+// +arr(500,50, #000, l)
+// +arr(500,50, #000, bl)
+
+// placeholder
+=placeholder
+  &::placeholder
+    @content
+
+// media query width
+=r($width)
+  @media only screen and (max-width: $width+ "px")
+    @content
+
+=rmin($width)
+  @media only screen and (min-width: $width+ "px")
+    @content
+
+// theme
+=dark
+  @at-root :global(.dark-mode) &
+    @content
+
+=dark-body
+  @at-root .dark-mode
+    @content
+
+=dark-common
+  @at-root .dark-mode &
+    @content

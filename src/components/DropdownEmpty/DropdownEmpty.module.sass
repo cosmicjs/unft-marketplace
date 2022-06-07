@@ -1,0 +1,94 @@
+@import ../../styles/helpers
+
+.dropdown
+    position: relative
+    z-index: 3
+    &.active
+        z-index: 10
+        .head
+            background: $neutrals8
+            color: $blue
+            +dark
+                background: $neutrals1
+            svg
+                transform: translateY(-50%) rotate(180deg)
+                fill: $blue
+        .body
+            visibility: visible
+            opacity: 1
+            transform: translateY(0)
+
+.head
+    position: relative
+    height: 64px
+    padding: 0 64px 0 24px
+    border-radius: 32px
+    background: transparent
+    +dm-sans
+    font-size: 40px
+    font-weight: 700
+    line-height: 64px
+    cursor: pointer
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
+    transition: all .2s
+    +m
+        height: 56px
+        font-size: 32px
+        line-height: 56px
+    svg
+        position: absolute
+        top: 50%
+        right: 27px
+        transform: translateY(-50%)
+        fill: $neutrals2
+        transition: all .2s
+        +dark
+            fill: $neutrals8
+    &:hover
+        background: $neutrals8
+        color: $blue
+        svg
+            fill: $blue
+        +dark
+            background: $neutrals1 
+
+.selection
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.body
+    position: absolute
+    top: calc(100% + 8px)
+    left: 0
+    right: 0
+    padding: 24px
+    border-radius: 24px
+    background: $neutrals8
+    box-shadow: 0px 40px 64px -32px rgba(15, 15, 15, 0.15)
+    visibility: hidden
+    opacity: 0
+    transform: translateY(3px)
+    transition: all .2s
+    +dark
+        background: $neutrals1
+        box-shadow: inset 0 0 0 2px $neutrals3, 0 4px 12px rgba($neutrals1, .1)
+
+.option
+    +dm-sans
+    font-size: 40px
+    font-weight: 700
+    line-height: 1.2
+    color: $neutrals4
+    transition: color .2s
+    cursor: pointer
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
+    +m
+        font-size: 32px
+    &:hover,
+    &.selectioned
+        color: $neutrals2
+        +dark
+            color: $neutrals8
+    &:not(:last-child)
+        margin-bottom: 8px

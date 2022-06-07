@@ -1,0 +1,162 @@
+@import ../../styles/helpers
+
+.section
+    padding: 96px 0
+    +x
+        padding: 80px 0
+    +m
+        padding: 64px 0
+
+.container
+    display: flex
+    align-items: flex-start
+    +t
+        display: block
+
+.actions
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+
+.dropdown
+    width: 100%
+    +t
+        width: 100%
+        +m
+            width: 100%
+            margin-bottom: 12px
+
+.btns
+    margin-top: 58px
+    display: flex
+    +m
+        display: block
+        margin-top: 48px
+
+.button
+    +m
+        width: 100%
+    &:not(:last-child)
+        margin-right: 16px
+        +m
+            margin: 0 0 16px
+
+.checking
+    margin-top: 30px
+    letter-spacing: 1px
+    +button-1
+
+.bg
+    position: relative
+    flex-grow: 1
+    margin-right: 96px
+    +x
+        margin-right: 64px
+    +d
+        margin-right: 32px
+    +t
+        margin: 0 0 32px
+
+.details
+    display: flex
+    flex-direction: column
+    flex-shrink: 0
+    width: 384px
+    +d
+        width: 336px
+    +t
+        width: 100%
+
+.preview
+    position: relative
+    img
+        width: 100%
+        border-radius: 16px
+
+.categories
+    position: absolute
+    top: 24px
+    left: 24px
+    display: flex
+    flex-wrap: wrap
+    margin: -8px 0 0 -8px
+
+.category
+    margin: 8px 0 0 8px
+
+.options
+    position: absolute
+    top: auto
+    left: 50%
+    bottom: 24px
+    transform: translateX(-50%)
+
+.title
+    margin-bottom: 8px
+
+.cost
+    display: flex
+    align-items: center
+    margin-bottom: 40px
+
+.price
+    +dm-sans
+    font-size: 16px
+    line-height: 30px
+    &:not(:last-child)
+        margin-right: 8px
+
+.counter
+    +button-1
+    color: $neutrals4
+
+.info
+    margin-bottom: 40px
+    +body-2
+    color: $neutrals4
+    a
+        text-decoration: underline
+        font-weight: 500
+        color: $neutrals2
+        +dark
+            color: $neutrals8
+        &:hover
+            text-decoration: none
+
+.nav
+    display: flex
+    margin-bottom: 32px
+    padding: 6px
+    border-radius: 20px
+    box-shadow: inset 0 0 0 2px $neutrals6
+    +dark
+        box-shadow: inset 0 0 0 2px $neutrals3
+
+.link
+    padding: 6px 12px
+    border-radius: 14px
+    background: none
+    +button-2
+    color: $neutrals4
+    transition: all .2s
+    &:hover
+        color: $neutrals3
+        +dark
+            color: $neutrals6
+    &.active
+        background: $neutrals3
+        color: $neutrals8
+        +dark
+            background: $neutrals8
+            color: $neutrals2
+    &:not(:last-child)
+        margin-right: 8px
+
+.users
+    margin-bottom: auto
+
+.control
+    margin-top: 40px
+    +m
+        margin-top: 32px

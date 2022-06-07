@@ -1,0 +1,39 @@
+@import ../../styles/helpers
+
+.title
+    margin-bottom: 32px
+
+.text
+    margin-bottom: 32px
+    +body-2
+    color: $neutrals4
+
+.info
+    margin-bottom: 3px
+    +body-bold-1
+
+.input
+    width: 100%
+    height: 48px
+    border-bottom: 1px solid $neutrals6
+    background: none
+    border-radius: 0
+    +poppins
+    +body-bold-2
+    color: $neutrals2
+    transform: border-color .2s
+    +dark
+        border-color: $neutrals3
+        color: $neutrals8
+    +placeholder
+        color: $neutrals4
+    &:focus
+        border-color: $neutrals4
+
+.btns
+    margin-top: 32px
+
+.button
+    width: 100%
+    &:not(:last-child)
+        margin-bottom: 8px

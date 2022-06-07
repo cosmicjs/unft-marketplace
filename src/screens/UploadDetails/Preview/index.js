@@ -1,0 +1,52 @@
+import React from "react";
+import cn from "classnames";
+import Image from '../../../components/Image';
+import styles from "./Preview.module.sass";
+import Icon from "../../../components/Icon";
+
+const Preview = ( { className, onClose, info, image } ) => {
+  return (
+    <div className={cn(className, styles.wrap)}>
+      <div className={styles.inner}>
+        <button className={styles.close} onClick={onClose}>
+          <Icon name="close" size="14" />
+        </button>
+        <div className={styles.info}>Preview</div>
+        <div className={styles.card}>
+          <div className={styles.preview}>
+            {<Image
+              srcSet={image || '/images/content/upload-pic@2x.jpg'}
+              src={image || '/images/content/upload-pic.jpg'}
+              alt="Card"
+            /> }
+          </div>
+          <div className={styles.link}>
+            <div className={styles.body}>
+              <div className={styles.line}>
+                <div className={styles.title}>{info?.title}</div>
+                <div className={styles.price}>{info?.price} $</div>
+              </div>
+              <div className={styles.line}>
+                <div className={styles.counter}>{info?.count} in stock</div>
+              </div>
+            </div>
+            <div className={styles.foot}>
+              <div className={styles.status}>
+                <Icon name="candlesticks-up" size="20" />
+                Highest bid <span>{info?.price} $</span>
+              </div>
+              <div className={styles.bid}>
+                New item
+                <span role="img" aria-label="fire">
+                  🔥
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Preview;

@@ -1,0 +1,34 @@
+.section-bg
+    background: url(/images/content/section-background.webp) no-repeat center center
+    background-size: cover
+    +dark-common
+        background: url(/images/content/section-background-dark.webp) no-repeat center center
+        background-size: cover
+
+.section-bg-partners
+    background: url(/images/content/section-background-partner.webp) no-repeat center center
+    background-size: cover
+    +dark-common
+        background: url(/images/content/section-background-partner.webp) no-repeat center center
+        background-size: cover
+
+[class^="section"]
+    padding: 100px 0
+    +x
+    padding: 90px 0
+    +m
+        padding: 60px 0
+
+.section-pb
+    padding-top: 0
+    +d
+        padding-top: 0
+    +m
+        padding-top: 0
+
+.section-pt80
+    padding-top: 80px
+    +d
+        padding-top: 64px
+    +m
+        padding-top: 32px

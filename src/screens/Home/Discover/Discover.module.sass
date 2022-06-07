@@ -1,0 +1,181 @@
+@import ../../../styles/helpers
+
+.title
+    margin-bottom: 64px
+    +m
+        margin-bottom: 32px
+
+.header
+    display: flex
+    justify-content: space-between
+    +m
+        display: block
+
+.top
+    position: relative
+    display: flex
+    justify-content: space-between
+    margin-bottom: 32px
+    +m
+        display: block
+    .dropdown
+        width: 180px
+        +t
+            width: 260px
+        +m
+            width: 100%
+            margin-bottom: 12px
+
+.nav
+    position: absolute
+    top: 10px
+    left: 50%
+    display: flex
+    justify-content: center
+    transform: translateX(-50%)
+    +t
+        display: none
+
+.link
+    margin: 0 6px
+    padding: 6px 12px
+    border-radius: 14px
+    background: none
+    +button-2
+    color: $neutrals4
+    transition: all .2s
+    &:hover
+        color: $neutrals3
+        +dark
+            color: $neutrals6
+    &.active
+        background: $neutrals3
+        color: $neutrals8
+        +dark
+            background: $neutrals8
+            color: $neutrals2
+    &:nth-child(n+5)
+        +d
+            display: none
+
+.filter
+    position: relative
+    display: flex
+    justify-content: center
+    align-items: center
+    padding: 0 0 0 24px
+    flex-shrink: 0
+    border-radius: 24px
+    background: $blue
+    +dm-sans
+    font-size: 16px
+    line-height: 48px
+    color: $neutrals8
+    transition: background .2s, box-shadow .2s
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
+    +m
+        width: 100%
+    &.active
+        .toggle
+            svg
+                &:first-child
+                    display: none
+                &:nth-child(2)
+                    display: inline-block
+
+.toggle
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 52px
+    padding-right: 10px
+    background: none
+    font-size: 0
+    svg
+        fill: $neutrals8
+        &:first-child
+            width: 18px
+            height: 18px
+        &:nth-child(2)
+            display: none
+            width: 10px
+            height: 10px
+.filters
+    display: none
+    padding: 32px 0
+    border-top: 1px solid $neutrals6
+    +dark
+        border-color: $neutrals3
+    &.active
+        display: block
+
+.sorting
+    display: flex
+    flex-wrap: wrap
+    margin: -32px -16px 0
+    +d
+        margin: -24px -8px 0
+    +m
+        display: block
+        margin: 0
+
+.cell
+    flex: 0 0 calc(25% - 32px)
+    max-width: calc(25% - 32px)
+    margin: 32px 16px 0
+    +d
+        flex: 0 0 calc(25% - 16px)
+        max-width: calc(25% - 16px)
+        margin: 24px 8px 0
+    +t
+        flex: 0 0 calc(50% - 32px)
+        max-width: calc(50% - 32px)
+        margin: 32px 16px 0
+    +m
+        max-width: 100%
+        margin: 0
+        &:not(:last-child)
+            margin-bottom: 20px
+
+.label
+    margin-bottom: 12px
+    +hairline-2
+    color: $neutrals5
+
+.scale
+    display: flex
+    justify-content: space-between
+    margin-bottom: -3px
+    font-weight: 500
+
+.list
+    +m
+        margin: 0 -8px
+
+.slider
+    display: flex
+    flex-wrap: wrap
+    margin: -32px -16px 0
+    +m
+        display: block
+        margin: 0
+
+.card
+    flex: 0 0 calc(25% - 32px)
+    max-width: calc(25% - 32px)
+    margin: 32px 16px 0
+    +d
+        flex: 0 0 calc(33.333% - 32px)
+        max-width: calc(33.333% - 32px)
+    +t
+        flex: 0 0 calc(50% - 32px)
+        max-width: calc(50% - 32px)
+    +m
+        max-width: 100%
+        margin: 0
+
+.btns
+    margin-top: 32px
+    text-align: center
+    +m
+        display: none

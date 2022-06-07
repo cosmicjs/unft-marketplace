@@ -1,0 +1,26 @@
+@import ../../styles/helpers
+
+.loader,
+.loader:after
+  border-radius: 50%
+
+.loader
+  font-size: 10px
+  position: relative
+  text-indent: -9999em
+  border-top: 5px solid $neutrals5
+  border-right: 5px solid $neutrals5
+  border-bottom: 5px solid $neutrals5
+  border-left: 5px solid $blue
+  transform: translateZ(0)
+  animation: loader 1.1s infinite linear
+  +dark
+    border-top: 5px solid $neutrals3
+    border-right: 5px solid $neutrals3
+    border-bottom: 5px solid $neutrals3
+
+@keyframes loader
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(360deg)

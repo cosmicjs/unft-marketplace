@@ -1,0 +1,50 @@
+// common styles
+body
+    min-width: 375px
+    background: $neutrals8
+    +poppins
+    font-size: 14px
+    line-height: calc(24/14)
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+    color: $neutrals2
+    +dark-body
+        background: $neutrals1
+        color: $neutrals8
+
+a
+    text-decoration: none
+
+svg,
+img
+    vertical-align: middle
+
+.desktop
+    &-hide
+        +d
+            display: none !important
+    &-show
+        display: none !important
+        +d
+            display: block !important
+    &-text-right
+        +d
+            text-align: right
+
+.tablet
+    &-hide
+        +t
+            display: none !important
+    &-show
+        display: none !important
+        +t
+            display: block !important
+
+.mobile
+    &-hide
+        +m
+            display: none !important
+    &-show
+        display: none !important
+        +m
+            display: block !important

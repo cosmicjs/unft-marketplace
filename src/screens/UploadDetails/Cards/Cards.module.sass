@@ -1,0 +1,62 @@
+@import ../../../styles/helpers
+
+.category
+    +body-bold-2
+
+.text
+    margin-top: 4px
+    +caption-2
+    color: $neutrals4
+
+.cards
+    display: flex
+    margin: 24px -4px 0
+    overflow-x: auto
+    -ms-overflow-style: none
+    scrollbar-width: none
+    -webkit-overflow-scrolling: touch
+    +m
+        margin: 24px -32px 0
+    &::-webkit-scrollbar
+        display: none
+    +m
+        &:before,
+        &:after
+            content: ""
+            flex-shrink: 0
+            width: 32px
+            height: 1px
+
+.card
+    flex-shrink: 0
+    width: 160px
+    margin: 0 4px
+    padding: 24px
+    border-radius: 16px
+    background: $neutrals7
+    +button-2
+    cursor: pointer
+    +m
+        margin: 0
+        &:not(:last-child)
+            margin-right: 8px
+    +dark
+        background: $neutrals2
+    &:hover
+        .plus
+            background: $blue
+            svg
+                opacity: 1
+
+.plus
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 32px
+    height: 32px
+    border-radius: 50%
+    margin-bottom: 12px
+    svg
+        fill: $neutrals8
+        opacity: 0
+        transition: opacity .2s

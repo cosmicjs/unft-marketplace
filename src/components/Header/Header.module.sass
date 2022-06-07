@@ -1,0 +1,195 @@
+@import ../../styles/helpers
+
+.header
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    z-index: 20
+    padding: 10px 0
+    background: $white
+    border-bottom: 1px solid $neutrals6
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2)
+    +m
+        padding: 10px 0
+        border: none
+    +dark
+        background: $neutrals1
+        border-color: $neutrals3
+        box-shadow: 0 0 10px 0 rgba(107, 107, 107, 0.2)
+
+.container
+    display: flex
+    align-items: center
+    & > .button
+        margin-right: 12px
+        background: transparent
+        transition: all 0.5s ease-out
+        svg
+            fill: $neutrals4
+        +m
+            display: none
+        +dark
+            svg
+                fill: $neutrals4
+        &:hover
+            background: transparent
+            transform: scale(1.098)
+            svg
+                fill: $blue
+
+.logo
+    position: relative
+    z-index: 12
+    display: inline-block
+    flex-shrink: 0
+    width: 128px
+    margin-right: 32px
+    +d
+        margin-right: auto
+    img
+        width: 50%
+        height: auto
+
+.wrapper
+    display: flex
+    align-items: center
+    flex-grow: 1
+    +d
+        flex-grow: 0
+    +m
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        flex-direction: column
+        align-items: stretch
+        height: 100vh
+        margin: 0
+        padding: 140px 32px 40px
+        box-shadow: 0px 64px 64px rgba(31, 47, 70, 0.2)
+        background: $neutrals8
+        visibility: hidden
+        opacity: 0
+        transition: all .2s
+        +dark
+            background: $neutrals1
+        &.active
+            visibility: visible
+            opacity: 1
+    .button
+        display: none
+        +m
+            display: inline-flex
+            margin-top: 16px
+
+.nav
+    display: flex
+    margin-right: auto
+    border-left: 2px solid $neutrals6
+    +d
+        display: none
+    +m
+        display: flex
+        flex-direction: column
+        margin: 0 0 40px
+        border: none
+    +dark
+        border-color: $neutrals3
+
+.link
+    margin-left: 32px
+    +dm-sans
+    line-height: 40px
+    color: $neutrals4
+    transition: color .2s
+    +m
+        margin-left: 0
+        font-size: 24px
+        line-height: 64px
+    &:hover,
+    &.active
+        color: $blue
+    &:nth-child(n+3)
+        display: none
+        +m
+            display: block
+
+.search
+    position: relative
+    flex-shrink: 0
+    width: 256px
+    margin-right: 24px
+    +t
+        display: none
+    +m
+        display: block
+        width: 100%
+        margin: auto 0 0
+
+.input
+    width: 100%
+    height: 40px
+    padding: 0 42px 0 16px
+    background: none
+    border: 2px solid $neutrals6
+    border-radius: 8px
+    +poppins
+    +caption-2
+    transition: border-color .2s
+    +placeholder
+        color: $neutrals4
+    +dark
+        border-color: $neutrals3
+        color: $neutrals8
+    &:focus
+        border-color: $neutrals4
+
+.result
+    position: absolute
+    top: 0
+    right: 0
+    bottom: 0
+    width: 42px
+    svg
+        fill: $neutrals4
+        transition: fill .2s
+    &:hover
+        svg
+            fill: $blue
+
+.notification
+    margin-right: 24px
+    +m
+        margin-right: 20px
+
+.burger
+    display: none
+    +m
+        display: block
+        position: relative
+        margin-left: 20px
+        width: 32px
+        height: 32px
+        background: none
+        -webkit-tap-highlight-color: rgba(0,0,0,0)
+        &.active
+            &:before
+                transform: translateY(0) rotate(-45deg)
+            &:after
+                transform: translateY(0) rotate(45deg)
+        &:before,
+        &:after
+            content: ''
+            position: absolute
+            top: 16px
+            left: 6px
+            width: 20px
+            height: 2px
+            background: $neutrals4
+            border-radius: 2px
+            transition: transform .2s
+        &:before
+            transform: translateY(-4px)
+        &:after
+            transform: translateY(3px)

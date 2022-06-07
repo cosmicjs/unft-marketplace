@@ -1,0 +1,145 @@
+@import ../../../styles/helpers
+
+.inner
+    padding: 48px
+    background: $neutrals8
+    box-shadow: 0px 64px 64px rgba(31, 47, 70, 0.12)
+    border-radius: 16px
+    +d
+        padding: 24px
+    +t
+        position: relative
+        width: 352px
+        margin: auto
+    +dark
+        background: $neutrals1
+        box-shadow: inset 0 0 0 1px $neutrals3
+
+.close
+    display: none
+    position: absolute
+    top: 20px
+    right: 24px
+    width: 40px
+    height: 40px
+    background: $neutrals8
+    border: 2px solid $neutrals6
+    border-radius: 50%
+    font-size: 0
+    +t
+        display: inline-block
+    svg
+        fill: $neutrals2
+        transition: transform .2s
+    +dark
+        border-color: $neutrals3
+        background: $neutrals1
+        svg
+            fill: $neutrals8
+
+.info
+    margin-bottom: 24px
+    +body-bold-1
+
+.preview
+    position: relative
+    border-radius: 16px
+    overflow: hidden
+    background: $neutrals8
+    width: 100%
+    height: 260px
+    & > img
+        width: 100%
+        height: 100%
+        object-fit: cover
+
+.link
+    padding: 20px 0
+    color: $neutrals2
+    +dark
+        color: $neutrals8
+
+.line
+    display: flex
+    align-items: flex-start
+    &:first-child
+        margin-bottom: 12px
+
+.title
+    margin-right: auto
+    padding-top: 1px
+    +body-bold-2
+
+.price
+    flex-shrink: 0
+    margin-left: 12px
+    padding: 0 8px
+    border-radius: 4px
+    box-shadow: inset 0 0 0 2px $green
+    font-size: 12px
+    line-height: 26px
+    font-weight: 700
+    text-transform: uppercase
+    color: $green
+
+.counter
+    +dark
+        color: $neutrals6
+
+.users
+    display: flex
+    margin-right: auto
+
+.avatar
+    flex-shrink: 0
+    width: 24px
+    height: 24px
+    border-radius: 50%
+    border: 2px solid $neutrals8
+    +dark
+        border-color: $neutrals1
+    img
+        width: 100%
+        height: 100%
+        object-fit: cover
+        border-radius: 50%
+    &:not(:first-child)
+        margin-left: -8px
+
+.foot
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-top: 12px
+    padding-top: 12px
+    border-top: 1px solid $neutrals6
+    +caption-2
+    color: $neutrals4
+    +dark
+        border-color: $neutrals3
+
+.status
+    svg
+        margin: -2px 4px 0 0
+        fill: $neutrals4
+    span
+        font-weight: 600
+        color: $neutrals3
+        +dark
+            color: $neutrals8
+
+.clear
+    display: inline-flex
+    align-items: center
+    margin-top: 24px
+    +button-1
+    color: $neutrals4
+    transition: color .2s
+    svg
+        margin-right: 8px
+        fill: $neutrals4
+        transition: fill .2s
+    &:hover
+        color: $blue
+        svg
+            fill: $blue

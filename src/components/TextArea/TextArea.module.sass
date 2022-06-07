@@ -1,0 +1,26 @@
+@import ../../styles/helpers
+
+.label
+    margin-bottom: 12px
+    +hairline-2
+    color: $neutrals5
+
+.textarea
+    width: 100%
+    height: 96px
+    padding: 10px 14px
+    resize: none
+    border-radius: 12px
+    border: 2px solid $neutrals6
+    background: none
+    +poppins
+    +caption-bold-1
+    color: $neutrals2
+    transition: border-color .2s
+    +dark
+        border-color: $neutrals3
+        color: $neutrals8
+    +placeholder
+        color: $neutrals4
+    &:focus
+        border-color: $neutrals4

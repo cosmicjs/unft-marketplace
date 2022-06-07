@@ -1,0 +1,143 @@
+@import ../../../styles/helpers
+
+.head
+    max-width: 600px
+    margin: 0 auto 78px
+    text-align: center
+    +x
+        margin-bottom: 62px
+    +m
+        margin-bottom: 44px
+
+.stage
+    margin-bottom: 8px
+    +hairline-2
+    color: $neutrals4
+
+.title
+    margin-bottom: 24px
+    +m
+        font-size: 32px
+
+.wrapper
+    position: relative
+    margin: 0 -12px
+
+.row
+    display: flex
+    align-items: center
+    margin-left: -19%
+    +t
+        display: block
+        margin-left: 0
+
+.player
+    align-items: flex-start
+    max-width: 90%
+    margin: 0 auto
+    +t
+        max-width: 100%
+
+.details
+    flex-shrink: 1
+    margin-left: 18px
+    padding-bottom: 80px
+    width: 50%
+    +x
+        margin-left: 10px
+    +d
+        width: 304px
+        margin-left: 8px
+        padding-bottom: 64px
+    +t
+        width: 100%
+        margin: 48px 0 0
+        padding-bottom: 80px
+    +m
+        margin-top: 32px
+        width: 100%
+
+.subtitle
+    margin-bottom: 20px
+    +d
+        font-size: 48px
+
+.line
+    display: flex
+    margin: 0 -16px 40px
+    +d
+        margin-bottom: 24px
+
+.item
+    display: flex
+    align-items: center
+    flex: 0 0 calc(50% - 32px)
+    width: calc(50% - 32px)
+    margin: 0 16px
+
+.description
+    flex-grow: 1
+
+.category
+    +caption-2
+    color: $neutrals4
+
+.text
+    font-weight: 500
+
+.wrap
+    margin-bottom: 20px
+    padding: 30px 16px
+    box-shadow: 0px 64px 64px -48px rgba(31, 47, 70, 0.12)
+    border: 2px solid $neutrals6
+    border-radius: 24px
+    text-align: center
+    +d
+        margin-bottom: 32px
+        padding: 24px 16px
+    +dark
+        background: $neutrals2
+        border-color: $neutrals2
+
+.info
+    +body-bold-2
+
+.currency
+    +dm-sans
+    font-size: 48px
+    line-height: calc(56/48)
+    letter-spacing: -.02em
+
+.price
+    margin-bottom: 20px
+    +body-bold-1
+    color: $neutrals4
+
+.timer
+    display: flex
+    justify-content: center
+    margin-top: 8px
+
+.box
+    flex-shrink: 0
+    width: 64px
+    &:not(:last-child)
+        margin-right: 20px
+
+.number
+    +dm-sans
+    font-size: 32px
+    line-height: calc(40/32)
+    letter-spacing: -.01em
+
+.time
+    +body-bold-2
+    color: $neutrals4
+
+.btns
+    display: flex
+    flex-direction: column
+    .button
+        width: 100%
+        &:not(:last-child)
+            margin-bottom: 8px

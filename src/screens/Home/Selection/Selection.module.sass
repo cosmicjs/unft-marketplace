@@ -1,0 +1,264 @@
+@import ../../../styles/helpers
+
+.wrapper
+    position: relative
+
+.section
+    overflow: hidden
+
+.container
+    display: flex
+    +x
+        display: block
+
+.search
+    position: static
+    top: 0
+    left: 0
+    transform: translateX(50%)
+    margin: 25px auto
+
+.row
+    display: flex
+    flex-grow: 1
+    margin-right: 32px
+    padding-right: 32px
+    border-right: 1px solid $neutrals6
+    +x
+        margin-right: 0
+        padding: 0
+        border: none
+    +dark
+        border-color: $neutrals3
+
+.sidebar
+    flex-shrink: 0
+    width: 224px
+    +x
+        width: 100%
+        margin-top: 64px
+    +m
+        margin-top: 40px
+        padding-top: 40px
+        border-top: 1px solid $neutrals6
+        +dark
+            border-color: $neutrals3
+    .button
+        margin-top: 8px
+        +x
+            display: none
+
+.col
+    &:first-child
+        flex-grow: 1
+        padding-right: 32px
+        +t
+            padding: 0
+    &:nth-child(2)
+        flex: 0 0 42.2%
+        +d
+            flex: 0 0 43.5%
+        +t
+            display: none
+
+.preview
+    position: relative
+    border-radius: 12px
+    overflow: hidden
+    max-height: 550px
+    img
+        width: 100%
+        height: 100%
+        object-fit: cover
+    &:before
+        content: ""
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' fill='none' xmlns:v='https://vecta.io/nano'%3E%3Cpath d='M0 24C0 10.745 10.745 0 24 0s24 10.745 24 24-10.745 24-24 24S0 37.255 0 24z' fill='%23fcfcfd'/%3E%3Cpath fill-rule='evenodd' d='M25.394 20.843c.271-.25.692-.233.942.038l2.154 2.333c.236.255.236.649 0 .904l-2.154 2.333c-.25.271-.672.287-.942.038s-.287-.671-.038-.942l1.121-1.215H20c-.368 0-.667-.298-.667-.667S19.632 23 20 23h6.477l-1.121-1.214c-.25-.271-.233-.692.038-.942z' fill='%23777e91'/%3E%3C/svg%3E") no-repeat 50% 50% / 48px 48px
+        opacity: 0
+        visibility: hidden
+        transition: all .2s
+        +dark
+            background-color: transparent
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' fill='none' xmlns:v='https://vecta.io/nano'%3E%3Cpath d='M0 24C0 10.745 10.745 0 24 0s24 10.745 24 24-10.745 24-24 24S0 37.255 0 24z' fill='%2323262F'/%3E%3Cpath fill-rule='evenodd' d='M25.394 20.843c.271-.25.692-.233.942.038l2.154 2.333c.236.255.236.649 0 .904l-2.154 2.333c-.25.271-.672.287-.942.038s-.287-.671-.038-.942l1.121-1.215H20c-.368 0-.667-.298-.667-.667S19.632 23 20 23h6.477l-1.121-1.214c-.25-.271-.233-.692.038-.942z' fill='%23777E90'/%3E%3C/svg%3E")
+
+.card,
+.item
+    color: $neutrals2
+    +dark
+        color: $neutrals8
+    &:hover
+        .preview
+            &:before
+                opacity: 1
+                visibility: visible
+
+.card
+    .preview
+        margin-bottom: 24px
+    .avatar
+        width: 48px
+        height: 48px
+        margin-right: 16px
+    .title
+        +body-bold-1
+        +m
+            font-size: 16px
+    .content
+        margin-bottom: 2px
+
+.line,
+.head
+    display: flex
+
+.line
+    align-items: center
+
+.box
+    margin-left: auto
+    padding-left: 20px
+    text-align: right
+
+.avatar
+    flex-shrink: 0
+    img
+        width: 100%
+        height: 100%
+        border-radius: 50%
+        object-fit: cover
+
+.description
+    flex-grow: 1
+
+.counter
+    font-weight: 500
+    color: $neutrals3
+    +dark
+        color: $neutrals6
+
+.content
+    +caption-2
+    color: $neutrals4
+
+.price
+    display: inline-block
+    padding: 7px
+    box-shadow: inset 0 0 0 2px $green
+    border-radius: 4px
+    +hairline-2
+    color: $green
+
+.item
+    display: flex
+    align-items: center
+    .preview
+        flex-shrink: 0
+        width: 160px
+        height: 160px
+        margin-right: 24px
+    .avatar
+        width: 24px
+        height: 24px
+        margin-right: 12px
+    .title
+        margin-bottom: 8px
+        +body-bold-2
+    .line
+        margin-bottom: 16px
+    .price
+        margin-right: 12px
+    .button
+        padding: 0 12px
+        height: 32px
+    &:not(:last-child)
+        margin-bottom: 30px
+
+.info
+    +caption-bold-2
+    color: $neutrals4
+    +x
+        margin-bottom: 24px
+    +t
+        margin-bottom: 20px
+
+.list
+    +x
+        display: flex
+        margin: 0 -12px
+    +t
+        margin: 0 -40px
+        padding-top: 4px
+        overflow: auto
+        overflow-x: auto
+        -ms-overflow-style: none
+        scrollbar-width: none
+        -webkit-overflow-scrolling: touch
+        &::-webkit-scrollbar
+            display: none
+        &:before,
+        &:after
+            content: ""
+            flex-shrink: 0
+            width: 40px
+            height: 1px
+
+.user
+    display: flex
+    align-items: center
+    padding: 24px 0
+    +x
+        flex: 0 0 calc(25% - 24px)
+        width: calc(25% - 24px)
+        margin: 0 12px
+        padding: 0
+    +t
+        flex: 0 0 224px
+        width: 224px
+        margin: 0
+        padding-right: 16px
+    .avatar
+        position: relative
+        width: 56px
+        height: 56px
+        margin-right: 16px
+    &:not(:last-child)
+        border-bottom: 1px solid $neutrals6
+        +x
+            border: none
+        +dark
+            border-color: $neutrals3
+
+.number
+    position: absolute
+    top: -4px
+    left: -4px
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 24px
+    height: 24px
+    border-radius: 50%
+    border: 2px solid $neutrals8
+    background: $neutrals2
+    +caption-bold-2
+    color: $neutrals8
+    +dark
+        border-color: $neutrals1
+        background: $neutrals8
+        color: $neutrals2
+
+.name
+    margin-bottom: 2px
+    font-weight: 500
+
+.money
+    +caption-2
+    color: $neutrals4
+    span
+        font-weight: 600
+        color: $neutrals2
+        +dark
+            color: $neutrals6

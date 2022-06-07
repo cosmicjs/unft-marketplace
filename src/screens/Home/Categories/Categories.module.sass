@@ -1,0 +1,90 @@
+@import ../../../styles/helpers
+
+.section
+    overflow: hidden
+
+.wrapper
+    position: relative
+
+.title
+    margin-bottom: 80px
+    +d
+        margin-bottom: 64px
+    +m
+        margin-bottom: 32px
+        text-align: center
+
+.inner
+    margin: 0 -16px
+
+.gallery
+    display: flex
+    flex-wrap: wrap
+    margin: -8px -4px 16px
+
+.cart
+    background: $white
+    padding: 15px
+    border-radius: 10px
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2)
+    cursor: pointer
+    +dark
+        background: $neutrals1
+        box-shadow: 0px 0px 20px 0px rgba(107, 107, 107, 0.2)
+    &:hover
+        transform: scale(1.01)
+        transition: all .4s
+
+.preview
+    flex: 0 0 calc(33.333% - 8px)
+    width: calc(33.333% - 8px)
+    margin: 8px 4px 0
+    img
+        width: 100%
+        height: 88px
+        object-fit: cover
+        border-radius: 8px
+        background-position: center center
+    &:first-child
+        flex: 0 0 calc(100% - 8px)
+        width: calc(100% - 8px)
+        img
+            object-fit: cover
+            background-position: center center
+            width: 100%
+            height: 208px
+
+.subtitle
+    margin-bottom: 8px
+    +body-bold-1
+    color: $neutrals2
+    +dark
+        color: $neutrals8
+
+.line
+    display: flex
+    align-items: center
+
+.user
+    display: flex
+    align-items: center
+    margin-right: auto
+    color: $neutrals3
+    +dark
+        color: $neutrals6
+    span
+        font-weight: 500
+
+.avatar
+    flex-shrink: 0
+    width: 24px
+    height: 24px
+    margin-right: 12px
+    img
+        width: 100%
+        height: 100%
+        object-fit: cover
+        border-radius: 50%
+
+.counter
+    flex-shrink: 0

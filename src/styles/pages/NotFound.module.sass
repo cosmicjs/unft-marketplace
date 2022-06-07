@@ -1,0 +1,104 @@
+@import ../../styles/helpers
+
+.section
+    overflow: hidden
+    +m
+        padding-top: 48px
+
+.preview
+    margin: 26px 0
+    +d
+        margin: 0 -34px 50px
+    +t
+        margin-bottom: 34px
+    +m
+        margin: 0 -100px 22px
+    img
+        width: 100%
+
+.wrap
+    max-width: 736px
+    margin: 0 auto 96px
+    text-align: center
+    +m
+        margin-bottom: 64px
+
+.title
+    margin-bottom: 8px
+
+.info
+    margin-bottom: 24px
+    color: $neutrals4
+
+.form
+    max-width: 300px
+    margin: 0 auto
+    +m
+        max-width: 100%
+
+.subtitle
+    margin-bottom: 48px
+    text-align: center
+    +body-bold-1
+
+.list
+    display: flex
+    margin: 0 -16px
+    +d
+        margin: 0 -80px
+        overflow: auto
+        overflow-x: auto
+        -ms-overflow-style: none
+        scrollbar-width: none
+        -webkit-overflow-scrolling: touch
+        &::-webkit-scrollbar
+            display: none
+        &:before,
+        &:after
+            content: ""
+            flex-shrink: 0
+            width: 80px
+            height: 1px
+
+.item
+    display: flex
+    align-items: center
+    flex: 0 0 calc(25% - 32px)
+    width: calc(25% - 32px)
+    margin: 0 16px
+    padding: 9px
+    border: 1px solid $neutrals6
+    border-radius: 32px
+    cursor: pointer
+    transition: all .2s
+    +d
+        flex: 0 0 256px
+        width: 256px
+        margin: 0
+    &:not(:last-child)
+        +d
+            margin-right: 20px
+    &:hover
+        box-shadow: 0px 24px 24px -16px rgba(15, 15, 15, 0.2)
+    +dark
+        border-color: $neutrals3
+        &:hover
+            border-color: $neutrals4
+
+.picture
+    flex-shrink: 0
+    width: 44px
+    height: 44px
+    margin-right: 12px
+    img
+        width: 100%
+        height: 100%
+        object-fit: cover
+        border-radius: 50%
+
+.category
+    +body-bold-2
+
+.text
+    +caption-2
+    color: $neutrals4
