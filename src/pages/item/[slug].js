@@ -7,19 +7,19 @@ import HotBid from "../../components/HotBid";
 import Discover from "../../screens/Home/Discover";
 import Dropdown from "../../components/Dropdown";
 import Image from "../../components/Image";
-import { getDataBySlug, getAllDataByType } from '../../lib/cosmic';
+import { getDataBySlug, getAllDataByType, getDataByCategory } from '../../lib/cosmic';
 import getStripe from '../../lib/getStripe';
 
 import styles from "../../styles/pages/Item.module.sass";
 
-const Item = ( { itemInfo } ) => {
-  const { categories, onAdd, cartItems } =  useStateContext();
+const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
+  const { onAdd, cartItems } =  useStateContext();
 
-  const [ activeIndex,setActiveIndex ] = useState( 0 );
-  const [ checkItems,setCheckItems ] = useState( false );
+  const [ activeIndex, setActiveIndex ] = useState( 0 );
+  const [ checkItems, setCheckItems ] = useState( false );
 
   const counts = itemInfo?.[0]?.metadata?.count ? Array( itemInfo[ 0 ]?.metadata?.count ).fill(1).map( ( _,index ) => index + 1 ) : 1;
-  const [ option,setOption ] = useState( counts[0] );
+  const [ option, setOption ] = useState( counts[0] );
 
   const handleAddToCart =() => {
     checkItems && setCheckItems( false );
@@ -53,7 +53,7 @@ const Item = ( { itemInfo } ) => {
   }
 
   return (
-      <Layout>
+      <Layout navigationPaths={navigationItems[0]?.metadata}>
         <div className={cn("section", styles.section)}>
           <div className={cn("container", styles.container)}>
             <div className={styles.bg}>
@@ -124,8 +124,8 @@ const Item = ( { itemInfo } ) => {
               </div>
             </div>
           </div>
-          <HotBid classSection="section" info={categories['groups'][ 0 ]} />
-          <Discover info={categories['groups']} type={categories['type']}/>
+          <HotBid classSection="section" info={categoriesGroup['groups'][ 0 ]} />
+          <Discover info={categoriesGroup['groups']} type={categoriesGroup['type']}/>
         </div>
       </Layout>
   );
@@ -134,20 +134,36 @@ const Item = ( { itemInfo } ) => {
 export default Item;
 
 export async function getStaticPaths() {
-  const products = (await getAllDataByType('products')) || [];
+  const products = ( await getAllDataByType( 'products' ) ) || [];
 
   return {
     paths: products.map((product) => ({
-      params: { slug: product.slug },
+      params: { slug: `${product.id}` },
     } ) ),
     fallback: true,
   };
 }
 
 export async function getStaticProps({ params }) {
-  const itemInfo = await  getDataBySlug(params.slug);
+  const itemInfo = await getDataBySlug( params.slug );
+  const navigationItems = await getAllDataByType( 'navigation' ) || [];
+
+  const categoryTypes = await getAllDataByType( 'categories' ) || [];
+  const categoriesData = await Promise.all( categoryTypes?.map( ( category ) => {
+      return getDataByCategory( category?.id );
+  } ) );
+
+  const categoriesGroups = categoryTypes?.map(({ id }, index) => {
+      return { [id]: categoriesData[index] };
+    });
+
+    const categoriesType = categoryTypes?.reduce((arr,{ title,id }) => {
+      return { ...arr, [id]: title };
+    },{} );
+
+  const categoriesGroup = { groups: categoriesGroups, type: categoriesType }
 
   return {
-    props: { itemInfo },
+    props: { itemInfo, navigationItems, categoriesGroup },
   };
 }

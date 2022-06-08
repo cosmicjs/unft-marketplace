@@ -4,37 +4,40 @@ import Layout from "../components/Layout";
 import {Intro, Selection, Partners, HotBid, Categories, Discover, Description} from '../screens/Home'
 import {  getDataByCategory, getAllDataByType } from '../lib/cosmic'
 
-const Home = ({reviews, landing, categoryTypes, categoriesGroups,  categoriesType}) => {
-  const { categories,onCategoriesChange } = useStateContext();
+const Home = ({reviews, landing, categoriesGroup,  categoryTypes, navigationItems}) => {
+  const { categories, onCategoriesChange, setNavigation } = useStateContext();
 
-  const fetchCategoryData = useCallback((category, data) => {
-    onCategoriesChange({ groups: category, type: data });
-  },[ onCategoriesChange ] );
+  const handleContextAdd = useCallback((category, data, navigation) => {
+    onCategoriesChange( { groups: category,type: data } );
+    setNavigation( navigation );
+  },[onCategoriesChange, setNavigation] );
 
   useEffect(() => {
     let isMounted = true;
 
     if(!categories['groups']?.length && isMounted) {
-      fetchCategoryData(categoriesGroups, categoriesType);
+      handleContextAdd(categoriesGroup?.groups, categoriesGroup?.type, navigationItems[0]?.metadata);
     }
 
     return () => {
       isMounted = false;
     }
-  },[categories, categoriesGroups, categoriesType, fetchCategoryData]);
+  },[categories, categoriesGroup, categoryTypes, handleContextAdd, navigationItems]);
 
   return (
-    <Layout>
-        <Description info={landing[1]} />
-        <HotBid classSection="section" info={categories['groups'][0]} />
-        <Categories info={categories['groups']} type={categories['type']} />
-        <Selection info={categories[ 'groups' ]} type={categoryTypes} />
-        <Intro info={landing[0]}/>
-        <Partners info={reviews} />
-        <Discover info={categories[ 'groups' ]} type={categories[ 'type' ]} />
+    <Layout navigationPaths={navigationItems[0]?.metadata}>
+      <Description info={landing[1]} />
+      <HotBid classSection="section" info={categoriesGroup['groups'][0]} />
+      <Categories info={categoriesGroup['groups']} type={categoriesGroup['type']} />
+      <Selection info={categoriesGroup[ 'groups' ]} type={categoryTypes} />
+      <Intro info={landing[0]}/>
+      <Partners info={reviews} />
+      <Discover info={categoriesGroup[ 'groups' ]} type={categoriesGroup[ 'type' ]} />
     </Layout>
   )
 }
+
+export default Home;
 
 export async function getStaticProps() {
   const reviews = await getAllDataByType('reviews') || [];
@@ -42,7 +45,8 @@ export async function getStaticProps() {
   const categoryTypes = await getAllDataByType( 'categories' ) || [];
   const categoriesData = await Promise.all( categoryTypes?.map( ( category ) => {
       return getDataByCategory( category?.id );
-    } ) );
+  } ) );
+  const navigationItems = await getAllDataByType('navigation') || [];
 
     const categoriesGroups = categoryTypes?.map(({ id }, index) => {
       return { [id]: categoriesData[index] };
@@ -50,11 +54,11 @@ export async function getStaticProps() {
 
     const categoriesType = categoryTypes?.reduce((arr,{ title,id }) => {
       return { ...arr, [id]: title };
-    },{});
+    },{} );
+
+  const categoriesGroup = { groups: categoriesGroups, type: categoriesType }
 
   return {
-    props: { reviews, landing, categoryTypes, categoriesGroups,  categoriesType},
+    props: { reviews, landing, categoriesGroup,  categoryTypes, navigationItems},
   }
 }
-
-export default Home;

@@ -30,7 +30,7 @@ const Headers = ({navigation}) => {
                 href={x?.url || `/search/${ACTIVE_INDEX}` }
                 key={index}
               >
-                {x.item}
+                {x.title}
               </AppLink>
             ))}
           </nav>

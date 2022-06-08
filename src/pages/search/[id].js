@@ -10,6 +10,7 @@ import Dropdown from "../../components/Dropdown";
 import { filterDataByPrice, filterDataByColor, getSearchDataWith } from "../../lib/cosmic";
 import { useStateContext } from '../../utils/context/StateContext';
 import { filterByType } from '../../utils/filterDataByType';
+import { getAllDataByType, getDataByCategory } from '../../lib/cosmic';
 import { ACTIVE_INDEX, OPTIONS } from "../../utils/constants/appConstants";
 
 import styles from "../../styles/pages/Search.module.sass";
@@ -18,14 +19,17 @@ const STEP = 1;
 const MIN = 1;
 const MAX = 100;
 
-const Search = () => {
+const Search = ({categoriesGroup, navigationItems}) => {
   const { query: {id} } = useRouter();
   const { categories } = useStateContext();
 
-  const [activeIndex, setActiveIndex] = useState( id || ACTIVE_INDEX );
-  const [searchResult, setSearchResult] = useState( filterByType(categories['groups'], id));
+  const categoriesTypeData = categoriesGroup['type'] || categories[ 'type' ];
+  const categoriesGroupsData = categoriesGroup['groups'] || categories[ 'groups' ];
 
-  const [ search,setSearch ] = useState( "" );
+  const [activeIndex, setActiveIndex] = useState( id || ACTIVE_INDEX );
+  const [searchResult, setSearchResult] = useState( filterByType(categoriesGroupsData, id));
+
+  const [search, setSearch] = useState( "" );
 
   const debouncedSearchTerm = useDebounce(search, 600);
 
@@ -51,7 +55,7 @@ const Search = () => {
 
   const handleCategoryChange = ( index ) => {
     setActiveIndex( index );
-    setSearchResult( filterByType(categories['groups'], activeIndex) );
+    setSearchResult( filterByType(categoriesGroupsData, activeIndex) );
   }
 
   const handleSubmit = ( e ) => {
@@ -65,16 +69,16 @@ const Search = () => {
     if( debouncedSearchTerm?.length &&  isMounted) {
         getDataBySearch( debouncedSearchTerm.toLowerCase().trim() );
     } else {
-      setSearchResult(filterByType( categories['groups'], activeIndex ));
+      setSearchResult(filterByType(categoriesGroupsData, activeIndex ));
     };
 
     return () => {
       isMounted = false;
     }
-  },[id, debouncedSearchTerm, getDataBySearch, categories, activeIndex] );
+  },[id, debouncedSearchTerm, getDataBySearch, categories, activeIndex, categoriesGroup, categoriesGroupsData] );
 
   return (
-    <Layout>
+    <Layout navigationPaths={navigationItems[0]?.metadata}>
       <div className={cn("section-pt80", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.top}>
@@ -108,7 +112,7 @@ const Search = () => {
               />
             </div>
             <div className={styles.nav}>
-              {categories['type'] && Object.entries(categories['type'])?.map((item, index) => (
+              {categoriesTypeData && Object.entries(categoriesTypeData)?.map((item, index) => (
                 <button
                   className={cn(styles.link, {
                     [styles.active]: item[0] === activeIndex,
@@ -225,3 +229,36 @@ const Search = () => {
 };
 
 export default Search;
+
+export async function getStaticPaths() {
+  const categories = await getAllDataByType( 'categories' ) || [];
+
+  return { paths: categories.map((category) => ({
+      params: { id: `${category.slug}` },
+  } ) ),
+    fallback: true
+  }
+}
+
+export async function getStaticProps({ params }) {
+  const navigationItems = await getAllDataByType( 'navigation' ) || [];
+
+  const categoryTypes = await getAllDataByType( 'categories' ) || [];
+  const categoriesData = await Promise.all( categoryTypes?.map( ( category ) => {
+      return getDataByCategory( category?.id );
+  } ) );
+
+  const categoriesGroups = categoryTypes?.map(({ id }, index) => {
+      return { [id]: categoriesData[index] };
+    });
+
+    const categoriesType = categoryTypes?.reduce((arr,{ title,id }) => {
+      return { ...arr, [id]: title };
+    },{} );
+
+  const categoriesGroup = { groups: categoriesGroups, type: categoriesType }
+
+  return {
+    props: { navigationItems, categoriesGroup },
+  };
+}

@@ -27,11 +27,6 @@ const FolowSteps = ( { className } ) => {
           </div>
         </div>
         <div className={styles.item}>
-          <div className={styles.head}>
-            <div className={styles.icon}>
-              <Icon name="bag" size="24" />
-            </div>
-          </div>
           <button onClick={handleGoHomePage} className={cn("button", styles.button)}>Start now</button>
         </div>
       </div>

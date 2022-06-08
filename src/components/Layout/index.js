@@ -3,29 +3,24 @@ import Head from 'next/head';
 import Header from "../Header";
 import Footer from "../Footer";
 import { getAllDataByType } from "../../lib/cosmic";
+import { useStateContext } from '../../utils/context/StateContext';
 
 import styles from "./Layout.module.sass";
 
-const Layout = ({ children, title }) => {
-  const [ navigation,setNavigation ] = useState( {} );
-
-  const fetchNavigationData = useCallback( async () => {
-    const navigationItems = await getAllDataByType( 'navigation' );
-    await setNavigation( navigationItems[0]?.metadata);
-  }, []);
+const Layout = ({ children, title, navigationPaths }) => {
+  const { navigation, setNavigation } = useStateContext();
 
   useEffect(() => {
     let isMounted = true;
 
-    if(!navigation.hasOwnProperty('menu') && isMounted) {
-      fetchNavigationData();
+    if(!navigation?.hasOwnProperty('menu') && navigationPaths?.hasOwnProperty('menu') && isMounted) {
+      setNavigation(navigationPaths);
     }
 
     return () => {
       isMounted = false;
     }
-  },[fetchNavigationData, navigation]);
-
+  },[navigation, navigationPaths, setNavigation]);
 
   return (
     <>
@@ -35,11 +30,11 @@ const Layout = ({ children, title }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.page}>
-        <Header navigation={navigation}/>
+        <Header navigation={navigationPaths || navigation}/>
         <main className={styles.inner}>
           {children}
         </main>
-        <Footer navigation={navigation} />
+        <Footer navigation={navigationPaths || navigation} />
       </div>
     </>
   );

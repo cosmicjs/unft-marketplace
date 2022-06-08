@@ -8,6 +8,7 @@ import TextInput from "../components/TextInput";
 import Switch from "../components/Switch";
 import Loader from "../components/Loader";
 import Modal from "../components/Modal";
+import OAuth from '../components/OAuth';
 import Preview from "../screens/UploadDetails/Preview";
 import Cards from "../screens/UploadDetails/Cards";
 import FolowSteps from "../screens/UploadDetails/FolowSteps";
@@ -29,12 +30,18 @@ const Upload = () => {
   const [{ title, count, description, price  }, setFields] = useState(() => createFields);
 
   const [visibleModal, setVisibleModal] = useState(false);
+  const [ visibleAuthModal,setVisibleAuthModal ] = useState( false );
+  const [token, setToken] = useState('');
 
-  const [visiblePreview, setVisiblePreview] = useState( false );
+  const [ visiblePreview,setVisiblePreview ] = useState( false );
 
   const handleUpload = async ( e ) => {
-    const mediaData = await uploadMediaFiles(e.target.files[0]);
-    await setUploadMedia( mediaData?.['media']);
+    setVisibleAuthModal( true );
+
+    if( token ) {
+      const mediaData = await uploadMediaFiles(e.target.files[0]);
+      await setUploadMedia( mediaData?.['media']);
+    }
   };
 
   const handleChange = ({ target: { name, value } }) =>
@@ -58,6 +65,10 @@ const Upload = () => {
 
   const submitForm = useCallback( async ( e ) => {
     e.preventDefault();
+    setVisibleAuthModal( true );
+
+    if( !token ) setFillFiledMessage( true );
+
     if( title && color && count && price && uploadMedia ) {
       fillFiledMessage && setFillFiledMessage( false );
 
@@ -111,7 +122,7 @@ const Upload = () => {
     } else {
       setFillFiledMessage( true );
     }
-  },[chooseCategory, color, count, description, fillFiledMessage, price, title, uploadMedia] );
+  },[chooseCategory, color, count, description, fillFiledMessage, price, title, token, uploadMedia] );
 
   return (
       <Layout>
@@ -265,6 +276,9 @@ const Upload = () => {
         </div>
         <Modal visible={visibleModal} onClose={() => setVisibleModal(false)}>
           <FolowSteps className={styles.steps} />
+        </Modal>
+        <Modal visible={visibleAuthModal} onClose={() => setVisibleAuthModal(false)}>
+          <OAuth className={styles.steps} handleOAuth={setToken} handleClose={() => setVisibleAuthModal(false)} />
         </Modal>
       </Layout>
   );
