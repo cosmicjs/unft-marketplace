@@ -50,7 +50,7 @@ const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
 
 const Discover = ( { info,type } ) => {
   const { push } = useRouter();
-  const [activeIndex, setActiveIndex] = useState(type ? Object.entries(type)[0][0] : ACTIVE_INDEX);
+  const [activeIndex, setActiveIndex] = useState(type ? Object.entries(type)[0]?.[0] : ACTIVE_INDEX);
   const [option, setOption] = useState( OPTIONS[ 0 ] );
 
   const [rangeValues, setValues] = useState([50]);
