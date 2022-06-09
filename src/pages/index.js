@@ -39,7 +39,7 @@ const Home = ({reviews, landing, categoriesGroup,  categoryTypes, navigationItem
 
 export default Home;
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const reviews = await getAllDataByType('reviews') || [];
   const landing = await getAllDataByType('landings')  || [];
   const categoryTypes = await getAllDataByType( 'categories' ) || [];
