@@ -230,17 +230,7 @@ const Search = ({categoriesGroup, navigationItems}) => {
 
 export default Search;
 
-export async function getStaticPaths() {
-  const categories = await getAllDataByType( 'categories' ) || [];
-
-  return { paths: categories.map((category) => ({
-      params: { id: `${category.slug}` },
-  } ) ),
-    fallback: true
-  }
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   const navigationItems = await getAllDataByType( 'navigation' ) || [];
 
   const categoryTypes = await getAllDataByType( 'categories' ) || [];

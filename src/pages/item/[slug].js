@@ -133,21 +133,11 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
 
 export default Item;
 
-export async function getStaticPaths() {
-  const products = ( await getAllDataByType( 'products' ) ) || [];
 
-  return {
-    paths: products.map((product) => ({
-      params: { slug: `${product.id}` },
-    } ) ),
-    fallback: true,
-  };
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   const itemInfo = await getDataBySlug( params.slug );
-  const navigationItems = await getAllDataByType( 'navigation' ) || [];
 
+  const navigationItems = await getAllDataByType( 'navigation' ) || [];
   const categoryTypes = await getAllDataByType( 'categories' ) || [];
   const categoriesData = await Promise.all( categoryTypes?.map( ( category ) => {
       return getDataByCategory( category?.id );
@@ -161,7 +151,13 @@ export async function getStaticProps({ params }) {
       return { ...arr, [id]: title };
     },{} );
 
-  const categoriesGroup = { groups: categoriesGroups, type: categoriesType }
+  const categoriesGroup = { groups: categoriesGroups,type: categoriesType }
+
+  if (!itemInfo) {
+    return {
+      notFound: true,
+    }
+  }
 
   return {
     props: { itemInfo, navigationItems, categoriesGroup },
