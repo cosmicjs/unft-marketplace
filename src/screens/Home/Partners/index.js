@@ -77,9 +77,17 @@ const Partners = ({info}) => {
                     <div className={styles.item}>
                       <div className={styles.body}>
                         <div className={styles.avatar}>
-                          <Image src={x?.metadata?.avatar?.imgix_url} alt="Avatar" />
+                        <Image
+                          size={{ width: "86px", height: "86px" }}
+                          src={x?.metadata?.avatar?.imgix_url}
+                          alt="Avatar"
+                          objectFit="cover"
+                          />
                           <div className={styles.reward}>
-                            <Image src='/images/content/reward-1.svg' alt="Reward" />
+                            <Image
+                              size={{ width: "28px", height: "28px" }}
+                              src='/images/content/reward-1.svg'
+                              alt="Reward" />
                           </div>
                         </div>
                         <div className={styles.name}>{x?.metadata?.name}</div>

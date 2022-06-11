@@ -37,13 +37,15 @@ const Intro = ( { info } ) => {
             <Slider className="creative-slider" {...settings}>
                 <div className={styles.slide}>
                   <div className={styles.row}>
-                    <Image
+                  <Image
+                      size={{ width: "100%", height: "80vh" }}
                       className={styles.player}
                       srcSet={info?.metadata?.image?.imgix_url}
                       srcSetDark={info?.metadata?.image?.imgix_url}
                       src={info?.metadata?.image?.imgix_url}
                       srcDark={info?.metadata?.image?.imgix_url}
                       alt="Introduction"
+                      objectFit="contain"
                     />
                     <div className={styles.details}>
                       <h3 className={cn("h3", styles.subtitle)}>{info?.metadata?.title}</h3>

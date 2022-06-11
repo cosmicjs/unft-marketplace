@@ -57,7 +57,12 @@ const Categories = ( { info, type } ) => {
                       <div className={styles.gallery}>
                         {category[key]?.slice(0, 7)?.map((intro, index) => (
                           <div className={styles.preview} key={index}>
-                            <Image src={intro?.metadata?.image?.imgix_url} alt="Collection" />
+                            <Image
+                              size={{ width: "100%", height: "98px" }}
+                              src={intro?.metadata?.image?.imgix_url}
+                              alt="Collection"
+                              objectFit="cover"
+                            />
                           </div>
                         ))}
                       </div>

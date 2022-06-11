@@ -19,7 +19,7 @@ import createFields from "../utils/constants/createFields";
 import styles from "../styles/pages/UploadDetails.module.sass";
 
 const Upload = () => {
-  const { categories } =  useStateContext();
+  const { categories, navigation, token, setToken } =  useStateContext();
 
   const [color, setColor] = useState(OPTIONS[0]);
   const [sale, setSale] = useState(true);
@@ -30,13 +30,20 @@ const Upload = () => {
   const [{ title, count, description, price  }, setFields] = useState(() => createFields);
 
   const [visibleModal, setVisibleModal] = useState(false);
-  const [ visibleAuthModal,setVisibleAuthModal ] = useState( false );
-  const [token, setToken] = useState('');
+  const [visibleAuthModal, setVisibleAuthModal] = useState( false );
 
   const [ visiblePreview,setVisiblePreview ] = useState( false );
 
+  const handleAuth = async ( authToken ) => {
+    if( authToken ) {
+      setToken(authToken);
+    }
+  }
+
   const handleUpload = async ( e ) => {
-    setVisibleAuthModal( true );
+    !token && setVisibleAuthModal( true );
+
+    console.log( 'token',token );
 
     if( token ) {
       const mediaData = await uploadMediaFiles(e.target.files[0]);
@@ -125,7 +132,7 @@ const Upload = () => {
   },[chooseCategory, color, count, description, fillFiledMessage, price, title, token, uploadMedia] );
 
   return (
-      <Layout>
+      <Layout navigation={navigation}>
         <div className={cn("section", styles.section)}>
           <div className={cn("container", styles.container)}>
             <div className={styles.wrapper}>
@@ -278,7 +285,7 @@ const Upload = () => {
           <FolowSteps className={styles.steps} />
         </Modal>
         <Modal visible={visibleAuthModal} onClose={() => setVisibleAuthModal(false)}>
-          <OAuth className={styles.steps} handleOAuth={setToken} handleClose={() => setVisibleAuthModal(false)} />
+          <OAuth className={styles.steps} handleOAuth={handleAuth} handleClose={() => setVisibleAuthModal(false)} />
         </Modal>
       </Layout>
   );

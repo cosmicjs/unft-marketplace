@@ -14,11 +14,13 @@ const Preview = ( { className, onClose, info, image } ) => {
         <div className={styles.info}>Preview</div>
         <div className={styles.card}>
           <div className={styles.preview}>
-            {<Image
-              srcSet={image || '/images/content/upload-pic@2x.jpg'}
+            <Image
+              size={{ width: "100%", height: "100%" }}
+              srcSet={image || '/images/content/upload-pic.jpg'}
               src={image || '/images/content/upload-pic.jpg'}
               alt="Card"
-            /> }
+              objectFit="cover"
+            />
           </div>
           <div className={styles.link}>
             <div className={styles.body}>

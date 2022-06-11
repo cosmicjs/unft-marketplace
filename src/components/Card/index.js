@@ -12,7 +12,12 @@ const Card = ({ className, item }) => {
     <div className={cn( styles.card,className )}>
       <AppLink className={styles.link} href={`/item/${item?.slug}` || '/'}>
       <div className={styles.preview}>
-        <Image src={item?.metadata?.image?.imgix_url} alt="Card" />
+          <Image
+            size={{ width: "100%", height: "360px" }}
+            src={item?.metadata?.image?.imgix_url}
+            alt="Card"
+            objectFit="cover"
+            />
         <div className={styles.control}>
           <div
             className={styles.category}

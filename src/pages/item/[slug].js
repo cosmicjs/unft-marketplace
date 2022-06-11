@@ -63,10 +63,12 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
                     {itemInfo[0]?.metadata?.color}
                   </div>
                 </div>
-                <Image
+              <Image
+                  size={{ width: "100%", height: "100vh" }}
                   srcSet={`${itemInfo[0]?.metadata?.image?.imgix_url}`}
                   src={itemInfo[0]?.metadata?.image?.imgix_url}
                   alt="Item"
+                  objectFit="cover"
                 />
               </div>
             </div>

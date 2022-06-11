@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouter } from 'next/router';
 import cn from "classnames";
+import { useStateContext } from "../utils/context/StateContext";
 import Layout from "../components/Layout";
 import Image from "../components/Image";
 import { ACTIVE_INDEX } from "../utils/constants/appConstants";
@@ -8,6 +9,7 @@ import { ACTIVE_INDEX } from "../utils/constants/appConstants";
 import styles from "../styles/pages/NotFound.module.sass";
 
 const NotFound = () => {
+  const { navigation } =  useStateContext();
   const { push } = useRouter();
 
   const handleClick = ( href ) => {
@@ -15,15 +17,14 @@ const NotFound = () => {
   }
 
   return (
-    <Layout>
+    <Layout navigation={navigation }>
       <div className={cn("section", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.wrap}>
             <div className={styles.preview}>
               <Image
-                srcSet="/images/content/figures.png 2x"
-                srcSetDark="/images/content/figures.png 2x"
-                src="/images/content/figures.png"
+                size={{ width: "100%", height: "50vh" }}
+                src="/images/content/figures-dark.png"
                 srcDark="/images/content/figures-dark.png"
                 alt="Figures"
               />

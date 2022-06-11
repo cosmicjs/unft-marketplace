@@ -28,18 +28,23 @@ const Selection = ( { info,type } ) => {
                 (x, index) =>
                   index === 0 && (
                     <AppLink className={styles.card} href={`/item/${x.slug}`} key={index}>
-                      <div className={styles.preview}>
                         <Image
+                          size={{ width: "100%", height: "75vh" }}
                           srcSet={`${x.metadata?.image?.imgix_url} 2x`}
                           src={`${x.metadata?.image?.imgix_url}`}
                           alt="Selection"
+                          className={styles.preview}
+                          objectFit="cover"
                         />
-                      </div>
                       <div className={styles.head}>
                         <div className={styles.line}>
-                          <div className={styles.avatar}>
-                            <Image src={x.metadata?.image?.imgix_url} alt="Avatar" />
-                          </div>
+                            <Image
+                              className={styles.avatar}
+                              size={{ width: "48px", height: "48px" }}
+                              src={x.metadata?.image?.imgix_url}
+                              alt="Avatar"
+                              objectFit="cover"
+                            />
                           <div className={styles.description}>
                             <div className={styles.title}>{x?.title}</div>
                             <div className={styles.counter}>{`${x?.metadata?.count} item`}</div>
@@ -61,17 +66,23 @@ const Selection = ( { info,type } ) => {
                     <AppLink className={styles.item} href={`/item/${x.slug}`} key={index}>
                       <div className={styles.preview}>
                         <Image
-                          srcSet={`${x.metadata?.image?.imgix_url} 2x`}
+                          size={{ width: "160px", height: "160px" }}
+                          srcSet={x.metadata?.image?.imgix_url}
                           src={x.metadata?.image?.imgix_url}
                           alt="Selection"
+                          objectFit="cover"
                         />
                       </div>
                       <div className={styles.description}>
                         <div className={styles.title}>{x.title}</div>
                         <div className={styles.line}>
-                          <div className={styles.avatar}>
-                            <Image src={x.metadata?.image?.imgix_url} alt="Avatar" />
-                          </div>
+                            <Image
+                                className={styles.avatar}
+                                size={{ width: "48px", height: "48px" }}
+                                src={x.metadata?.image?.imgix_url}
+                                alt="Avatar"
+                                objectFit="cover"
+                            />
                           <div className={styles.price}>{`${x?.metadata?.price} $`}</div>
                           <div className={styles.content}>{`${x?.metadata?.count} item`}</div>
                         </div>
@@ -100,7 +111,12 @@ const Selection = ( { info,type } ) => {
               {type?.map( ( x,index ) => (
                 <div className={styles.user} key={index}>
                   <div className={styles.avatar}>
-                    <Image src={x.metadata?.image?.imgix_url} alt="Avatar" />
+                    <Image
+                      size={{ width: "56px", height: "56px" }}
+                      src={x.metadata?.image?.imgix_url}
+                      alt="Avatar"
+                      objectFit="cover"
+                    />
                   </div>
                   <div className={styles.description}>
                     <div className={styles.name}>{x.metadata?.title}</div>

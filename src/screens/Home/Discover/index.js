@@ -91,7 +91,7 @@ const Discover = ( { info,type } ) => {
               <button
                 onClick={() => handleClick( `/search/${activeIndex}` )}
                 className={cn( "button-stroke",styles.button )} >
-                Start your search
+                Start search
               </button>
           </div>
         </div>

@@ -16,6 +16,7 @@ const Headers = ({navigation}) => {
       <div className={cn("container", styles.container)}>
         <AppLink className={styles.logo} href="/">
           <Image
+            size={{ width: "128px", height: "60px" }}
             className={styles.pic}
             src={navigation['logo']?.imgix_url}
             srcDark={navigation['logo']?.imgix_url}

@@ -38,13 +38,14 @@ const Description = ( { info } ) => {
           </div>
         </div>
         <div className={styles.gallery}>
-          <div className={styles.preview}>
             <Image
+              size={{width: '100%', height: '100vh'}}
+              className={styles.preview}
               src={info?.metadata?.image?.imgix_url}
               srcDark={info?.metadata?.image?.imgix_url}
+              objectFit="contain"
               alt="Team"
             />
-          </div>
         </div>
       </div>
       </div>

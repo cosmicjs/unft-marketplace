@@ -35,9 +35,11 @@ const User = ({ className }) => {
     <OutsideClickHandler onOutsideClick={() => setVisible(false)}>
       <div className={cn(styles.user, className)}>
         <div className={styles.head} onClick={() => setVisible(!visible)}>
-          <div className={styles.avatar}>
-            <Image src="/images/content/avatar.png" alt="Avatar" />
-          </div>
+            <Image
+              className={styles.avatar}
+              size={{ width: "32px", height: "32px" }}
+              src="/images/content/avatar.png"
+              alt="Avatar" />
           <div className={styles.wallet}>
             User <span className={styles.currency}>Active</span>
           </div>
