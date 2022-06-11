@@ -34,16 +34,8 @@ const Upload = () => {
 
   const [ visiblePreview,setVisiblePreview ] = useState( false );
 
-  const handleAuth = async ( authToken ) => {
-    if( authToken ) {
-      setToken(authToken);
-    }
-  }
-
   const handleUpload = async ( e ) => {
     !token && setVisibleAuthModal( true );
-
-    console.log( 'token',token );
 
     if( token ) {
       const mediaData = await uploadMediaFiles(e.target.files[0]);
@@ -285,7 +277,7 @@ const Upload = () => {
           <FolowSteps className={styles.steps} />
         </Modal>
         <Modal visible={visibleAuthModal} onClose={() => setVisibleAuthModal(false)}>
-          <OAuth className={styles.steps} handleOAuth={handleAuth} handleClose={() => setVisibleAuthModal(false)} />
+          <OAuth className={styles.steps} handleOAuth={setToken} handleClose={() => setVisibleAuthModal(false)} />
         </Modal>
       </Layout>
   );
