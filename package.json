@@ -23,6 +23,7 @@
     "react-share": "^4.4.0",
     "react-slick": "^0.29.0",
     "sass": "^1.52.1",
+    "serve": "^13.0.2",
     "stripe": "^9.2.0",
     "use-dark-mode": "^2.3.1",
     "webpack": "^5.73.0"
