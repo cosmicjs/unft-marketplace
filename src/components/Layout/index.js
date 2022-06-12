@@ -2,7 +2,6 @@ import React,{ useEffect,useState,useCallback } from "react";
 import Head from 'next/head';
 import Header from "../Header";
 import Footer from "../Footer";
-import { getAllDataByType } from "../../lib/cosmic";
 import { useStateContext } from '../../utils/context/StateContext';
 
 import styles from "./Layout.module.sass";
@@ -23,10 +22,13 @@ const Layout = ({ children, title, navigationPaths }) => {
   },[navigation, navigationPaths, setNavigation]);
 
   return (
-    <>
+    <html lang="en">
       <Head>
         <title>{title || 'Marketplace'}</title>
-        <meta name="description" content="Marketplace with React.js Cosmic" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="uNFT Marketplace with Cosmic React.js Next.js Stripe" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.page}>
@@ -36,7 +38,7 @@ const Layout = ({ children, title, navigationPaths }) => {
         </main>
         <Footer navigation={navigationPaths || navigation} />
       </div>
-    </>
+    </html>
   );
 };
 

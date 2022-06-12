@@ -20,7 +20,9 @@ import createFields from "../utils/constants/createFields";
 import styles from "../styles/pages/UploadDetails.module.sass";
 
 const Upload = ({navigationItems, categoriesType}) => {
-  const { categories, navigation, authToken, setAuthToken } =  useStateContext();
+  const { categories,navigation,authToken,setAuthToken } = useStateContext();
+  
+  console.log( 'navigationItems',navigationItems[0]?.metadata );
 
   const [color, setColor] = useState(OPTIONS[0]);
   const [sale, setSale] = useState(true);
@@ -37,13 +39,12 @@ const Upload = ({navigationItems, categoriesType}) => {
 
   const handleOAuth = ( token ) => {
     if( !token && !token.hasOwnProperty('token') ) return;
-
     setAuthToken( token[ 'token' ] );
-    return token[ 'token' ];
   };
 
   const handleUpload = async ( e ) => {
     if( !authToken ) setVisibleAuthModal( true );
+    console.log( 'authToken',authToken );
 
       const mediaData = await uploadMediaFiles( e.target.files[ 0 ] );
       await setUploadMedia( mediaData?.[ 'media' ] );
@@ -129,7 +130,7 @@ const Upload = ({navigationItems, categoriesType}) => {
   },[chooseCategory, color, count, description, fillFiledMessage, price, title, authToken, uploadMedia] );
 
   return (
-      <Layout navigation={navigationItems[0]?.metadata || navigation}>
+      <Layout navigationPaths={navigationItems[0]?.metadata || navigation}>
         <div className={cn("section", styles.section)}>
           <div className={cn("container", styles.container)}>
             <div className={styles.wrapper}>
