@@ -10,7 +10,7 @@ import styles from "./Partners.module.sass";
 const directionOptions = ["Reviews", "Partners"];
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
-  <button {...props}>{children}</button>
+  <button aria-label="arrow" {...props}>{children}</button>
 );
 
 const settings = {
@@ -71,7 +71,7 @@ const Partners = ({info}) => {
             </div>
           </div>
           <div className={styles.wrapper}>
-            <Slider className="popular-slider" {...settings}>
+            <Slider className="popular-slider" {...settings} aria-hidden="true">
               {info?.map(( x, index ) => (
                   <div className={styles.slide} key={index}>
                     <div className={styles.item}>

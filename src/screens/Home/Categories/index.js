@@ -7,7 +7,7 @@ import Icon from "../../../components/Icon";
 import Image from "../../../components/Image";
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
-  <button {...props}>{children}</button>
+  <button aria-label="arrow" {...props}>{children}</button>
 );
 
   const settings = {
@@ -49,7 +49,7 @@ const Categories = ( { info, type } ) => {
           <div className={styles.wrapper}>
             <h3 className={cn("h3", styles.title)}>Hot collections</h3>
             <div className={styles.inner}>
-              <Slider className="collection-slider" {...settings}>
+              <Slider className="collection-slider" {...settings} aria-hidden="true">
                 {info?.length && info?.map(( category ) => (
                   Object.keys(category)?.map((key, index ) => (
                     <Link className={styles.item} href={`/search/${key}` || '/'} key={index}>
