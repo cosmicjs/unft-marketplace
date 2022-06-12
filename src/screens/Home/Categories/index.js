@@ -49,7 +49,7 @@ const Categories = ( { info, type } ) => {
           <div className={styles.wrapper}>
             <h3 className={cn("h3", styles.title)}>Hot collections</h3>
             <div className={styles.inner}>
-              <Slider className="collection-slider" {...settings} aria-hidden="true">
+              <Slider className="collection-slider" {...settings}>
                 {info?.length && info?.map(( category ) => (
                   Object.keys(category)?.map((key, index ) => (
                     <Link className={styles.item} href={`/search/${key}` || '/'} key={index}>

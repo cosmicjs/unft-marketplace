@@ -12,7 +12,7 @@ import { filterByType } from '../../../utils/filterDataByType';
 import { ACTIVE_INDEX, OPTIONS } from "../../../utils/constants/appConstants";
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
-  <button aria-label="arrow" {...props}>{children}</button>
+  <button aria-label="arrow" aria-hidden="true" {...props}>{children}</button>
 );
 
   const settings = {

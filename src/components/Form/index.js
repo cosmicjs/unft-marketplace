@@ -23,7 +23,7 @@ const Form = ({
         placeholder={placeholder}
         required
       />
-      <button className={styles.btn}>
+      <button className={styles.btn} aria-label="arrow">
         <Icon name="arrow-next" size="14" />
       </button>
     </form>

@@ -9,7 +9,7 @@ const Card = ({ className, item }) => {
   const [ visible,setVisible ] = useState( false );
 
   return (
-    <div className={cn( styles.card,className )}>
+    <div className={cn( styles.card,className )} aria-hidden="true">
       <AppLink className={styles.link} href={`/item/${item?.slug}` || '/'}>
       <div className={styles.preview}>
           <Image

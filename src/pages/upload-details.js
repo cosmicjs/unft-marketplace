@@ -21,8 +21,6 @@ import styles from "../styles/pages/UploadDetails.module.sass";
 
 const Upload = ({navigationItems, categoriesType}) => {
   const { categories,navigation,authToken,setAuthToken } = useStateContext();
-  
-  console.log( 'navigationItems',navigationItems[0]?.metadata );
 
   const [color, setColor] = useState(OPTIONS[0]);
   const [sale, setSale] = useState(true);
