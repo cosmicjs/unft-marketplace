@@ -5,7 +5,7 @@ const Context = createContext();
 
 export const StateContext = ( { children } ) => {
   const [navigation, setNavigation] = useState([]);
-  const [token, setToken] = useState("");
+  const [authToken, setAuthToken] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [ totalQuantities,setTotalQuantities ] = useState( 0 );
@@ -69,8 +69,8 @@ export const StateContext = ( { children } ) => {
         onCategoriesChange,
         navigation,
         setNavigation,
-        token,
-        setToken,
+        authToken,
+        setAuthToken,
       }}
     >
       {children}

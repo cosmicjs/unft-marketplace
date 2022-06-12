@@ -7,37 +7,37 @@ import styles from "./OAuth.module.sass";
 
 const OAuth = ( { className, handleClose, handleOAuth } ) => {
   const [ { email, password }, setFields ] = useState( () => registerFields );
-  const [fillFiledMessage, setFillFiledMessage] = useState(false);
+  const [fillFiledMessage, setFillFiledMessage] = useState('');
 
   const handleChange = ({ target: { name, value } }) =>
     setFields(prevFields => ({
       ...prevFields,
       [name]: value,
-    } ) );
+    }));
 
   const submitForm = useCallback( async ( e ) => {
     e.preventDefault();
-    if( email, password ) {
-      fillFiledMessage && setFillFiledMessage( '' );
+    fillFiledMessage?.length && setFillFiledMessage( '' );
 
+    if( email, password ) {
       const token = await cosmicAuth( {
         email: `${email}`,
         password: `${password}`,
       } );
 
-      if( token ) {
+      if( token?.hasOwnProperty('token') ) {
         setFillFiledMessage( 'Congrats!' );
         handleOAuth( token );
         setFields( registerFields );
         handleClose();
       } else {
-        setFillFiledMessage( 'Please first register in Cosmic' );
+        setFillFiledMessage(token || 'Please first register in Cosmic' );
       }
 
     } else {
       setFillFiledMessage( 'Please first all filed' )
     }
-  },[email, password, fillFiledMessage, handleOAuth, handleClose] );
+  },[ email,password,fillFiledMessage,handleOAuth,handleClose ] );
 
   return (
     <div className={cn( className,styles.transfer )}>
@@ -56,7 +56,7 @@ const OAuth = ( { className, handleClose, handleOAuth } ) => {
           Cosmic
         </AppLink>
       </div>
-      <div className={styles.info}>{fillFiledMessage}</div>
+      <div className={styles.error}>{fillFiledMessage}</div>
       <form className={styles.form} action="" onSubmit={submitForm}>
         <div className={styles.field}>
           <input

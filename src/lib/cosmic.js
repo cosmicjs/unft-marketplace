@@ -149,7 +149,7 @@ export async function getDataBySlug(slug) {
 
 export async function uploadMediaFiles(file) {
   try {
-    const data = await bucket.addMedia({media: file})
+    const data = await bucket?.addMedia({media: file})
     return data
   } catch (error) {
     // Don't throw if an slug doesn't exist
@@ -173,9 +173,7 @@ export async function cosmicAuth(fields) {
   try {
     const data = await CosmicAuth.authenticate(fields);
     return data
-  } catch (error) {
-    // Don't throw if an slug doesn't exist
-    if (is404(error)) return
-    throw error
+  } catch( error ) {
+    return error[ 'message' ];
   }
 }

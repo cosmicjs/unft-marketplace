@@ -1,6 +1,7 @@
 import React,{ useState, useCallback } from "react";
 import cn from "classnames";
 import { useStateContext } from "../utils/context/StateContext";
+import { getAllDataByType } from '../lib/cosmic'
 import Layout from "../components/Layout";
 import Dropdown from "../components/Dropdown";
 import Icon from "../components/Icon";
@@ -18,14 +19,14 @@ import createFields from "../utils/constants/createFields";
 
 import styles from "../styles/pages/UploadDetails.module.sass";
 
-const Upload = () => {
-  const { categories, navigation, token, setToken } =  useStateContext();
+const Upload = ({navigationItems, categoriesType}) => {
+  const { categories, navigation, authToken, setAuthToken } =  useStateContext();
 
   const [color, setColor] = useState(OPTIONS[0]);
   const [sale, setSale] = useState(true);
   const [locking, setLocking] = useState(false);
-  const [uploadMedia, setUploadMedia] = useState('');
-  const [chooseCategory, setChooseCategory] = useState('');
+  const [uploadMedia, setUploadMedia] = useState( '' );
+  const [chooseCategory, setChooseCategory ] = useState( '' );
   const [fillFiledMessage, setFillFiledMessage] = useState(false);
   const [{ title, count, description, price  }, setFields] = useState(() => createFields);
 
@@ -34,13 +35,18 @@ const Upload = () => {
 
   const [ visiblePreview,setVisiblePreview ] = useState( false );
 
-  const handleUpload = async ( e ) => {
-    !token && setVisibleAuthModal( true );
+  const handleOAuth = ( token ) => {
+    if( !token && !token.hasOwnProperty('token') ) return;
 
-    if( token ) {
-      const mediaData = await uploadMediaFiles(e.target.files[0]);
-      await setUploadMedia( mediaData?.['media']);
-    }
+    setAuthToken( token[ 'token' ] );
+    return token[ 'token' ];
+  };
+
+  const handleUpload = async ( e ) => {
+    if( !authToken ) setVisibleAuthModal( true );
+
+      const mediaData = await uploadMediaFiles( e.target.files[ 0 ] );
+      await setUploadMedia( mediaData?.[ 'media' ] );
   };
 
   const handleChange = ({ target: { name, value } }) =>
@@ -64,9 +70,8 @@ const Upload = () => {
 
   const submitForm = useCallback( async ( e ) => {
     e.preventDefault();
-    setVisibleAuthModal( true );
 
-    if( !token ) setFillFiledMessage( true );
+    if(!authToken) setVisibleAuthModal( true );
 
     if( title && color && count && price && uploadMedia ) {
       fillFiledMessage && setFillFiledMessage( false );
@@ -121,10 +126,10 @@ const Upload = () => {
     } else {
       setFillFiledMessage( true );
     }
-  },[chooseCategory, color, count, description, fillFiledMessage, price, title, token, uploadMedia] );
+  },[chooseCategory, color, count, description, fillFiledMessage, price, title, authToken, uploadMedia] );
 
   return (
-      <Layout navigation={navigation}>
+      <Layout navigation={navigationItems[0]?.metadata || navigation}>
         <div className={cn("section", styles.section)}>
           <div className={cn("container", styles.container)}>
             <div className={styles.wrapper}>
@@ -240,7 +245,7 @@ const Upload = () => {
                   <div className={styles.text}>
                     Choose an exiting Categories
                   </div>
-                  <Cards className={styles.cards} handleChoose={handleChooseCategory} items={categories['type']} />
+                  <Cards className={styles.cards} handleChoose={handleChooseCategory} items={categoriesType || categories['type']} />
                 </div>
                 <div className={styles.foot}>
                   <button
@@ -268,7 +273,7 @@ const Upload = () => {
             <Preview
               className={cn( styles.preview,{ [ styles.active ]: visiblePreview } )}
               info={{ title, color, count, description, price }}
-              image={uploadMedia['imgix_url']}
+              image={uploadMedia?.['imgix_url']}
               onClose={() => setVisiblePreview(false)}
             />
           </div>
@@ -277,10 +282,23 @@ const Upload = () => {
           <FolowSteps className={styles.steps} />
         </Modal>
         <Modal visible={visibleAuthModal} onClose={() => setVisibleAuthModal(false)}>
-          <OAuth className={styles.steps} handleOAuth={setToken} handleClose={() => setVisibleAuthModal(false)} />
+          <OAuth className={styles.steps} handleOAuth={handleOAuth} handleClose={() => setVisibleAuthModal(false)} />
         </Modal>
       </Layout>
   );
 };
 
 export default Upload;
+
+export async function getServerSideProps() {
+  const navigationItems = await getAllDataByType( 'navigation' ) || [];
+  const categoryTypes = await getAllDataByType( 'categories' ) || [];
+
+    const categoriesType = categoryTypes?.reduce((arr,{ title,id }) => {
+      return { ...arr, [id]: title };
+    },{} );
+
+  return {
+    props: { navigationItems, categoriesType },
+  }
+}
