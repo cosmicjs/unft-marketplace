@@ -15,6 +15,8 @@ const ImageApp = ({ className, src, srcDark, alt, size, objectFit="contain" }) =
           alt={alt}
           layout="fill"
           objectFit={objectFit}
+          placeholder="blur"
+          blurDataURL={`${src}?w=10`}
         />
       }
   </div>
