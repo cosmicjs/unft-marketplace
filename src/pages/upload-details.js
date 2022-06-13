@@ -26,6 +26,7 @@ const Upload = ({navigationItems, categoriesType}) => {
   const [sale, setSale] = useState(true);
   const [locking, setLocking] = useState(false);
   const [uploadMedia, setUploadMedia] = useState( '' );
+  const [uploadFile, setUploadFile] = useState( '' );
   const [chooseCategory, setChooseCategory ] = useState( '' );
   const [fillFiledMessage, setFillFiledMessage] = useState(false);
   const [{ title, count, description, price  }, setFields] = useState(() => createFields);
@@ -35,17 +36,25 @@ const Upload = ({navigationItems, categoriesType}) => {
 
   const [ visiblePreview,setVisiblePreview ] = useState( false );
 
+  const handleUploadFile = async (uploadFile) => {
+    const mediaData = await uploadMediaFiles(uploadFile);
+    await setUploadMedia( mediaData?.[ 'media' ] );
+  };
+
   const handleOAuth = ( token ) => {
-    if( !token && !token.hasOwnProperty('token') ) return;
+    !authToken && setVisibleAuthModal( true );
+
+    if( !token && !token?.hasOwnProperty('token') ) return;
     setAuthToken( token[ 'token' ] );
+    handleUploadFile(uploadFile);
   };
 
   const handleUpload = async ( e ) => {
-    if( !authToken ) setVisibleAuthModal( true );
-    console.log( 'authToken',authToken );
+    setUploadFile( e.target.files[ 0 ] );
 
-      const mediaData = await uploadMediaFiles( e.target.files[ 0 ] );
-      await setUploadMedia( mediaData?.[ 'media' ] );
+    authToken ?
+      handleUploadFile( e.target.files[ 0 ] ) :
+      handleOAuth();
   };
 
   const handleChange = ({ target: { name, value } }) =>
@@ -69,8 +78,6 @@ const Upload = ({navigationItems, categoriesType}) => {
 
   const submitForm = useCallback( async ( e ) => {
     e.preventDefault();
-
-    if(!authToken) setVisibleAuthModal( true );
 
     if( title && color && count && price && uploadMedia ) {
       fillFiledMessage && setFillFiledMessage( false );
