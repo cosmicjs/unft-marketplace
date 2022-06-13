@@ -2,32 +2,32 @@ import React, { useState, useEffect, useCallback, startTransition } from "react"
 import cn from "classnames";
 import { useRouter } from 'next/router';
 import { Range,getTrackBackground } from "react-range";
-import useDebounce from '../../utils/hooks/useDebounce';
-import Layout from "../../components/Layout";
-import Icon from "../../components/Icon";
-import Card from "../../components/Card";
-import Dropdown from "../../components/Dropdown";
-import { filterDataByPrice, filterDataByColor, getSearchDataWith } from "../../lib/cosmic";
-import { useStateContext } from '../../utils/context/StateContext';
-import { filterByType } from '../../utils/filterDataByType';
-import { getAllDataByType, getDataByCategory } from '../../lib/cosmic';
-import { ACTIVE_INDEX, OPTIONS } from "../../utils/constants/appConstants";
+import useDebounce from '../utils/hooks/useDebounce';
+import Layout from "../components/Layout";
+import Icon from "../components/Icon";
+import Card from "../components/Card";
+import Dropdown from "../components/Dropdown";
+import { filterDataByPrice, filterDataByColor, getSearchDataWith } from "../lib/cosmic";
+import { useStateContext } from '../utils/context/StateContext';
+import { filterByType } from '../utils/filterDataByType';
+import { getAllDataByType, getDataByCategory } from '../lib/cosmic';
+import { ACTIVE_INDEX, OPTIONS } from "../utils/constants/appConstants";
 
-import styles from "../../styles/pages/Search.module.sass";
+import styles from "../styles/pages/Search.module.sass";
 
 const STEP = 1;
 const MIN = 1;
 const MAX = 100;
 
 const Search = ({categoriesGroup, navigationItems}) => {
-  const { query: {id} } = useRouter();
+  const { query } = useRouter();
   const { categories } = useStateContext();
 
   const categoriesTypeData = categoriesGroup['type'] || categories[ 'type' ];
   const categoriesGroupsData = categoriesGroup['groups'] || categories[ 'groups' ];
 
-  const [activeIndex, setActiveIndex] = useState( id || ACTIVE_INDEX );
-  const [searchResult, setSearchResult] = useState( filterByType(categoriesGroupsData, id));
+  const [activeIndex, setActiveIndex] = useState( query['id'] || ACTIVE_INDEX );
+  const [searchResult, setSearchResult] = useState( filterByType(categoriesGroupsData, query['id']));
 
   const [search, setSearch] = useState( "" );
 
@@ -75,7 +75,7 @@ const Search = ({categoriesGroup, navigationItems}) => {
     return () => {
       isMounted = false;
     }
-  },[id, debouncedSearchTerm, getDataBySearch, categories, activeIndex, categoriesGroup, categoriesGroupsData] );
+  },[query, debouncedSearchTerm, getDataBySearch, categories, activeIndex, categoriesGroup, categoriesGroupsData] );
 
   return (
     <Layout navigationPaths={navigationItems[0]?.metadata}>

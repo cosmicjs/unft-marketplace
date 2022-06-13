@@ -4,7 +4,7 @@ import cn from "classnames";
 import { useStateContext } from "../utils/context/StateContext";
 import Layout from "../components/Layout";
 import Image from "../components/Image";
-import { ACTIVE_INDEX } from "../utils/constants/appConstants";
+import { getAllDataByType } from '../lib/cosmic';
 
 import styles from "../styles/pages/NotFound.module.sass";
 
@@ -34,7 +34,7 @@ const NotFound = ({navigationItems}) => {
             </h2>
             <div className={styles.info}>Maybe give one of these a try?</div>
               <button
-                onClick={() => handleClick( `/search/${ACTIVE_INDEX}` )}
+                onClick={() => handleClick( `/search` )}
                 className={cn( "button-stroke",styles.form )}>
                 Start your search
               </button>
@@ -47,7 +47,7 @@ const NotFound = ({navigationItems}) => {
 
 export default NotFound;
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const navigationItems = await getAllDataByType( 'navigation' ) || [];
 
   return {

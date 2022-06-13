@@ -2,7 +2,6 @@ import React from "react";
 import cn from "classnames";
 import { useRouter } from 'next/router';
 import Image from "../../../components/Image";
-import { ACTIVE_INDEX } from "../../../utils/constants/appConstants";
 
 import styles from "./Description.module.sass";
 
@@ -27,7 +26,7 @@ const Description = ( { info } ) => {
           <div className={styles.btns}>
             <button
                 aria-hidden="true"
-                onClick={() => handleClick( `/search/${ACTIVE_INDEX}` )}
+                onClick={() => handleClick( `/search` )}
                 className={cn( "button-stroke",styles.button )}>
                 Discover more
               </button>

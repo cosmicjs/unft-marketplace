@@ -1,7 +1,6 @@
 import React,{ useState, useCallback } from "react";
 import cn from "classnames";
 import { useStateContext } from "../utils/context/StateContext";
-import { getAllDataByType } from '../lib/cosmic'
 import Layout from "../components/Layout";
 import Dropdown from "../components/Dropdown";
 import Icon from "../components/Icon";
@@ -13,7 +12,7 @@ import OAuth from '../components/OAuth';
 import Preview from "../screens/UploadDetails/Preview";
 import Cards from "../screens/UploadDetails/Cards";
 import FolowSteps from "../screens/UploadDetails/FolowSteps";
-import {uploadMediaFiles, createItem, getCosmicUser} from "../lib/cosmic";
+import { getAllDataByType, uploadMediaFiles, createItem, getCosmicUser } from "../lib/cosmic";
 import { OPTIONS } from "../utils/constants/appConstants";
 import createFields from "../utils/constants/createFields";
 
@@ -47,7 +46,6 @@ const Upload = ({navigationItems, categoriesType}) => {
     if( !token && !token?.hasOwnProperty('token') ) return;
     await handleUploadFile(uploadFile);
     const userInfo = await getCosmicUser( token[ 'token' ] );
-    await console.log( userInfo );
     await setCosmicUser( userInfo['user'] );
 
     setAuthToken( token[ 'token' ] );

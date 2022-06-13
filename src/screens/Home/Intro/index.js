@@ -3,7 +3,6 @@ import cn from "classnames";
 import { useRouter } from 'next/router';
 import Slider from "react-slick";
 import Image from "../../../components/Image";
-import {ACTIVE_INDEX} from "../../../utils/constants/appConstants";
 
 import styles from "./Intro.module.sass";
 
@@ -55,7 +54,7 @@ const Intro = ( { info } ) => {
                       </div>
                       <div className={styles.btns}>
                       <button
-                          onClick={() => handleClick( `/search/${ACTIVE_INDEX}` )}
+                          onClick={() => handleClick( `/search` )}
                           className={cn( "button-stroke",styles.button )}>Explore more
                       </button>
                       </div>

@@ -7,7 +7,6 @@ import Theme from "../Theme";
 import Image from "../Image";
 
 import styles from "./Footer.module.sass";
-import {ACTIVE_INDEX} from "../../utils/constants/appConstants";
 
 const items = [
   {
@@ -15,7 +14,7 @@ const items = [
     menu: [
       {
         title: "Search",
-        url: `/search/${ACTIVE_INDEX}`,
+        url: '/search',
       },
       {
         title: "Create item",
