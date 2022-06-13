@@ -4,12 +4,11 @@ import AppLink from "../AppLink";
 import Icon from "../Icon";
 import Image from "../Image";
 import User from "./User";
-import {ACTIVE_INDEX} from "../../utils/constants/appConstants";
 
 import styles from "./Header.module.sass";
 
-const Headers = ({navigation}) => {
-  const [ visibleNav,setVisibleNav ] = useState( false );
+const Headers = ({navigation, user}) => {
+  const [ visibleNav, setVisibleNav ] = useState( false );
 
   return (
     <header className={styles.header}>
@@ -29,7 +28,7 @@ const Headers = ({navigation}) => {
               <AppLink
                 aria-label="navigation"
                 className={styles.link}
-                href={x?.url || `/search/${ACTIVE_INDEX}` }
+                href={x?.url || `/search` }
                 key={index}
               >
                 {x.title}
@@ -41,11 +40,11 @@ const Headers = ({navigation}) => {
           aria-label="search"
           aria-hidden="true"
           className={cn( "button-small",styles.button )}
-          href={`/search/${ACTIVE_INDEX}`}
+          href={`/search`}
         >
           <Icon name="search" size="20" />
         </AppLink>
-        <User className={styles.user} />
+        {user?.['id'] && <User className={styles.user} user={user} />}
         <button
           aria-label="user-information"
           aria-hidden="true"

@@ -9,26 +9,12 @@ import Theme from "../../Theme";
 
 const items = [
   {
-    title: "My profile",
-    icon: "user",
-    url: "/profile",
-  },
-  {
-    title: "My items",
-    icon: "image",
-    url: "/item",
-  },
-  {
     title: "Dark theme",
     icon: "bulb",
   },
-  {
-    title: "Disconnect",
-    icon: "exit",
-  },
 ];
 
-const User = ({ className }) => {
+const User = ({ className, user }) => {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -38,10 +24,10 @@ const User = ({ className }) => {
             <Image
               className={styles.avatar}
               size={{ width: "32px", height: "32px" }}
-              src="/images/content/avatar.png"
+              src={user?.['avatar_url'] || "/images/content/avatar.png"}
               alt="Avatar" />
           <div className={styles.wallet}>
-            User <span className={styles.currency}>Active</span>
+            {user?.['first_name'] || 'User'}
           </div>
         </div>
         {visible && (

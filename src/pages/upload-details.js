@@ -1,7 +1,6 @@
 import React,{ useState, useCallback } from "react";
 import cn from "classnames";
 import { useStateContext } from "../utils/context/StateContext";
-import { getAllDataByType } from '../lib/cosmic'
 import Layout from "../components/Layout";
 import Dropdown from "../components/Dropdown";
 import Icon from "../components/Icon";
@@ -13,14 +12,14 @@ import OAuth from '../components/OAuth';
 import Preview from "../screens/UploadDetails/Preview";
 import Cards from "../screens/UploadDetails/Cards";
 import FolowSteps from "../screens/UploadDetails/FolowSteps";
-import {uploadMediaFiles, createItem} from "../lib/cosmic";
+import { getAllDataByType, uploadMediaFiles, createItem, getCosmicUser } from "../lib/cosmic";
 import { OPTIONS } from "../utils/constants/appConstants";
 import createFields from "../utils/constants/createFields";
 
 import styles from "../styles/pages/UploadDetails.module.sass";
 
 const Upload = ({navigationItems, categoriesType}) => {
-  const { categories,navigation,authToken,setAuthToken } = useStateContext();
+  const { categories,navigation,authToken,setAuthToken, cosmicUser, setCosmicUser } = useStateContext();
 
   const [color, setColor] = useState(OPTIONS[0]);
   const [sale, setSale] = useState(true);
@@ -41,12 +40,15 @@ const Upload = ({navigationItems, categoriesType}) => {
     await setUploadMedia( mediaData?.[ 'media' ] );
   };
 
-  const handleOAuth = ( token ) => {
+  const handleOAuth = async ( token ) => {
     !authToken && setVisibleAuthModal( true );
 
     if( !token && !token?.hasOwnProperty('token') ) return;
+    await handleUploadFile(uploadFile);
+    const userInfo = await getCosmicUser( token[ 'token' ] );
+    await setCosmicUser( userInfo['user'] );
+
     setAuthToken( token[ 'token' ] );
-    handleUploadFile(uploadFile);
   };
 
   const handleUpload = async ( e ) => {

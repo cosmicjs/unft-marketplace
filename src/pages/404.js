@@ -4,11 +4,11 @@ import cn from "classnames";
 import { useStateContext } from "../utils/context/StateContext";
 import Layout from "../components/Layout";
 import Image from "../components/Image";
-import { ACTIVE_INDEX } from "../utils/constants/appConstants";
+import { getAllDataByType } from '../lib/cosmic';
 
 import styles from "../styles/pages/NotFound.module.sass";
 
-const NotFound = () => {
+const NotFound = ({navigationItems}) => {
   const { navigation } =  useStateContext();
   const { push } = useRouter();
 
@@ -17,7 +17,7 @@ const NotFound = () => {
   }
 
   return (
-    <Layout navigationPaths={navigation }>
+    <Layout navigationPaths={navigationItems[0]?.metadata || navigation }>
       <div className={cn("section", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.wrap}>
@@ -34,7 +34,7 @@ const NotFound = () => {
             </h2>
             <div className={styles.info}>Maybe give one of these a try?</div>
               <button
-                onClick={() => handleClick( `/search/${ACTIVE_INDEX}` )}
+                onClick={() => handleClick( `/search` )}
                 className={cn( "button-stroke",styles.form )}>
                 Start your search
               </button>
@@ -46,3 +46,11 @@ const NotFound = () => {
 };
 
 export default NotFound;
+
+export async function getStaticProps() {
+  const navigationItems = await getAllDataByType( 'navigation' ) || [];
+
+  return {
+    props: { navigationItems },
+  }
+}

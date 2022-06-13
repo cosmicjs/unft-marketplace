@@ -17,7 +17,7 @@ const Selection = ( { info,type } ) => {
     <div className={styles.wrapper}>
       <button
         className={cn( "button-stroke",styles.search )}
-        onClick={() => handleClick( `/search/${ACTIVE_INDEX}` )}>
+        onClick={() => handleClick( '/search' )}>
         Start your search
       </button>
       <div className={cn( "section-pb",styles.section )}>
@@ -109,23 +109,25 @@ const Selection = ( { info,type } ) => {
             </div>
             <div className={styles.list}>
               {type?.map( ( x,index ) => (
-                <div className={styles.user} key={index}>
-                  <div className={styles.avatar}>
-                    <Image
-                      size={{ width: "56px", height: "56px" }}
-                      src={x.metadata?.image?.imgix_url}
-                      alt="Avatar"
-                      objectFit="cover"
-                    />
+                  <div className={styles.user} key={index}>
+                    <AppLink href={`/search?id=${x.id}`} >
+                    <div className={styles.avatar}>
+                      <Image
+                        size={{ width: "56px", height: "56px" }}
+                        src={x.metadata?.image?.imgix_url}
+                        alt="Avatar"
+                        objectFit="cover"
+                      />
+                    </div>
+                    <div className={styles.description}>
+                      <div className={styles.name}>{x.metadata?.title}</div>
+                      <div
+                        className={styles.money}
+                        dangerouslySetInnerHTML={{ __html: x.content }}
+                      />
+                    </div>
+                    </AppLink>
                   </div>
-                  <div className={styles.description}>
-                    <div className={styles.name}>{x.metadata?.title}</div>
-                    <div
-                      className={styles.money}
-                      dangerouslySetInnerHTML={{ __html: x.content }}
-                    />
-                  </div>
-                </div>
               ))}
             </div>
             <AppLink
