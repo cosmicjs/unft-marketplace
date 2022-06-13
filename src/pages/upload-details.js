@@ -132,7 +132,7 @@ const Upload = ({navigationItems, categoriesType}) => {
     } else {
       setFillFiledMessage( true );
     }
-  },[chooseCategory, color, count, description, fillFiledMessage, price, title, authToken, uploadMedia] );
+  },[chooseCategory, color, count, description, fillFiledMessage, price, title, uploadMedia] );
 
   return (
       <Layout navigationPaths={navigationItems[0]?.metadata || navigation}>
