@@ -25,12 +25,14 @@ const Description = ( { info } ) => {
             {info?.metadata?.description}
           </div>
           <div className={styles.btns}>
-              <button
+            <button
+                aria-hidden="true"
                 onClick={() => handleClick( `/search/${ACTIVE_INDEX}` )}
                 className={cn( "button-stroke",styles.button )}>
                 Discover more
               </button>
-              <button
+            <button
+                aria-hidden="true"
                 onClick={()=> handleClick ('/upload-details')}
                 className={cn( "button",styles.button )}>
                 Create item

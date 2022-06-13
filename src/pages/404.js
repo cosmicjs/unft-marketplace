@@ -17,7 +17,7 @@ const NotFound = () => {
   }
 
   return (
-    <Layout navigation={navigation }>
+    <Layout navigationPaths={navigation }>
       <div className={cn("section", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.wrap}>

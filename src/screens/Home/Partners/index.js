@@ -10,7 +10,7 @@ import styles from "./Partners.module.sass";
 const directionOptions = ["Reviews", "Partners"];
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
-  <button {...props}>{children}</button>
+  <button aria-label="arrow" aria-hidden="true" {...props}>{children}</button>
 );
 
 const settings = {

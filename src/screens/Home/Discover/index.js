@@ -12,7 +12,7 @@ import { filterByType } from '../../../utils/filterDataByType';
 import { ACTIVE_INDEX, OPTIONS } from "../../../utils/constants/appConstants";
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
-  <button {...props}>{children}</button>
+  <button aria-label="arrow" aria-hidden="true" {...props}>{children}</button>
 );
 
   const settings = {
@@ -211,6 +211,7 @@ const Discover = ( { info,type } ) => {
         </div>
         <div className={styles.list}>
           <Slider
+            aria-hidden="true"
             className={cn("discover-slider", styles.slider)}
             {...settings}
           >

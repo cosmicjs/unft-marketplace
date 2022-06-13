@@ -13,7 +13,7 @@ const Headers = ({navigation}) => {
 
   return (
     <header className={styles.header}>
-      <div className={cn("container", styles.container)}>
+      <div className={cn("container", styles.container)} aria-hidden="true">
         <AppLink className={styles.logo} href="/">
           <Image
             size={{ width: "128px", height: "60px" }}
@@ -27,6 +27,7 @@ const Headers = ({navigation}) => {
           <nav className={styles.nav}>
             {navigation['menu']?.map((x, index) => (
               <AppLink
+                aria-label="navigation"
                 className={styles.link}
                 href={x?.url || `/search/${ACTIVE_INDEX}` }
                 key={index}
@@ -37,6 +38,8 @@ const Headers = ({navigation}) => {
           </nav>
         </div>
         <AppLink
+          aria-label="search"
+          aria-hidden="true"
           className={cn( "button-small",styles.button )}
           href={`/search/${ACTIVE_INDEX}`}
         >
@@ -44,9 +47,11 @@ const Headers = ({navigation}) => {
         </AppLink>
         <User className={styles.user} />
         <button
+          aria-label="user-information"
+          aria-hidden="true"
           className={cn(styles.burger, { [styles.active]: visibleNav })}
           onClick={() => setVisibleNav(!visibleNav)}
-        ></button>
+        />
       </div>
     </header>
   );

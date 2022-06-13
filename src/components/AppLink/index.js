@@ -8,8 +8,8 @@ https://nextjs.org/docs/api-reference/next/link */
 function AppLink({ href, className, children, target }) {
   // Must add passHref to Link
   return (
-    <Link href={href} passHref>
-      <a target={target} className={className}>
+    <Link href={href} passHref aria-hidden="true">
+      <a target={target} className={className} aria-hidden="true">
         {children}
       </a>
     </Link>

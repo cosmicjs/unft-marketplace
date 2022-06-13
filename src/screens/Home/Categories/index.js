@@ -7,7 +7,7 @@ import Icon from "../../../components/Icon";
 import Image from "../../../components/Image";
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
-  <button {...props}>{children}</button>
+  <button aria-label="arrow" {...props}>{children}</button>
 );
 
   const settings = {

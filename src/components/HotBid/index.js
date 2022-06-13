@@ -7,7 +7,7 @@ import Card from "../Card";
 import styles from "./HotBid.module.sass";
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
-  <button {...props}>{children}</button>
+  <button aria-label="arrow" aria-hidden="true" {...props}>{children}</button>
 );
 
 const settings = {
@@ -53,7 +53,7 @@ const Hot = ( { classSection, info } ) => {
     <div className={cn(classSection, styles.section)}>
       <div className={cn("container", styles.container)}>
         <div className={styles.wrapper}>
-          <h3 className={cn( "h3",styles.title )}>Hot bid</h3>
+          <h2 className={cn( "h3",styles.title )}>Hot bid</h2>
           <div className={styles.inner}>
             <Slider className="bid-slider" {...settings}>
               {info && Object.keys(info)?.length && Object.values(info)[0]?.map((x, index) => (

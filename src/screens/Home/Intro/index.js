@@ -34,7 +34,7 @@ const Intro = ( { info } ) => {
             </h3>
           </div>
           <div className={styles.wrapper}>
-            <Slider className="creative-slider" {...settings}>
+            <Slider className="creative-slider" {...settings} aria-hidden="true">
                 <div className={styles.slide}>
                   <div className={styles.row}>
                   <Image
