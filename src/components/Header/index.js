@@ -8,8 +8,9 @@ import {ACTIVE_INDEX} from "../../utils/constants/appConstants";
 
 import styles from "./Header.module.sass";
 
-const Headers = ({navigation}) => {
-  const [ visibleNav,setVisibleNav ] = useState( false );
+const Headers = ({navigation, user}) => {
+  const [ visibleNav, setVisibleNav ] = useState( false );
+  console.log( 'user Header',user );
 
   return (
     <header className={styles.header}>
@@ -45,7 +46,7 @@ const Headers = ({navigation}) => {
         >
           <Icon name="search" size="20" />
         </AppLink>
-        <User className={styles.user} />
+        {user?.['id'] && <User className={styles.user} user={user} />}
         <button
           aria-label="user-information"
           aria-hidden="true"

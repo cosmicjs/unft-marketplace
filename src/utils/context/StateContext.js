@@ -5,6 +5,7 @@ const Context = createContext();
 
 export const StateContext = ( { children } ) => {
   const [navigation, setNavigation] = useState([]);
+  const [cosmicUser, setCosmicUser] = useState({});
   const [authToken, setAuthToken] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -71,6 +72,8 @@ export const StateContext = ( { children } ) => {
         setNavigation,
         authToken,
         setAuthToken,
+        cosmicUser,
+        setCosmicUser,
       }}
     >
       {children}

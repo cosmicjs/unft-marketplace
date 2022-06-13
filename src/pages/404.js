@@ -8,7 +8,7 @@ import { ACTIVE_INDEX } from "../utils/constants/appConstants";
 
 import styles from "../styles/pages/NotFound.module.sass";
 
-const NotFound = () => {
+const NotFound = ({navigationItems}) => {
   const { navigation } =  useStateContext();
   const { push } = useRouter();
 
@@ -17,7 +17,7 @@ const NotFound = () => {
   }
 
   return (
-    <Layout navigationPaths={navigation }>
+    <Layout navigationPaths={navigationItems[0]?.metadata || navigation }>
       <div className={cn("section", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.wrap}>
@@ -46,3 +46,11 @@ const NotFound = () => {
 };
 
 export default NotFound;
+
+export async function getServerSideProps() {
+  const navigationItems = await getAllDataByType( 'navigation' ) || [];
+
+  return {
+    props: { navigationItems },
+  }
+}

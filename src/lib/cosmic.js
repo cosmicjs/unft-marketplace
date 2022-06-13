@@ -177,3 +177,17 @@ export async function cosmicAuth(fields) {
     return error[ 'message' ];
   }
 }
+
+export async function getCosmicUser(token) {
+  try {
+    const data = await fetch( 'https://api.cosmicjs.com/v2/user',{
+      method: 'GET',
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    } );
+    return data.json();
+  } catch( error ) {
+    return error[ 'message' ];
+  }
+}
