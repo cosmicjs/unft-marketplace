@@ -25,6 +25,7 @@
         margin-right: 12px
         background: transparent
         transition: all 0.5s ease-out
+        color: $neutrals4
         svg
             fill: $neutrals4
         +m
@@ -34,9 +35,16 @@
                 fill: $neutrals4
         &:hover
             background: transparent
-            transform: scale(1.098)
+            color: $blue
             svg
                 fill: $blue
+    .login
+        border: 1px solid $blue
+        color: $blue
+        transparent: all 0.5s ease-out
+        &:hover
+            background: $blue
+            color: $white
 
 .logo
     position: relative

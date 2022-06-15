@@ -4,13 +4,30 @@ import AppLink from "../AppLink";
 import Icon from "../Icon";
 import Image from "../Image";
 import User from "./User";
+import Theme from "../Theme";
+import Modal from "../Modal";
+import OAuth from '../OAuth';
+import { getCosmicUser } from '../../lib/cosmic';
+import { useStateContext } from "../../utils/context/StateContext";
 
 import styles from "./Header.module.sass";
 
-const Headers = ({navigation, user}) => {
-  const [ visibleNav, setVisibleNav ] = useState( false );
+const Headers = ({navigation}) => {
+  const [visibleNav, setVisibleNav] = useState( false );
+  const [visibleAuthModal, setVisibleAuthModal] = useState( false );
+
+  const { cosmicUser, setCosmicUser, setAuthToken } = useStateContext();
+
+  const handleOAuth = async ( token ) => {
+    if( !token && !token?.hasOwnProperty('token') ) return;
+    const userInfo = await getCosmicUser( token[ 'token' ] );
+    await setCosmicUser( userInfo['user'] );
+    setAuthToken( token[ 'token' ] );
+  };
+
 
   return (
+    <>
     <header className={styles.header}>
       <div className={cn("container", styles.container)} aria-hidden="true">
         <AppLink className={styles.logo} href="/">
@@ -36,6 +53,9 @@ const Headers = ({navigation, user}) => {
             ))}
           </nav>
         </div>
+        <div className={styles.version}>
+          <Theme className="theme-big" />
+        </div>
         <AppLink
           aria-label="search"
           aria-hidden="true"
@@ -43,8 +63,19 @@ const Headers = ({navigation, user}) => {
           href={`/search`}
         >
           <Icon name="search" size="20" />
+          Search
         </AppLink>
-        {user?.['id'] && <User className={styles.user} user={user} />}
+        {cosmicUser?.[ 'id' ] ?
+          <User className={styles.user} user={cosmicUser} /> :
+          <button
+          aria-label="login"
+          aria-hidden="true"
+          className={cn( "button-small",styles.button, styles.login )}
+          onClick={() => setVisibleAuthModal(true)}
+            >
+              Login
+        </button>
+          }
         <button
           aria-label="user-information"
           aria-hidden="true"
@@ -53,6 +84,10 @@ const Headers = ({navigation, user}) => {
         />
       </div>
     </header>
+    <Modal visible={visibleAuthModal} onClose={() => setVisibleAuthModal(false)}>
+      <OAuth className={styles.steps} handleOAuth={handleOAuth} handleClose={() => setVisibleAuthModal(false)} />
+    </Modal>
+  </>
   );
 };
 

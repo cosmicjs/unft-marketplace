@@ -44,9 +44,9 @@ const Upload = ({navigationItems, categoriesType}) => {
     !authToken && setVisibleAuthModal( true );
 
     if( !token && !token?.hasOwnProperty('token') ) return;
-    await handleUploadFile(uploadFile);
     const userInfo = await getCosmicUser( token[ 'token' ] );
-    await setCosmicUser( userInfo['user'] );
+    await setCosmicUser( userInfo[ 'user' ] );
+    await handleUploadFile(uploadFile);
 
     setAuthToken( token[ 'token' ] );
   };
