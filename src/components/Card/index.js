@@ -32,7 +32,7 @@ const Card = ({ className, item }) => {
             <Icon name="heart" size="20" />
           </button>
           <button className={cn("button-small", styles.button)}>
-            <span>{`${item?.metadata?.price} $`}</span>
+            <span>{`$${item?.metadata?.price}`}</span>
             <Icon name="scatter-up" size="16" />
           </button>
         </div>

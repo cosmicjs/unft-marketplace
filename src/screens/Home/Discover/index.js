@@ -203,8 +203,8 @@ const Discover = ( { info,type } ) => {
                 )}
               />
               <div className={styles.scale}>
-                <div className={styles.number}>0 $</div>
-                <div className={styles.number}>100 $</div>
+                <div className={styles.number}>$0</div>
+                <div className={styles.number}>$100</div>
               </div>
             </div>
           </div>

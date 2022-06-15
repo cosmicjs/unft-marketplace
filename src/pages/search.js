@@ -200,8 +200,8 @@ const Search = ({categoriesGroup, navigationItems}) => {
                   )}
                 />
                 <div className={styles.scale}>
-                  <div className={styles.number}>1 $</div>
-                  <div className={styles.number}>100 $</div>
+                  <div className={styles.number}>$1</div>
+                  <div className={styles.number}>$100</div>
                 </div>
               </div>
               <div className={styles.reset} onClick={() => setRangeValues([50])}>
