@@ -35,7 +35,7 @@ const Preview = ( { className, onClose, info, image } ) => {
             <div className={styles.foot}>
               <div className={styles.status}>
                 <Icon name="candlesticks-up" size="20" />
-                Highest bid <span>{info?.price} $</span>
+                Price <span>{info?.price} $</span>
               </div>
               <div className={styles.bid}>
                 New item

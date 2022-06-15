@@ -22,8 +22,6 @@ const Upload = ({navigationItems, categoriesType}) => {
   const { categories,navigation,authToken,setAuthToken, cosmicUser, setCosmicUser } = useStateContext();
 
   const [color, setColor] = useState(OPTIONS[0]);
-  const [sale, setSale] = useState(true);
-  const [locking, setLocking] = useState(false);
   const [uploadMedia, setUploadMedia] = useState( '' );
   const [uploadFile, setUploadFile] = useState( '' );
   const [chooseCategory, setChooseCategory ] = useState( '' );
@@ -231,24 +229,6 @@ const Upload = ({navigationItems, categoriesType}) => {
                   </div>
                 </div>
                 <div className={styles.options}>
-                  <div className={styles.option}>
-                    <div className={styles.box}>
-                      <div className={styles.category}>Put on sale</div>
-                      <div className={styles.text}>
-                        You’ll receive bids on this item
-                      </div>
-                    </div>
-                    <Switch value={sale} setValue={setSale} />
-                  </div>
-                  <div className={styles.option}>
-                    <div className={styles.box}>
-                      <div className={styles.category}>Unlock once purchased</div>
-                      <div className={styles.text}>
-                        Content will be unlocked after successful transaction
-                      </div>
-                    </div>
-                    <Switch value={locking} setValue={setLocking} />
-                  </div>
                   <div className={styles.category}>Choose collection</div>
                   <div className={styles.text}>
                     Choose an exiting Categories
