@@ -54,11 +54,17 @@ const Footers = ({navigation}) => {
             ))}
           </div>
           <div className={styles.col}>
-            <div className={styles.category}>Join Newsletter</div>
-            <div className={styles.text}>
-              Subscribe our newsletter to get more free design course and
-              resource
-            </div>
+            <div className={styles.category}>About Us</div>
+            <AppLink
+              target='_blank'
+              href={`https://www.cosmicjs.com/contact`}>
+              <div className={styles.text}>
+                <p>Contact Us</p>
+                <span>
+
+                </span>
+              </div>
+            </AppLink>
             <Form
               className={styles.form}
               value={email}
@@ -67,11 +73,6 @@ const Footers = ({navigation}) => {
               type="email"
               name="email"
             />
-          </div>
-        </div>
-        <div className={styles.foot}>
-          <div className={styles.note}>
-            We use cookies for better service. <AppLink href="/#">Accept</AppLink>
           </div>
         </div>
       </div>
