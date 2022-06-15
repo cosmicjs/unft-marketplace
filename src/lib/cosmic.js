@@ -1,9 +1,9 @@
 import Cosmic from 'cosmicjs';
 const CosmicAuth = require("cosmicjs")();
 
-const BUCKET_SLUG = process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG
-const READ_KEY = process.env.NEXT_PUBLIC_COSMIC_READ_KEY
-const WRITE_KEY = process.env.NEXT_PUBLIC_COSMIC_WRITE_KEY
+const BUCKET_SLUG = process.env.COSMIC_BUCKET_SLUG
+const READ_KEY = process.env.COSMIC_READ_KEY
+const WRITE_KEY = process.env.COSMIC_WRITE_KEY
 
 const bucket = Cosmic().bucket({
   slug: BUCKET_SLUG,

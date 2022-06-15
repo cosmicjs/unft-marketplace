@@ -7,6 +7,7 @@ import Image from '../Image';
 
 const Card = ({ className, item }) => {
   const [ visible,setVisible ] = useState( false );
+  console.log('item', item)
 
   return (
     <div className={cn( styles.card,className )} aria-hidden="true">
