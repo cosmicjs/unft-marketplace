@@ -38,13 +38,13 @@ const Upload = ({navigationItems, categoriesType}) => {
     await setUploadMedia( mediaData?.[ 'media' ] );
   };
 
-  const handleOAuth = async ( token ) => {
+  const handleOAuth = async ( token, authForm ) => {
     !authToken && setVisibleAuthModal( true );
 
     if( !token && !token?.hasOwnProperty('token') ) return;
     const userInfo = await getCosmicUser( token[ 'token' ] );
     await setCosmicUser( userInfo[ 'user' ] );
-    await handleUploadFile(uploadFile);
+    authForm==='upload' && await handleUploadFile(uploadFile);
 
     setAuthToken( token[ 'token' ] );
   };
@@ -54,7 +54,7 @@ const Upload = ({navigationItems, categoriesType}) => {
 
     authToken ?
       handleUploadFile( e.target.files[ 0 ] ) :
-      handleOAuth();
+      handleOAuth('upload');
   };
 
   const handleChange = ({ target: { name, value } }) =>
@@ -79,7 +79,9 @@ const Upload = ({navigationItems, categoriesType}) => {
   const submitForm = useCallback( async ( e ) => {
     e.preventDefault();
 
-    if( title && color && count && price && uploadMedia ) {
+    !authToken && handleOAuth();
+
+    if(authToken && (title && color && count && price && uploadMedia) ) {
       fillFiledMessage && setFillFiledMessage( false );
 
       await createItem( {
@@ -132,7 +134,7 @@ const Upload = ({navigationItems, categoriesType}) => {
     } else {
       setFillFiledMessage( true );
     }
-  },[chooseCategory, color, count, description, fillFiledMessage, price, title, uploadMedia] );
+  },[chooseCategory, color, count, description, fillFiledMessage, price, title, uploadMedia, authToken] );
 
   return (
       <Layout navigationPaths={navigationItems[0]?.metadata || navigation}>
