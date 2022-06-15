@@ -33,7 +33,7 @@ const Search = ({categoriesGroup, navigationItems}) => {
 
   const debouncedSearchTerm = useDebounce(search, 600);
 
-  const [ rangeValues, setRangeValues ] = useState( [ 50 ] );
+  const [ rangeValues, setRangeValues ] = useState( [ 1 ] );
   const [ option,setOption ] = useState( OPTIONS[ 0 ] );
 
   const getDataByFilterPrice = useCallback( async ( value ) => {
@@ -204,7 +204,7 @@ const Search = ({categoriesGroup, navigationItems}) => {
                   <div className={styles.number}>$100</div>
                 </div>
               </div>
-              <div className={styles.reset} onClick={() => setRangeValues([50])}>
+              <div className={styles.reset} onClick={() => setRangeValues([1])}>
                 <Icon name="close-circle-fill" size="24" />
                 <span>Reset filter</span>
               </div>
@@ -214,11 +214,6 @@ const Search = ({categoriesGroup, navigationItems}) => {
                 {searchResult?.length && searchResult?.map((x, index) => (
                   <Card className={styles.card} item={x} key={index} />
                 ))}
-              </div>
-              <div className={styles.btns}>
-                <button className={cn("button-stroke", styles.button)}>
-                  <span>Load more</span>
-                </button>
               </div>
             </div>
           </div>

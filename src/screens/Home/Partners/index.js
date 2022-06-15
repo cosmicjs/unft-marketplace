@@ -7,7 +7,7 @@ import Image from "../../../components/Image";
 
 import styles from "./Partners.module.sass";
 
-const directionOptions = ["Reviews", "Partners"];
+const directionOptions = ["Partners"];
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
   <button aria-label="arrow" aria-hidden="true" {...props}>{children}</button>
