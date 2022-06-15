@@ -73,7 +73,7 @@ const Headers = ({navigation}) => {
           className={cn( "button-small",styles.button, styles.login )}
           onClick={() => setVisibleAuthModal(true)}
             >
-              Login
+            Login
         </button>
           }
         <button

@@ -5,6 +5,7 @@ import Group from "./Group";
 import Form from "../Form";
 import Theme from "../Theme";
 import Image from "../Image";
+import SocialMedia from '../SocialMedia';
 
 import styles from "./Footer.module.sass";
 
@@ -60,11 +61,9 @@ const Footers = ({navigation}) => {
               href={`https://www.cosmicjs.com/contact`}>
               <div className={styles.text}>
                 <p>Contact Us</p>
-                <span>
-
-                </span>
               </div>
             </AppLink>
+            <SocialMedia className={styles.form}/>
             <Form
               className={styles.form}
               value={email}
