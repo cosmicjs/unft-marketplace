@@ -76,7 +76,7 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
               <h1 className={cn( "h3",styles.title )}>{itemInfo[0]?.title}</h1>
               <div className={styles.cost}>
                 <div className={cn("status-stroke-green", styles.price)}>
-                  {`${itemInfo[0]?.metadata?.price} $`}
+                  {`$${itemInfo[0]?.metadata?.price}`}
                 </div>
                 <div className={styles.counter}>{itemInfo[0]?.metadata?.count} in stock</div>
               </div>
