@@ -1,11 +1,12 @@
 import Cosmic from 'cosmicjs';
 const CosmicAuth = require("cosmicjs")();
 
-const BUCKET_SLUG = process.env.COSMIC_BUCKET_SLUG
-const READ_KEY = process.env.COSMIC_READ_KEY
-const WRITE_KEY = process.env.COSMIC_WRITE_KEY
+const BUCKET_SLUG = process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG
+const READ_KEY = process.env.NEXT_PUBLIC_COSMIC_READ_KEY
 
-console.log( 'READ_KEY',READ_KEY, 'BUCKET_SLUG', READ_KEY );
+// Secret environment variables add to the JavaScript bundle, open the next.config.js
+//https://nextjs.org/docs/api-reference/next.config.js/environment-variables
+const WRITE_KEY = process.env.cosmicWriteKey
 
 const bucket = Cosmic().bucket({
   slug: BUCKET_SLUG,
