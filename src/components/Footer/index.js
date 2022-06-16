@@ -55,7 +55,20 @@ const Footers = ({navigation}) => {
             ))}
           </div>
           <div className={styles.col}>
-            <div className={styles.category}>About Us</div>
+            <AppLink
+              target='_blank'
+              href={`https://www.cosmicjs.com/features`}>
+              <div className={styles.category}>
+                About Cosmic
+              </div>
+            </AppLink>
+            <AppLink
+              target='_blank'
+              href={`https://docs.cosmicjs.com/`}>
+              <div className={styles.text}>
+                <p>Documentation</p>
+              </div>
+            </AppLink>
             <AppLink
               target='_blank'
               href={`https://www.cosmicjs.com/contact`}>
@@ -63,15 +76,16 @@ const Footers = ({navigation}) => {
                 <p>Contact Us</p>
               </div>
             </AppLink>
-            <SocialMedia className={styles.form}/>
-            <Form
-              className={styles.form}
-              value={email}
-              setValue={setEmail}
-              placeholder="Enter your email"
-              type="email"
-              name="email"
-            />
+            <SocialMedia className={styles.form} />
+            <AppLink
+              target='_blank'
+              href={`https://cosmicjs.us5.list-manage.com/subscribe/post?u=15433aab34aefd5450c23fd94&id=028c29b6ca`}>
+              <button
+                aria-hidden="true"
+                className={cn( "button",styles.button )}>
+                Subscribe Newsletter
+              </button>
+            </AppLink>
           </div>
         </div>
       </div>

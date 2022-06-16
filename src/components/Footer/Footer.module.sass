@@ -99,15 +99,27 @@
         margin-right: 10px
 
 .category
+    cursor: pointer
     margin-bottom: 40px
+    color: $white
+    font-weight: 600
     +body-bold-2
     +t
         margin-block-end: 24px
+    &:hover
+        color: $neutrals4
+        +dark
+            color: $blue
 
 .text
+    cursor: pointer
     margin-bottom: 24px
     color: $white
     font-weight: 700
+    &:hover
+        color: $neutrals4
+        +dark
+            color: $blue
 
 .foot
     display: flex
