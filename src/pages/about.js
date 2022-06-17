@@ -4,17 +4,21 @@ import cn from "classnames";
 import { useStateContext } from "../utils/context/StateContext";
 import Layout from "../components/Layout";
 import Image from "../components/Image";
+import chooseBySlug from "../utils/chooseBySlug";
 import { getAllDataByType } from '../lib/cosmic';
 
 import styles from "../styles/pages/NotFound.module.sass";
 
-const AboutUs = ({navigationItems}) => {
+const AboutUs = ({navigationItems, landing}) => {
   const { navigation } =  useStateContext();
   const { push } = useRouter();
 
   const handleClick = ( href ) => {
     push( href );
   }
+
+  const landingAbout = chooseBySlug( landing,'marketing' );
+  console.log( 'landingAbout',landingAbout );
 
   return (
     <Layout navigationPaths={navigationItems[0]?.metadata || navigation }>
@@ -49,8 +53,9 @@ export default AboutUs;
 
 export async function getStaticProps() {
   const navigationItems = await getAllDataByType( 'navigation' ) || [];
+  const landing = await getAllDataByType('landings')  || [];
 
   return {
-    props: { navigationItems },
+    props: { navigationItems, landing },
   }
 }
