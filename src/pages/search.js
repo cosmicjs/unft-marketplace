@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, startTransition } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import cn from "classnames";
 import { useRouter } from 'next/router';
 import { Range,getTrackBackground } from "react-range";
@@ -11,13 +11,9 @@ import { filterDataByPrice, filterDataByColor, getSearchDataWith } from "../lib/
 import { useStateContext } from '../utils/context/StateContext';
 import { filterByType } from '../utils/filterDataByType';
 import { getAllDataByType, getDataByCategory } from '../lib/cosmic';
-import { ACTIVE_INDEX, OPTIONS } from "../utils/constants/appConstants";
+import { ACTIVE_INDEX, OPTIONS, MIN, STEP, MAX } from "../utils/constants/appConstants";
 
 import styles from "../styles/pages/Search.module.sass";
-
-const STEP = 1;
-const MIN = 1;
-const MAX = 100;
 
 const Search = ({categoriesGroup, navigationItems}) => {
   const { query } = useRouter();
@@ -33,8 +29,16 @@ const Search = ({categoriesGroup, navigationItems}) => {
 
   const debouncedSearchTerm = useDebounce(search, 600);
 
-  const [ rangeValues, setRangeValues ] = useState( [ 1 ] );
+  const [ rangeValues, setRangeValues ] = useState( [MIN] );
   const [ option,setOption ] = useState( OPTIONS[ 0 ] );
+
+  const searchElement = useRef( null );
+
+  useEffect(() => {
+    if (searchElement.current) {
+      searchElement.current.focus();
+    }
+  }, [query]);
 
   const getDataByFilterPrice = useCallback( async ( value ) => {
     setRangeValues( value );
@@ -89,6 +93,7 @@ const Search = ({categoriesGroup, navigationItems}) => {
               onSubmit={(e) => handleSubmit(e)}
             >
               <input
+                ref={searchElement}
                 className={styles.input}
                 type="text"
                 value={search}
@@ -204,7 +209,7 @@ const Search = ({categoriesGroup, navigationItems}) => {
                   <div className={styles.number}>$100</div>
                 </div>
               </div>
-              <div className={styles.reset} onClick={() => setRangeValues([1])}>
+              <div className={styles.reset} onClick={() => setRangeValues([MIN])}>
                 <Icon name="close-circle-fill" size="24" />
                 <span>Reset filter</span>
               </div>

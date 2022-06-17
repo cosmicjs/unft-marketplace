@@ -1,3 +1,9 @@
-export const ACTIVE_INDEX = '627e23f18bb13a000911ea55';
+const ACTIVE_INDEX = '627e23f18bb13a000911ea55';
 
-export const OPTIONS = ["Red", "Blue", "Black", "Purple"];
+const OPTIONS = [ "Red","Blue","Black","Purple" ];
+
+const STEP = 1;
+const MIN = 1;
+const MAX = 100;
+
+export {STEP, MIN, MAX, ACTIVE_INDEX, OPTIONS};

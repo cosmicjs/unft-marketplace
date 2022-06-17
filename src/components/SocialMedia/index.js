@@ -31,8 +31,10 @@ const SocialMedia = () => {
     <div className={styles.social}>
       {socialMedia?.map( ( { Icon,url },index ) => (
         <AppLink
+              key={index}
               target='_blank'
-              href={url}>
+              href={url}
+              >
           <Icon className={styles.icon}/>
         </AppLink>
       ))}
