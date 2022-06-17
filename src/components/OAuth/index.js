@@ -57,7 +57,7 @@ const OAuth = ( { className, handleClose, handleOAuth } ) => {
         </AppLink>
       </div>
       <div className={styles.error}>{fillFiledMessage}</div>
-      <form className={styles.form} action="" onSubmit={submitForm}>
+      <form className={styles.form} action="submit" onSubmit={submitForm}>
         <div className={styles.field}>
           <input
             className={styles.input}

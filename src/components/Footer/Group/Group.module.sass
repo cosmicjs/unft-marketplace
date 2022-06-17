@@ -54,10 +54,12 @@
 
 .link
     +button-2
-    color: $neutrals4
+    color: $white
+    cursor: pointer
     transition: color .2s
     &:hover
-        color: $blue
+        color: $neutrals4
+        +dark
+            color: $blue
     &:not(:last-child)
         margin-bottom: 24px
-

@@ -7,9 +7,9 @@ import Slider from "react-slick";
 import Icon from "../../../components/Icon";
 import Card from "../../../components/Card";
 import Dropdown from "../../../components/Dropdown";
-import { filterDataByPrice, filterDataByColor } from "../../../lib/cosmic";
+import { filterDataByParams } from "../../../lib/cosmic";
 import { filterByType } from '../../../utils/filterDataByType';
-import { ACTIVE_INDEX, OPTIONS } from "../../../utils/constants/appConstants";
+import { ACTIVE_INDEX, OPTIONS, MIN, STEP, MAX } from "../../../utils/constants/appConstants";
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
   <button aria-label="arrow" aria-hidden="true" {...props}>{children}</button>
@@ -44,17 +44,13 @@ const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
     ],
   };
 
-  const STEP = 1;
-  const MIN = 0;
-  const MAX = 100;
-
 const Discover = ( { info,type } ) => {
   const { push } = useRouter();
   const [activeIndex, setActiveIndex] = useState(type ? Object.entries(type)[0]?.[0] : ACTIVE_INDEX);
   const [option, setOption] = useState( OPTIONS[ 0 ] );
 
-  const [rangeValues, setValues] = useState([50]);
-  const [ visible, setVisible ] = useState( false );
+  const [rangeValues, setRangeValues] = useState([MIN]);
+  const [visible, setVisible ] = useState( false );
 
   const [ filterResult, setFilterResult ] = useState( filterByType(info, activeIndex));
 
@@ -67,17 +63,17 @@ const Discover = ( { info,type } ) => {
     setFilterResult( filterByType(info, activeIndex) );
   }
 
-  const getDataByFilterPrice = useCallback( async ( value ) => {
-      setValues( value );
-      const rangeParams = await filterDataByPrice(value[0]);
+  const getDataByFilterPrice = useCallback( async ( price ) => {
+      setRangeValues( price );
+      const rangeParams = await filterDataByParams(price[0], option);
       await setFilterResult( rangeParams );
-  },[] );
+  },[option] );
 
-  const getDataByFilterOptions = useCallback( async ( value ) => {
-      setOption( value );
-      const optionsParams = await filterDataByColor(value);
+  const getDataByFilterOptions = useCallback( async ( color ) => {
+      setOption( color );
+      const optionsParams = await filterDataByParams(rangeValues[0], color);
       await setFilterResult( optionsParams );
-  },[]);
+  },[rangeValues]);
 
   return (
     <div className={cn("section", styles.section)}>
@@ -203,8 +199,8 @@ const Discover = ( { info,type } ) => {
                 )}
               />
               <div className={styles.scale}>
-                <div className={styles.number}>0 $</div>
-                <div className={styles.number}>100 $</div>
+                <div className={styles.number}>$0</div>
+                <div className={styles.number}>$100</div>
               </div>
             </div>
           </div>

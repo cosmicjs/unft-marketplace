@@ -7,7 +7,7 @@ import { useStateContext } from '../../utils/context/StateContext';
 import styles from "./Layout.module.sass";
 
 const Layout = ({ children, title, navigationPaths }) => {
-  const { navigation, setNavigation, cosmicUser } = useStateContext();
+  const { navigation, setNavigation } = useStateContext();
 
   useEffect(() => {
     let isMounted = true;
@@ -29,7 +29,7 @@ const Layout = ({ children, title, navigationPaths }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.page}>
-        <Header navigation={navigationPaths || navigation} user={cosmicUser} />
+        <Header navigation={navigationPaths || navigation} />
         <main className={styles.inner}>
           {children}
         </main>

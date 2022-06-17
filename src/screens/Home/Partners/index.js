@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import cn from "classnames";
 import Slider from "react-slick";
 import Icon from "../../../components/Icon";
-import DropdownEmpty from "../../../components/DropdownEmpty";
 import Image from "../../../components/Image";
 
 import styles from "./Partners.module.sass";
-
-const directionOptions = ["Reviews", "Partners"];
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
   <button aria-label="arrow" aria-hidden="true" {...props}>{children}</button>
@@ -53,7 +50,6 @@ const settings = {
   };
 
 const Partners = ({info}) => {
-  const [direction, setDirection] = useState(directionOptions[0]);
 
   return (
     <section className="section-bg">
@@ -62,12 +58,9 @@ const Partners = ({info}) => {
           <div className={styles.top}>
             <div className={styles.box}>
               <div className={styles.stage}>Join Us!</div>
-              <DropdownEmpty
-                className={styles.dropdown}
-                value={direction}
-                setValue={setDirection}
-                options={directionOptions}
-              />
+              <h2 className={cn( "h3",styles.title )} >
+                Reviews
+              </h2>
             </div>
           </div>
           <div className={styles.wrapper}>

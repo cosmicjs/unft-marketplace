@@ -5,6 +5,7 @@ import Group from "./Group";
 import Form from "../Form";
 import Theme from "../Theme";
 import Image from "../Image";
+import SocialMedia from '../SocialMedia';
 
 import styles from "./Footer.module.sass";
 
@@ -19,6 +20,10 @@ const items = [
       {
         title: "Create item",
         url: "/upload-details",
+      },
+      {
+        title: "About Us",
+        url: "/about",
       },
     ],
   },
@@ -54,24 +59,37 @@ const Footers = ({navigation}) => {
             ))}
           </div>
           <div className={styles.col}>
-            <div className={styles.category}>Join Newsletter</div>
-            <div className={styles.text}>
-              Subscribe our newsletter to get more free design course and
-              resource
-            </div>
-            <Form
-              className={styles.form}
-              value={email}
-              setValue={setEmail}
-              placeholder="Enter your email"
-              type="email"
-              name="email"
-            />
-          </div>
-        </div>
-        <div className={styles.foot}>
-          <div className={styles.note}>
-            We use cookies for better service. <AppLink href="/#">Accept</AppLink>
+            <AppLink
+              target='_blank'
+              href={`https://www.cosmicjs.com/features`}>
+              <div className={styles.category}>
+                About Cosmic
+              </div>
+            </AppLink>
+            <AppLink
+              target='_blank'
+              href={`https://docs.cosmicjs.com/`}>
+              <div className={styles.text}>
+                <p>Documentation</p>
+              </div>
+            </AppLink>
+            <AppLink
+              target='_blank'
+              href={`https://www.cosmicjs.com/contact`}>
+              <div className={styles.text}>
+                <p>Contact Us</p>
+              </div>
+            </AppLink>
+            <SocialMedia className={styles.form} />
+            <AppLink
+              target='_blank'
+              href={`https://cosmicjs.us5.list-manage.com/subscribe/post?u=15433aab34aefd5450c23fd94&id=028c29b6ca`}>
+              <button
+                aria-hidden="true"
+                className={cn( "button",styles.button )}>
+                Subscribe Newsletter
+              </button>
+            </AppLink>
           </div>
         </div>
       </div>

@@ -1,9 +1,14 @@
 import Cosmic from 'cosmicjs';
+import { OPTIONS, MIN } from '../utils/constants/appConstants';
+
 const CosmicAuth = require("cosmicjs")();
 
 const BUCKET_SLUG = process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG
 const READ_KEY = process.env.NEXT_PUBLIC_COSMIC_READ_KEY
-const WRITE_KEY = process.env.NEXT_PUBLIC_COSMIC_WRITE_KEY
+
+// Secret environment variables add to the JavaScript bundle, open the next.config.js
+//https://nextjs.org/docs/api-reference/next.config.js/environment-variables
+const WRITE_KEY = process.env.cosmicWriteKey
 
 const bucket = Cosmic().bucket({
   slug: BUCKET_SLUG,
@@ -89,10 +94,25 @@ export async function getSearchDataWith(title) {
   }
 }
 
-export async function filterDataByPrice(param) {
+export async function filterDataByParams( price, color, categories ) {
+  let queryParam = {};
+
+  if( price > MIN ) {
+    queryParam = { ...queryParam, "metadata.price": { "$lte": price },}
+  }
+
+  if( OPTIONS[0]?.toLocaleLowerCase() !== color?.toLocaleLowerCase() ) {
+    queryParam = { ...queryParam, "metadata.color": color,}
+  }
+
+  //TODO need check
+  if( categories ) {
+    queryParam = { ...queryParam, "metadata.categories.title": categories,}
+  }
+
   const params = {
     query: {
-      "metadata.price": { "$lte": param },
+      ...queryParam,
       type: 'products',
     },
     props: 'title,slug,metadata,created_at',
@@ -107,26 +127,6 @@ export async function filterDataByPrice(param) {
     throw error
   }
 }
-
-export async function filterDataByColor(param) {
-  const params = {
-    query: {
-      "metadata.color": param,
-      type: 'products',
-    },
-    props: 'title,slug,metadata,created_at',
-  }
-
-  try {
-    const data = await bucket.getObjects(params)
-    return data.objects
-  } catch (error) {
-    // Don't throw if an slug doesn't exist
-    if (is404(error)) return
-    throw error
-  }
-}
-
 export async function getDataBySlug(slug) {
   const params = {
     query: {
@@ -149,8 +149,10 @@ export async function getDataBySlug(slug) {
 
 export async function uploadMediaFiles(file) {
   try {
-    const data = await bucket?.addMedia({media: file})
-    return data
+    if( file ) {
+      const data = await bucket?.addMedia({media: file})
+      return data
+    }
   } catch (error) {
     // Don't throw if an slug doesn't exist
     if (is404(error)) return

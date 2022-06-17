@@ -1,8 +1,9 @@
 import {useEffect, useCallback} from 'react'
 import { useStateContext } from '../utils/context/StateContext';
 import Layout from "../components/Layout";
-import {Intro, Selection, Partners, HotBid, Categories, Discover, Description} from '../screens/Home'
-import {  getDataByCategory, getAllDataByType } from '../lib/cosmic'
+import { Intro,Selection,Partners,HotBid,Categories,Discover,Description } from '../screens/Home';
+import chooseBySlug from '../utils/chooseBySlug';
+import { getDataByCategory,getAllDataByType } from '../lib/cosmic';
 
 const Home = ({reviews, landing, categoriesGroup,  categoryTypes, navigationItems}) => {
   const { categories, onCategoriesChange, setNavigation } = useStateContext();
@@ -26,11 +27,11 @@ const Home = ({reviews, landing, categoriesGroup,  categoryTypes, navigationItem
 
   return (
     <Layout navigationPaths={navigationItems[0]?.metadata}>
-      <Description info={landing[1]} />
+      <Description info={chooseBySlug(landing, 'marketing')} />
       <HotBid classSection="section" info={categoriesGroup['groups'][0]} />
       <Categories info={categoriesGroup['groups']} type={categoriesGroup['type']} />
       <Selection info={categoriesGroup[ 'groups' ]} type={categoryTypes} />
-      <Intro info={landing[0]}/>
+      <Intro info={chooseBySlug(landing, 'introduction')}/>
       <Partners info={reviews} />
       <Discover info={categoriesGroup[ 'groups' ]} type={categoriesGroup[ 'type' ]} />
     </Layout>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, startTransition } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import cn from "classnames";
 import { useRouter } from 'next/router';
 import { Range,getTrackBackground } from "react-range";
@@ -7,17 +7,13 @@ import Layout from "../components/Layout";
 import Icon from "../components/Icon";
 import Card from "../components/Card";
 import Dropdown from "../components/Dropdown";
-import { filterDataByPrice, filterDataByColor, getSearchDataWith } from "../lib/cosmic";
+import { filterDataByParams, getSearchDataWith } from "../lib/cosmic";
 import { useStateContext } from '../utils/context/StateContext';
 import { filterByType } from '../utils/filterDataByType';
 import { getAllDataByType, getDataByCategory } from '../lib/cosmic';
-import { ACTIVE_INDEX, OPTIONS } from "../utils/constants/appConstants";
+import { ACTIVE_INDEX, OPTIONS, MIN, STEP, MAX } from "../utils/constants/appConstants";
 
 import styles from "../styles/pages/Search.module.sass";
-
-const STEP = 1;
-const MIN = 1;
-const MAX = 100;
 
 const Search = ({categoriesGroup, navigationItems}) => {
   const { query } = useRouter();
@@ -26,6 +22,8 @@ const Search = ({categoriesGroup, navigationItems}) => {
   const categoriesTypeData = categoriesGroup['type'] || categories[ 'type' ];
   const categoriesGroupsData = categoriesGroup['groups'] || categories[ 'groups' ];
 
+  console.log('categoriesGroup[type]', categoriesGroup['type'][query['id']])
+
   const [activeIndex, setActiveIndex] = useState( query['id'] || ACTIVE_INDEX );
   const [searchResult, setSearchResult] = useState( filterByType(categoriesGroupsData, query['id']));
 
@@ -33,27 +31,42 @@ const Search = ({categoriesGroup, navigationItems}) => {
 
   const debouncedSearchTerm = useDebounce(search, 600);
 
-  const [ rangeValues, setRangeValues ] = useState( [ 50 ] );
-  const [ option,setOption ] = useState( OPTIONS[ 0 ] );
+  const [ rangeValues, setRangeValues ] = useState( [MIN] );
+  const [ option, setOption ] = useState( OPTIONS[ 0 ] );
+
+  const searchElement = useRef( null );
+
+  useEffect(() => {
+    if (searchElement.current) {
+      searchElement.current.focus();
+    }
+  }, [query]);
 
   const getDataByFilterPrice = useCallback( async ( value ) => {
     setRangeValues( value );
-    const rangeParams = await filterDataByPrice( value[0] );
+    const rangeParams = await filterDataByParams( value[0], option );
     await setSearchResult( rangeParams );
-  },[] );
+  },[option] );
 
-  const getDataByFilterOptions = useCallback( async ( value ) => {
-      setOption( value );
-      const optionsParams = await filterDataByColor(value);
+  const getDataByFilterOptions = useCallback( async ( color ) => {
+      setOption( color );
+      const optionsParams = await filterDataByParams(rangeValues[0], color);
       await setSearchResult( optionsParams );
-  },[] );
+  },[rangeValues] );
 
-  const getDataBySearch = useCallback(async (search) => {
+  const handleReset = () => {
+    setRangeValues([MIN]);
+    setOption(OPTIONS[0]);
+  }
+
+  const getDataBySearch = useCallback( async ( search ) => {
+    handleReset();
+
       const searchResult = await getSearchDataWith(search);
       await setSearchResult( searchResult );
     }, []);
 
-  const handleCategoryChange = ( index ) => {
+  const handleCategoryChange = async ( index ) => {
     setActiveIndex( index );
     setSearchResult( filterByType(categoriesGroupsData, activeIndex) );
   }
@@ -89,6 +102,7 @@ const Search = ({categoriesGroup, navigationItems}) => {
               onSubmit={(e) => handleSubmit(e)}
             >
               <input
+                ref={searchElement}
                 className={styles.input}
                 type="text"
                 value={search}
@@ -200,11 +214,11 @@ const Search = ({categoriesGroup, navigationItems}) => {
                   )}
                 />
                 <div className={styles.scale}>
-                  <div className={styles.number}>1 $</div>
-                  <div className={styles.number}>100 $</div>
+                  <div className={styles.number}>$1</div>
+                  <div className={styles.number}>$100</div>
                 </div>
               </div>
-              <div className={styles.reset} onClick={() => setRangeValues([50])}>
+              <div className={styles.reset} onClick={handleReset}>
                 <Icon name="close-circle-fill" size="24" />
                 <span>Reset filter</span>
               </div>
@@ -214,11 +228,6 @@ const Search = ({categoriesGroup, navigationItems}) => {
                 {searchResult?.length && searchResult?.map((x, index) => (
                   <Card className={styles.card} item={x} key={index} />
                 ))}
-              </div>
-              <div className={styles.btns}>
-                <button className={cn("button-stroke", styles.button)}>
-                  <span>Load more</span>
-                </button>
               </div>
             </div>
           </div>

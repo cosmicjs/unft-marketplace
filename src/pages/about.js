@@ -1,18 +1,22 @@
 import React from "react";
 import { useRouter } from 'next/router';
 import cn from "classnames";
+import { useStateContext } from "../utils/context/StateContext";
 import Layout from "../components/Layout";
 import Image from "../components/Image";
+import chooseBySlug from "../utils/chooseBySlug";
 import { getAllDataByType } from '../lib/cosmic';
 
 import styles from "../styles/pages/NotFound.module.sass";
 
-const NotFound = ({navigationItems}) => {
+const AboutUs = ({navigationItems, landing}) => {
   const { push } = useRouter();
 
   const handleClick = ( href ) => {
     push( href );
   }
+
+  const infoAbout = chooseBySlug( landing,'about' );
 
   return (
     <Layout navigationPaths={navigationItems[0]?.metadata}>
@@ -22,15 +26,18 @@ const NotFound = ({navigationItems}) => {
             <div className={styles.preview}>
               <Image
                 size={{ width: "100%", height: "50vh" }}
-                src="/images/content/figures-dark.png"
-                srcDark="/images/content/figures-dark.png"
+                src={infoAbout?.metadata?.image?.imgix_url}
+                srcDark={infoAbout?.metadata?.image?.imgix_url}
                 alt="Figures"
               />
             </div>
             <h2 className={cn("h2", styles.title)}>
-              Sorry, we couldn’t find any results for this search.
+              {infoAbout?.metadata?.title}
             </h2>
-            <div className={styles.info}>Maybe give one of these a try?</div>
+            <h3 className={styles.info}>{infoAbout?.metadata?.subtitle}</h3>
+            <p className={styles.info}>
+              {infoAbout?.metadata?.description}
+            </p>
               <button
                 onClick={() => handleClick( `/search` )}
                 className={cn( "button-stroke",styles.form )}>
@@ -43,12 +50,13 @@ const NotFound = ({navigationItems}) => {
   );
 };
 
-export default NotFound;
+export default AboutUs;
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const navigationItems = await getAllDataByType( 'navigation' ) || [];
+  const landing = await getAllDataByType('landings')  || [];
 
   return {
-    props: { navigationItems },
+    props: { navigationItems, landing },
   }
 }

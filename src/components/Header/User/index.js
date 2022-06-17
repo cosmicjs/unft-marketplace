@@ -9,8 +9,8 @@ import Theme from "../../Theme";
 
 const items = [
   {
-    title: "Dark theme",
-    icon: "bulb",
+    title: "Disconnect",
+    icon: "exit",
   },
 ];
 
@@ -25,7 +25,9 @@ const User = ({ className, user }) => {
               className={styles.avatar}
               size={{ width: "32px", height: "32px" }}
               src={user?.['avatar_url'] || "/images/content/avatar.png"}
-              alt="Avatar" />
+              alt="Avatar"
+              objectFit="cover"
+              />
           <div className={styles.wallet}>
             {user?.['first_name'] || 'User'}
           </div>
@@ -66,7 +68,6 @@ const User = ({ className, user }) => {
                       <Icon name={x.icon} size="20" />
                     </div>
                     <div className={styles.text}>{x.title}</div>
-                    <Theme className={styles.theme} />
                   </div>
                 )
               )}

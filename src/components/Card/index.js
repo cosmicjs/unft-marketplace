@@ -31,20 +31,21 @@ const Card = ({ className, item }) => {
             <Icon name="heart" size="20" />
           </button>
           <button className={cn("button-small", styles.button)}>
-            <span>{`${item?.metadata?.price} $`}</span>
+            <span>{`${item?.metadata?.categories[0]?.title}`}</span>
             <Icon name="scatter-up" size="16" />
           </button>
         </div>
       </div>
       <div className={styles.foot}>
-        <div className={styles.status}>
-          <Icon name="candlesticks-up" size="20" />
-            Highest Trends <span>{item?.highestBid}</span>
-          </div>
-          <div
-            className={styles.bid}
-            dangerouslySetInnerHTML={{ __html: item?.count }}
-          />
+            <div className={styles.status}>
+              <p>{item?.title}</p>
+              <p className={styles.count}>{`${item?.metadata?.count} Items`}</p>
+            </div>
+            <div
+              className={styles.bid}
+              dangerouslySetInnerHTML={{ __html: item?.count }}
+            />
+            <span className={styles.price}>{`$ ${item?.metadata?.price}`}</span>
         </div>
         </AppLink>
       </div>

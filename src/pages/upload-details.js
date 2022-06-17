@@ -5,7 +5,6 @@ import Layout from "../components/Layout";
 import Dropdown from "../components/Dropdown";
 import Icon from "../components/Icon";
 import TextInput from "../components/TextInput";
-import Switch from "../components/Switch";
 import Loader from "../components/Loader";
 import Modal from "../components/Modal";
 import OAuth from '../components/OAuth';
@@ -22,8 +21,6 @@ const Upload = ({navigationItems, categoriesType}) => {
   const { categories,navigation,authToken,setAuthToken, cosmicUser, setCosmicUser } = useStateContext();
 
   const [color, setColor] = useState(OPTIONS[0]);
-  const [sale, setSale] = useState(true);
-  const [locking, setLocking] = useState(false);
   const [uploadMedia, setUploadMedia] = useState( '' );
   const [uploadFile, setUploadFile] = useState( '' );
   const [chooseCategory, setChooseCategory ] = useState( '' );
@@ -40,23 +37,25 @@ const Upload = ({navigationItems, categoriesType}) => {
     await setUploadMedia( mediaData?.[ 'media' ] );
   };
 
-  const handleOAuth = async ( token ) => {
+  const handleOAuth = async (token, params) => {
     !authToken && setVisibleAuthModal( true );
 
-    if( !token && !token?.hasOwnProperty('token') ) return;
-    await handleUploadFile(uploadFile);
-    const userInfo = await getCosmicUser( token[ 'token' ] );
-    await setCosmicUser( userInfo['user'] );
-
+    if( !token && !token?.hasOwnProperty( 'token' ) ) return;
     setAuthToken( token[ 'token' ] );
+
+    const userInfo = await getCosmicUser( token[ 'token' ] );
+    await setCosmicUser( userInfo[ 'user' ] );
+
+    userInfo && await handleUploadFile( uploadFile );
   };
 
   const handleUpload = async ( e ) => {
     setUploadFile( e.target.files[ 0 ] );
+    console.log( 'authToken',authToken );
 
     authToken ?
       handleUploadFile( e.target.files[ 0 ] ) :
-      handleOAuth();
+      handleOAuth('upload');
   };
 
   const handleChange = ({ target: { name, value } }) =>
@@ -81,7 +80,9 @@ const Upload = ({navigationItems, categoriesType}) => {
   const submitForm = useCallback( async ( e ) => {
     e.preventDefault();
 
-    if( title && color && count && price && uploadMedia ) {
+    !authToken && handleOAuth();
+
+    if(authToken && (title && color && count && price && uploadMedia) ) {
       fillFiledMessage && setFillFiledMessage( false );
 
       await createItem( {
@@ -134,7 +135,7 @@ const Upload = ({navigationItems, categoriesType}) => {
     } else {
       setFillFiledMessage( true );
     }
-  },[chooseCategory, color, count, description, fillFiledMessage, price, title, uploadMedia] );
+  },[chooseCategory, color, count, description, fillFiledMessage, price, title, uploadMedia, authToken] );
 
   return (
       <Layout navigationPaths={navigationItems[0]?.metadata || navigation}>
@@ -231,24 +232,6 @@ const Upload = ({navigationItems, categoriesType}) => {
                   </div>
                 </div>
                 <div className={styles.options}>
-                  <div className={styles.option}>
-                    <div className={styles.box}>
-                      <div className={styles.category}>Put on sale</div>
-                      <div className={styles.text}>
-                        You’ll receive bids on this item
-                      </div>
-                    </div>
-                    <Switch value={sale} setValue={setSale} />
-                  </div>
-                  <div className={styles.option}>
-                    <div className={styles.box}>
-                      <div className={styles.category}>Unlock once purchased</div>
-                      <div className={styles.text}>
-                        Content will be unlocked after successful transaction
-                      </div>
-                    </div>
-                    <Switch value={locking} setValue={setLocking} />
-                  </div>
                   <div className={styles.category}>Choose collection</div>
                   <div className={styles.text}>
                     Choose an exiting Categories
