@@ -7,7 +7,7 @@ import Layout from "../components/Layout";
 import Icon from "../components/Icon";
 import Card from "../components/Card";
 import Dropdown from "../components/Dropdown";
-import { filterDataByPrice, filterDataByColor, getSearchDataWith } from "../lib/cosmic";
+import { filterDataByParams, getSearchDataWith } from "../lib/cosmic";
 import { useStateContext } from '../utils/context/StateContext';
 import { filterByType } from '../utils/filterDataByType';
 import { getAllDataByType, getDataByCategory } from '../lib/cosmic';
@@ -30,7 +30,7 @@ const Search = ({categoriesGroup, navigationItems}) => {
   const debouncedSearchTerm = useDebounce(search, 600);
 
   const [ rangeValues, setRangeValues ] = useState( [MIN] );
-  const [ option,setOption ] = useState( OPTIONS[ 0 ] );
+  const [ option, setOption ] = useState( OPTIONS[ 0 ] );
 
   const searchElement = useRef( null );
 
@@ -42,15 +42,15 @@ const Search = ({categoriesGroup, navigationItems}) => {
 
   const getDataByFilterPrice = useCallback( async ( value ) => {
     setRangeValues( value );
-    const rangeParams = await filterDataByPrice( value[0] );
+    const rangeParams = await filterDataByParams( value[0], option );
     await setSearchResult( rangeParams );
-  },[] );
+  },[option] );
 
-  const getDataByFilterOptions = useCallback( async ( value ) => {
-      setOption( value );
-      const optionsParams = await filterDataByColor(value);
+  const getDataByFilterOptions = useCallback( async ( color ) => {
+      setOption( color );
+      const optionsParams = await filterDataByParams(rangeValues[0], color);
       await setSearchResult( optionsParams );
-  },[] );
+  },[rangeValues] );
 
   const getDataBySearch = useCallback(async (search) => {
       const searchResult = await getSearchDataWith(search);
@@ -66,6 +66,11 @@ const Search = ({categoriesGroup, navigationItems}) => {
     e.preventDefault();
     getDataBySearch( debouncedSearchTerm.toLowerCase().trim() );
   };
+
+  const handleReset = () => {
+    setRangeValues([MIN]);
+    setOption(OPTIONS[0]);
+  }
 
   useEffect(() => {
     let isMounted = true;
@@ -209,7 +214,7 @@ const Search = ({categoriesGroup, navigationItems}) => {
                   <div className={styles.number}>$100</div>
                 </div>
               </div>
-              <div className={styles.reset} onClick={() => setRangeValues([MIN])}>
+              <div className={styles.reset} onClick={handleReset}>
                 <Icon name="close-circle-fill" size="24" />
                 <span>Reset filter</span>
               </div>

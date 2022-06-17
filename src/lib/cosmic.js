@@ -1,4 +1,6 @@
 import Cosmic from 'cosmicjs';
+import { OPTIONS, MIN } from '../utils/constants/appConstants';
+
 const CosmicAuth = require("cosmicjs")();
 
 const BUCKET_SLUG = process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG
@@ -92,10 +94,20 @@ export async function getSearchDataWith(title) {
   }
 }
 
-export async function filterDataByPrice(param) {
+export async function filterDataByParams( price, color ) {
+  let queryParam = {};
+
+  if( price > MIN ) {
+    queryParam = { ...queryParam, "metadata.price": { "$lte": price },}
+  }
+  if( OPTIONS[ 0 ]?.toLocaleLowerCase() !== color?.toLocaleLowerCase() ) {
+    queryParam = { ...queryParam, "metadata.color": color,}
+  }
+
+
   const params = {
     query: {
-      "metadata.price": { "$lte": param },
+      ...queryParam,
       type: 'products',
     },
     props: 'title,slug,metadata,created_at',
@@ -110,26 +122,6 @@ export async function filterDataByPrice(param) {
     throw error
   }
 }
-
-export async function filterDataByColor(param) {
-  const params = {
-    query: {
-      "metadata.color": param,
-      type: 'products',
-    },
-    props: 'title,slug,metadata,created_at',
-  }
-
-  try {
-    const data = await bucket.getObjects(params)
-    return data.objects
-  } catch (error) {
-    // Don't throw if an slug doesn't exist
-    if (is404(error)) return
-    throw error
-  }
-}
-
 export async function getDataBySlug(slug) {
   const params = {
     query: {
