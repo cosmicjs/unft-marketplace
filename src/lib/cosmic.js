@@ -100,10 +100,10 @@ export async function filterDataByParams( price, color ) {
   if( price > MIN ) {
     queryParam = { ...queryParam, "metadata.price": { "$lte": price },}
   }
+
   if( OPTIONS[ 0 ]?.toLocaleLowerCase() !== color?.toLocaleLowerCase() ) {
     queryParam = { ...queryParam, "metadata.color": color,}
   }
-
 
   const params = {
     query: {

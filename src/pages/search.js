@@ -52,7 +52,14 @@ const Search = ({categoriesGroup, navigationItems}) => {
       await setSearchResult( optionsParams );
   },[rangeValues] );
 
-  const getDataBySearch = useCallback(async (search) => {
+  const handleReset = () => {
+    setRangeValues([MIN]);
+    setOption(OPTIONS[0]);
+  }
+
+  const getDataBySearch = useCallback( async ( search ) => {
+    handleReset();
+
       const searchResult = await getSearchDataWith(search);
       await setSearchResult( searchResult );
     }, []);
@@ -66,11 +73,6 @@ const Search = ({categoriesGroup, navigationItems}) => {
     e.preventDefault();
     getDataBySearch( debouncedSearchTerm.toLowerCase().trim() );
   };
-
-  const handleReset = () => {
-    setRangeValues([MIN]);
-    setOption(OPTIONS[0]);
-  }
 
   useEffect(() => {
     let isMounted = true;
