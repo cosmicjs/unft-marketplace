@@ -22,6 +22,8 @@ const Search = ({categoriesGroup, navigationItems}) => {
   const categoriesTypeData = categoriesGroup['type'] || categories[ 'type' ];
   const categoriesGroupsData = categoriesGroup['groups'] || categories[ 'groups' ];
 
+  console.log('categoriesGroup[type]', categoriesGroup['type'][query['id']])
+
   const [activeIndex, setActiveIndex] = useState( query['id'] || ACTIVE_INDEX );
   const [searchResult, setSearchResult] = useState( filterByType(categoriesGroupsData, query['id']));
 
@@ -64,7 +66,7 @@ const Search = ({categoriesGroup, navigationItems}) => {
       await setSearchResult( searchResult );
     }, []);
 
-  const handleCategoryChange = ( index ) => {
+  const handleCategoryChange = async ( index ) => {
     setActiveIndex( index );
     setSearchResult( filterByType(categoriesGroupsData, activeIndex) );
   }

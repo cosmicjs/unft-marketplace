@@ -94,15 +94,20 @@ export async function getSearchDataWith(title) {
   }
 }
 
-export async function filterDataByParams( price, color ) {
+export async function filterDataByParams( price, color, categories ) {
   let queryParam = {};
 
   if( price > MIN ) {
     queryParam = { ...queryParam, "metadata.price": { "$lte": price },}
   }
 
-  if( OPTIONS[ 0 ]?.toLocaleLowerCase() !== color?.toLocaleLowerCase() ) {
+  if( OPTIONS[0]?.toLocaleLowerCase() !== color?.toLocaleLowerCase() ) {
     queryParam = { ...queryParam, "metadata.color": color,}
+  }
+
+  //TODO need check
+  if( categories ) {
+    queryParam = { ...queryParam, "metadata.categories.title": categories,}
   }
 
   const params = {
@@ -144,8 +149,10 @@ export async function getDataBySlug(slug) {
 
 export async function uploadMediaFiles(file) {
   try {
-    const data = await bucket?.addMedia({media: file})
-    return data
+    if( file ) {
+      const data = await bucket?.addMedia({media: file})
+      return data
+    }
   } catch (error) {
     // Don't throw if an slug doesn't exist
     if (is404(error)) return

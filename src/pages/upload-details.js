@@ -37,19 +37,21 @@ const Upload = ({navigationItems, categoriesType}) => {
     await setUploadMedia( mediaData?.[ 'media' ] );
   };
 
-  const handleOAuth = async ( token, authForm ) => {
+  const handleOAuth = async (token, params) => {
     !authToken && setVisibleAuthModal( true );
 
-    if( !token && !token?.hasOwnProperty('token') ) return;
+    if( !token && !token?.hasOwnProperty( 'token' ) ) return;
+    setAuthToken( token[ 'token' ] );
+
     const userInfo = await getCosmicUser( token[ 'token' ] );
     await setCosmicUser( userInfo[ 'user' ] );
-    authForm==='upload' && await handleUploadFile(uploadFile);
 
-    setAuthToken( token[ 'token' ] );
+    userInfo && await handleUploadFile( uploadFile );
   };
 
   const handleUpload = async ( e ) => {
     setUploadFile( e.target.files[ 0 ] );
+    console.log( 'authToken',authToken );
 
     authToken ?
       handleUploadFile( e.target.files[ 0 ] ) :
