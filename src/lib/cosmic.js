@@ -105,7 +105,7 @@ export async function filterDataByParams( price, color, categories ) {
     queryParam = { ...queryParam, "metadata.color": color,}
   }
 
-  //TODO need check
+  //TODO need check filter
   if( categories ) {
     queryParam = { ...queryParam, "metadata.categories.title": categories,}
   }
