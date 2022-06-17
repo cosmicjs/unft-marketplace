@@ -18,7 +18,7 @@ import createFields from "../utils/constants/createFields";
 import styles from "../styles/pages/UploadDetails.module.sass";
 
 const Upload = ({navigationItems, categoriesType}) => {
-  const { categories,navigation,authToken,setAuthToken, cosmicUser, setCosmicUser } = useStateContext();
+  const { categories, navigation, authToken, setAuthToken, setCosmicUser } = useStateContext();
 
   const [color, setColor] = useState(OPTIONS[0]);
   const [uploadMedia, setUploadMedia] = useState( '' );
@@ -37,7 +37,7 @@ const Upload = ({navigationItems, categoriesType}) => {
     await setUploadMedia( mediaData?.[ 'media' ] );
   };
 
-  const handleOAuth = async (token, params) => {
+  const handleOAuth = useCallback(async (token) => {
     !authToken && setVisibleAuthModal( true );
 
     if( !token && !token?.hasOwnProperty( 'token' ) ) return;
@@ -47,11 +47,10 @@ const Upload = ({navigationItems, categoriesType}) => {
     await setCosmicUser( userInfo[ 'user' ] );
 
     userInfo && await handleUploadFile( uploadFile );
-  };
+  }, [authToken, setAuthToken, setCosmicUser, uploadFile]);
 
   const handleUpload = async ( e ) => {
     setUploadFile( e.target.files[ 0 ] );
-    console.log( 'authToken',authToken );
 
     authToken ?
       handleUploadFile( e.target.files[ 0 ] ) :
@@ -135,7 +134,7 @@ const Upload = ({navigationItems, categoriesType}) => {
     } else {
       setFillFiledMessage( true );
     }
-  },[chooseCategory, color, count, description, fillFiledMessage, price, title, uploadMedia, authToken] );
+  },[authToken, chooseCategory, color, count, description, fillFiledMessage, handleOAuth, price, title, uploadMedia]);
 
   return (
       <Layout navigationPaths={navigationItems[0]?.metadata || navigation}>
