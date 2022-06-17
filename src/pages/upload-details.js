@@ -5,7 +5,6 @@ import Layout from "../components/Layout";
 import Dropdown from "../components/Dropdown";
 import Icon from "../components/Icon";
 import TextInput from "../components/TextInput";
-import Switch from "../components/Switch";
 import Loader from "../components/Loader";
 import Modal from "../components/Modal";
 import OAuth from '../components/OAuth';

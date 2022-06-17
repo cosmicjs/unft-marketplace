@@ -10,33 +10,34 @@ import { getAllDataByType } from '../lib/cosmic';
 import styles from "../styles/pages/NotFound.module.sass";
 
 const AboutUs = ({navigationItems, landing}) => {
-  const { navigation } =  useStateContext();
   const { push } = useRouter();
 
   const handleClick = ( href ) => {
     push( href );
   }
 
-  const landingAbout = chooseBySlug( landing,'marketing' );
-  console.log( 'landingAbout',landingAbout );
+  const infoAbout = chooseBySlug( landing,'about' );
 
   return (
-    <Layout navigationPaths={navigationItems[0]?.metadata || navigation }>
+    <Layout navigationPaths={navigationItems[0]?.metadata}>
       <div className={cn("section", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.wrap}>
             <div className={styles.preview}>
               <Image
                 size={{ width: "100%", height: "50vh" }}
-                src="/images/content/figures-dark.png"
-                srcDark="/images/content/figures-dark.png"
+                src={infoAbout?.metadata?.image?.imgix_url}
+                srcDark={infoAbout?.metadata?.image?.imgix_url}
                 alt="Figures"
               />
             </div>
             <h2 className={cn("h2", styles.title)}>
-              Sorry, we couldn’t find any results for this search.
+              {infoAbout?.metadata?.title}
             </h2>
-            <div className={styles.info}>Maybe give one of these a try?</div>
+            <h3 className={styles.info}>{infoAbout?.metadata?.subtitle}</h3>
+            <p className={styles.info}>
+              {infoAbout?.metadata?.description}
+            </p>
               <button
                 onClick={() => handleClick( `/search` )}
                 className={cn( "button-stroke",styles.form )}>
@@ -51,7 +52,7 @@ const AboutUs = ({navigationItems, landing}) => {
 
 export default AboutUs;
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const navigationItems = await getAllDataByType( 'navigation' ) || [];
   const landing = await getAllDataByType('landings')  || [];
 

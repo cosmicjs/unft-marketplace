@@ -21,6 +21,10 @@ const items = [
         title: "Create item",
         url: "/upload-details",
       },
+      {
+        title: "About Us",
+        url: "/about",
+      },
     ],
   },
 ];

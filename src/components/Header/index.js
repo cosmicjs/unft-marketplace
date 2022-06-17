@@ -14,7 +14,7 @@ import styles from "./Header.module.sass";
 
 const Headers = ({navigation}) => {
   const [visibleNav, setVisibleNav] = useState( false );
-  const [visibleAuthModal, setVisibleAuthModal] = useState( false );
+  const [ visibleAuthModal,setVisibleAuthModal ] = useState( false );
 
   const { cosmicUser, setCosmicUser, setAuthToken } = useStateContext();
 

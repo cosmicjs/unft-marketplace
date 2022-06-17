@@ -50,7 +50,6 @@ const settings = {
   };
 
 const Partners = ({info}) => {
-  console.log( 'info',info );
 
   return (
     <section className="section-bg">

@@ -1,7 +1,6 @@
 import React from "react";
 import { useRouter } from 'next/router';
 import cn from "classnames";
-import { useStateContext } from "../utils/context/StateContext";
 import Layout from "../components/Layout";
 import Image from "../components/Image";
 import { getAllDataByType } from '../lib/cosmic';
@@ -9,7 +8,6 @@ import { getAllDataByType } from '../lib/cosmic';
 import styles from "../styles/pages/NotFound.module.sass";
 
 const NotFound = ({navigationItems}) => {
-  const { navigation } =  useStateContext();
   const { push } = useRouter();
 
   const handleClick = ( href ) => {
@@ -17,7 +15,7 @@ const NotFound = ({navigationItems}) => {
   }
 
   return (
-    <Layout navigationPaths={navigationItems[0]?.metadata || navigation }>
+    <Layout navigationPaths={navigationItems[0]?.metadata}>
       <div className={cn("section", styles.section)}>
         <div className={cn("container", styles.container)}>
           <div className={styles.wrap}>
