@@ -18,23 +18,6 @@ const bucket = Cosmic().bucket({
 
 const is404 = ( error ) => /not found/i.test( error?.message )
 
-export async function getAllDataForHome() {
-  const params = {
-    type: 'collections',
-    props: 'title,slug,metadata,created_at,id',
-    sort: '-created_at',
-  }
-
-  try {
-    const data = await bucket.getObjects( params )
-    return data.objects
-  } catch (error) {
-    // Don't throw if an slug doesn't exist
-    if (is404(error)) return
-    throw error
-  }
-}
-
 export async function getDataByCategory(id) {
   const params = {
     query: {
@@ -107,7 +90,7 @@ export async function filterDataByParams( price, color, categories ) {
 
   //TODO need check filter
   if( categories ) {
-    queryParam = { ...queryParam, "metadata.categories.title": categories,}
+    queryParam = { ...queryParam, "metadata.categories": { $in: categories },}
   }
 
   const params = {
