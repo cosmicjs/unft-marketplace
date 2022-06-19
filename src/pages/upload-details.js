@@ -84,50 +84,14 @@ const Upload = ({navigationItems, categoriesType}) => {
     if(authToken && (title && color && count && price && uploadMedia) ) {
       fillFiledMessage && setFillFiledMessage( false );
 
-      await createItem( {
-        title: title,
-        type: "products",
-        slug: "products",
-        thumbnail: uploadMedia['name'],
-        metafields: [
-          {
-            title: "Description",
-            key: "description",
-            type: "textarea",
-            value: description
-          },
-          {
-            title: "Price",
-            key: "price",
-            type: "text",
-            value: price
-          },
-          {
-            title: "Count",
-            key: "count",
-            type: "text",
-            value: count
-          },
-          {
-            title: "Color",
-            key: "color",
-            type: "text",
-            value: color
-          },
-          {
-            title: "Image",
-            key: "image",
-            type: "file",
-            value: uploadMedia['name']
-          },
-          {
-            title: "Categories",
-            key: "categories",
-            type: "objects",
-            value: chooseCategory
-          },
-        ]
-      } );
+      await fetch( `api/create`,{
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({title, description, price, count, color, category: chooseCategory, image: uploadMedia['name'], })
+      });
 
       await setVisibleModal( true );
 
@@ -283,6 +247,10 @@ export default Upload;
 export async function getServerSideProps() {
   const navigationItems = await getAllDataByType( 'navigation' ) || [];
   const categoryTypes = await getAllDataByType( 'categories' ) || [];
+
+  // const landing = await fetch( 'http://localhost:3000/api/type/landings' );
+  // const data = await landing.json()
+  // await console.log( 'landings serverside',  data);
 
     const categoriesType = categoryTypes?.reduce((arr,{ title,id }) => {
       return { ...arr, [id]: title };
