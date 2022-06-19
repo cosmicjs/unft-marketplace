@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import cn from "classnames";
 import AppLink from "../AppLink";
 import Icon from "../Icon";
@@ -6,8 +6,9 @@ import Image from "../Image";
 import User from "./User";
 import Theme from "../Theme";
 import Modal from "../Modal";
-import OAuth from '../OAuth';
+import OAuth from "../OAuth";
 import { useStateContext } from "../../utils/context/StateContext";
+import {getToken} from "../../utils/token";
 
 import styles from "./Header.module.sass";
 
@@ -21,6 +22,19 @@ const Headers = ({navigation}) => {
     (!cosmicUser.hasOwnProperty( 'id') && user?.hasOwnProperty( 'id' )) && setCosmicUser(user);
   }, [cosmicUser, setCosmicUser]);
 
+  useEffect(() => {
+    let unMount = false;
+    const uNFTUser = getToken();
+
+    if(!cosmicUser?.hasOwnProperty( 'id' ) && uNFTUser?.hasOwnProperty( 'id' ) ) {
+      setCosmicUser( uNFTUser );
+    }
+
+    return () => {
+      unMount = true;
+    }
+
+  }, [cosmicUser, setCosmicUser]);
 
   return (
     <>

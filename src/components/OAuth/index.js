@@ -1,15 +1,19 @@
 import React, {useState, useCallback} from "react";
 import cn from "classnames";
 import AppLink from '../AppLink';
+import Loader from '../Loader';
 import registerFields from "../../utils/constants/registerFields";
 import { useStateContext } from "../../utils/context/StateContext";
+import { setToken } from "../../utils/token";
+
 import styles from "./OAuth.module.sass";
 
 const OAuth = ( { className,handleClose,handleOAuth } ) => {
   const { setCosmicUser } = useStateContext();
-  
+
   const [ { email, password }, setFields ] = useState( () => registerFields );
   const [fillFiledMessage, setFillFiledMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = ({ target: { name, value } }) =>
     setFields(prevFields => ({
@@ -20,6 +24,7 @@ const OAuth = ( { className,handleClose,handleOAuth } ) => {
   const submitForm = useCallback( async ( e ) => {
     e.preventDefault();
     fillFiledMessage?.length && setFillFiledMessage( '' );
+    setLoading(true);
 
     if( email, password ) {
       const auth = await fetch( 'api/auth',{
@@ -34,7 +39,13 @@ const OAuth = ( { className,handleClose,handleOAuth } ) => {
       const cosmicUser = await auth.json();
 
       if( cosmicUser?.hasOwnProperty( 'user' ) ) {
-        setCosmicUser( cosmicUser['user'] );
+        setCosmicUser( cosmicUser[ 'user' ] );
+        setToken( {
+          id: cosmicUser[ 'user' ]['id'],
+          first_name: cosmicUser[ 'user' ]['first_name'],
+          avatar_url: cosmicUser[ 'user' ]['avatar_url'],
+        } );
+
         setFillFiledMessage( 'Congrats!' );
         handleOAuth(cosmicUser['user']);
         setFields( registerFields );
@@ -42,10 +53,10 @@ const OAuth = ( { className,handleClose,handleOAuth } ) => {
       } else {
         setFillFiledMessage('Please first register in Cosmic' );
       }
-
     } else {
       setFillFiledMessage( 'Please first all filed' )
     }
+    setLoading(false);
   },[fillFiledMessage?.length, email, password, setCosmicUser, handleOAuth, handleClose] );
 
   return (
@@ -90,7 +101,11 @@ const OAuth = ( { className,handleClose,handleOAuth } ) => {
           />
         </div>
       <div className={styles.btns}>
-        <button type="submit" className={cn("button", styles.button)}>Continue</button>
+          <button type="submit" className={cn( "button",styles.button )}>{
+            loading ?
+            <Loader /> :
+            'Continue'
+          }</button>
         <button onClick={handleClose} className={cn("button-stroke", styles.button)}>Cancel</button>
       </div>
       </form>

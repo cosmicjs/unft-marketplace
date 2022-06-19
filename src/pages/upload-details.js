@@ -47,9 +47,9 @@ const Upload = ({navigationItems, categoriesType}) => {
   const handleUpload = async ( e ) => {
     setUploadFile( e.target.files[ 0 ] );
 
-    authToken ?
+    cosmicUser.hasOwnProperty('id') ?
       handleUploadFile( e.target.files[ 0 ] ) :
-      handleOAuth('upload');
+      handleOAuth();
   };
 
   const handleChange = ({ target: { name, value } }) =>
@@ -74,9 +74,9 @@ const Upload = ({navigationItems, categoriesType}) => {
   const submitForm = useCallback( async ( e ) => {
     e.preventDefault();
 
-    !authToken && handleOAuth();
+    !cosmicUser.hasOwnProperty( 'id') && handleOAuth();
 
-    if(authToken && (title && color && count && price && uploadMedia) ) {
+    if(cosmicUser && (title && color && count && price && uploadMedia) ) {
       fillFiledMessage && setFillFiledMessage( false );
 
       await fetch( 'api/create', {
@@ -93,7 +93,7 @@ const Upload = ({navigationItems, categoriesType}) => {
     } else {
       setFillFiledMessage( true );
     }
-  },[chooseCategory, color, count, description, fillFiledMessage, handleOAuth, price, title, uploadMedia]);
+  },[chooseCategory, color, cosmicUser, count, description, fillFiledMessage, handleOAuth, price, title, uploadMedia]);
 
   return (
       <Layout navigationPaths={navigationItems[0]?.metadata || navigation}>
