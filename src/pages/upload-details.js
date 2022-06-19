@@ -11,14 +11,14 @@ import OAuth from '../components/OAuth';
 import Preview from "../screens/UploadDetails/Preview";
 import Cards from "../screens/UploadDetails/Cards";
 import FolowSteps from "../screens/UploadDetails/FolowSteps";
-import { getAllDataByType, uploadMediaFiles, createItem, getCosmicUser } from "../lib/cosmic";
+import { getAllDataByType, uploadMediaFiles } from "../lib/cosmic";
 import { OPTIONS } from "../utils/constants/appConstants";
 import createFields from "../utils/constants/createFields";
 
 import styles from "../styles/pages/UploadDetails.module.sass";
 
 const Upload = ({navigationItems, categoriesType}) => {
-  const { categories, navigation, authToken, setAuthToken, setCosmicUser } = useStateContext();
+  const { categories, navigation, cosmicUser } = useStateContext();
 
   const [color, setColor] = useState(OPTIONS[0]);
   const [uploadMedia, setUploadMedia] = useState( '' );
@@ -37,17 +37,12 @@ const Upload = ({navigationItems, categoriesType}) => {
     await setUploadMedia( mediaData?.[ 'media' ] );
   };
 
-  const handleOAuth = useCallback(async (token) => {
-    !authToken && setVisibleAuthModal( true );
+  const handleOAuth = useCallback(async (user) => {
+    !cosmicUser.hasOwnProperty('id') && setVisibleAuthModal( true );
 
-    if( !token && !token?.hasOwnProperty( 'token' ) ) return;
-    setAuthToken( token[ 'token' ] );
-
-    const userInfo = await getCosmicUser( token[ 'token' ] );
-    await setCosmicUser( userInfo[ 'user' ] );
-
-    userInfo && await handleUploadFile( uploadFile );
-  }, [authToken, setAuthToken, setCosmicUser, uploadFile]);
+    if( !user && !user?.hasOwnProperty( 'id' ) ) return;
+    user && await handleUploadFile( uploadFile );
+  }, [cosmicUser, uploadFile]);
 
   const handleUpload = async ( e ) => {
     setUploadFile( e.target.files[ 0 ] );
@@ -84,7 +79,7 @@ const Upload = ({navigationItems, categoriesType}) => {
     if(authToken && (title && color && count && price && uploadMedia) ) {
       fillFiledMessage && setFillFiledMessage( false );
 
-      await fetch( `api/create`,{
+      await fetch( 'api/create', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -98,7 +93,7 @@ const Upload = ({navigationItems, categoriesType}) => {
     } else {
       setFillFiledMessage( true );
     }
-  },[authToken, chooseCategory, color, count, description, fillFiledMessage, handleOAuth, price, title, uploadMedia]);
+  },[chooseCategory, color, count, description, fillFiledMessage, handleOAuth, price, title, uploadMedia]);
 
   return (
       <Layout navigationPaths={navigationItems[0]?.metadata || navigation}>
@@ -248,11 +243,7 @@ export async function getServerSideProps() {
   const navigationItems = await getAllDataByType( 'navigation' ) || [];
   const categoryTypes = await getAllDataByType( 'categories' ) || [];
 
-  // const landing = await fetch( 'http://localhost:3000/api/type/landings' );
-  // const data = await landing.json()
-  // await console.log( 'landings serverside',  data);
-
-    const categoriesType = categoryTypes?.reduce((arr,{ title,id }) => {
+  const categoriesType = categoryTypes?.reduce((arr,{ title,id }) => {
       return { ...arr, [id]: title };
     },{} );
 

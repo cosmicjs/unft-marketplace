@@ -2,10 +2,12 @@ import React, {useState, useCallback} from "react";
 import cn from "classnames";
 import AppLink from '../AppLink';
 import registerFields from "../../utils/constants/registerFields";
-import { cosmicAuth } from '../../lib/cosmic';
+import { useStateContext } from "../../utils/context/StateContext";
 import styles from "./OAuth.module.sass";
 
-const OAuth = ( { className, handleClose, handleOAuth } ) => {
+const OAuth = ( { className,handleClose,handleOAuth } ) => {
+  const { setCosmicUser } = useStateContext();
+  
   const [ { email, password }, setFields ] = useState( () => registerFields );
   const [fillFiledMessage, setFillFiledMessage] = useState('');
 
@@ -20,24 +22,31 @@ const OAuth = ( { className, handleClose, handleOAuth } ) => {
     fillFiledMessage?.length && setFillFiledMessage( '' );
 
     if( email, password ) {
-      const token = await cosmicAuth( {
-        email: `${email}`,
-        password: `${password}`,
+      const auth = await fetch( 'api/auth',{
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email, password})
       } );
 
-      if( token?.hasOwnProperty('token') ) {
+      const cosmicUser = await auth.json();
+
+      if( cosmicUser?.hasOwnProperty( 'user' ) ) {
+        setCosmicUser( cosmicUser['user'] );
         setFillFiledMessage( 'Congrats!' );
-        handleOAuth( token );
+        handleOAuth(cosmicUser['user']);
         setFields( registerFields );
         handleClose();
       } else {
-        setFillFiledMessage(token || 'Please first register in Cosmic' );
+        setFillFiledMessage('Please first register in Cosmic' );
       }
 
     } else {
       setFillFiledMessage( 'Please first all filed' )
     }
-  },[ email,password,fillFiledMessage,handleOAuth,handleClose ] );
+  },[fillFiledMessage?.length, email, password, setCosmicUser, handleOAuth, handleClose] );
 
   return (
     <div className={cn( className,styles.transfer )}>

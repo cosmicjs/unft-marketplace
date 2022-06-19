@@ -6,10 +6,9 @@ const Context = createContext();
 export const StateContext = ( { children } ) => {
   const [navigation, setNavigation] = useState([]);
   const [cosmicUser, setCosmicUser] = useState({});
-  const [authToken, setAuthToken] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [ totalQuantities,setTotalQuantities ] = useState( 0 );
+  const [totalQuantities, setTotalQuantities ] = useState( 0 );
   const [categories, setCategories] = useState({
     groups: [],
     types: {},
@@ -70,8 +69,6 @@ export const StateContext = ( { children } ) => {
         onCategoriesChange,
         navigation,
         setNavigation,
-        authToken,
-        setAuthToken,
         cosmicUser,
         setCosmicUser,
       }}

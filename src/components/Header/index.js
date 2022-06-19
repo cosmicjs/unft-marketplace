@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import cn from "classnames";
 import AppLink from "../AppLink";
 import Icon from "../Icon";
@@ -7,23 +7,19 @@ import User from "./User";
 import Theme from "../Theme";
 import Modal from "../Modal";
 import OAuth from '../OAuth';
-import { getCosmicUser } from '../../lib/cosmic';
 import { useStateContext } from "../../utils/context/StateContext";
 
 import styles from "./Header.module.sass";
 
 const Headers = ({navigation}) => {
   const [visibleNav, setVisibleNav] = useState( false );
-  const [ visibleAuthModal,setVisibleAuthModal ] = useState( false );
+  const [visibleAuthModal, setVisibleAuthModal ] = useState( false );
 
-  const { cosmicUser, setCosmicUser, setAuthToken } = useStateContext();
+  const { cosmicUser, setCosmicUser } = useStateContext();
 
-  const handleOAuth = async ( token ) => {
-    if( !token && !token?.hasOwnProperty('token') ) return;
-    const userInfo = await getCosmicUser( token[ 'token' ] );
-    await setCosmicUser( userInfo['user'] );
-    setAuthToken( token[ 'token' ] );
-  };
+  const handleOAuth = useCallback((user) => {
+    (!cosmicUser.hasOwnProperty( 'id') && user?.hasOwnProperty( 'id' )) && setCosmicUser(user);
+  }, [cosmicUser, setCosmicUser]);
 
 
   return (
