@@ -26,6 +26,12 @@
             flex-shrink: 0
             width: 32px
             height: 1px
+    & .active
+        border: 2px solid $blue
+        .plus
+            background: $blue
+            svg
+                opacity: 1
 
 .card
     flex-shrink: 0
@@ -33,6 +39,7 @@
     margin: 0 4px
     padding: 24px
     border-radius: 16px
+    border: 2px solid transparent
     background: $neutrals7
     +button-2
     cursor: pointer
@@ -43,8 +50,9 @@
     +dark
         background: $neutrals2
     &:hover
+        border: 2px solid $neutrals4
         .plus
-            background: $blue
+            background: $neutrals4
             svg
                 opacity: 1
 

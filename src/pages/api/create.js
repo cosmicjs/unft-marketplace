@@ -1,18 +1,10 @@
 import Cosmic from 'cosmicjs';
 
-const BUCKET_SLUG = process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG
-const READ_KEY = process.env.NEXT_PUBLIC_COSMIC_READ_KEY
-
-// Secret environment variables add to the JavaScript bundle, open the next.config.js
-//https://nextjs.org/docs/api-reference/next.config.js/environment-variables
-const WRITE_KEY = process.env.cosmicWriteKey
-
 const bucket = Cosmic().bucket({
-  slug: BUCKET_SLUG,
-  read_key: READ_KEY,
-  write_key: WRITE_KEY,
-})
-
+  slug: process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG,
+  read_key: process.env.NEXT_PUBLIC_COSMIC_READ_KEY,
+  write_key: process.env.COSMIC_WRITE_KEY,
+} )
 export default async function createHandler({body: {title, description, price, count, color, image, category,}}, res) {
 
   const createItem = {

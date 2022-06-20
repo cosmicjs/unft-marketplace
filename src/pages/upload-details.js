@@ -32,9 +32,18 @@ const Upload = ({navigationItems, categoriesType}) => {
 
   const [ visiblePreview,setVisiblePreview ] = useState( false );
 
-  const handleUploadFile = async (uploadFile) => {
+  const handleUploadFile = async ( uploadFile ) => {
     const mediaData = await uploadMediaFiles(uploadFile);
     await setUploadMedia( mediaData?.[ 'media' ] );
+    
+    // const formData = new FormData();
+    // formData.append( "image", uploadFile );
+
+    // const mediaData = await fetch( 'api/upload',{
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'multipart/form-data', },
+    //   body: formData,
+    // } );
   };
 
   const handleOAuth = useCallback(async (user) => {
@@ -194,7 +203,7 @@ const Upload = ({navigationItems, categoriesType}) => {
                   <div className={styles.text}>
                     Choose an exiting Categories
                   </div>
-                  <Cards className={styles.cards} handleChoose={handleChooseCategory} items={categoriesType || categories['type']} />
+                  <Cards className={styles.cards} category={chooseCategory} handleChoose={handleChooseCategory} items={categoriesType || categories['type']} />
                 </div>
                 <div className={styles.foot}>
                   <button

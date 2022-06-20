@@ -1,18 +1,13 @@
 import Cosmic from 'cosmicjs';
-import { OPTIONS, MIN } from '../utils/constants/appConstants';
-
-const CosmicAuth = require("cosmicjs")();
-
-const BUCKET_SLUG = process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG
-const READ_KEY = process.env.NEXT_PUBLIC_COSMIC_READ_KEY
+import { OPTIONS,MIN } from '../utils/constants/appConstants';
 
 // Secret environment variables add to the JavaScript bundle, open the next.config.js
 //https://nextjs.org/docs/api-reference/next.config.js/environment-variables
 const WRITE_KEY = process.env.cosmicWriteKey
 
 const bucket = Cosmic().bucket({
-  slug: BUCKET_SLUG,
-  read_key: READ_KEY,
+  slug: process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG,
+  read_key: process.env.NEXT_PUBLIC_COSMIC_READ_KEY,
   write_key: WRITE_KEY,
 })
 
@@ -143,36 +138,4 @@ export async function uploadMediaFiles(file) {
   }
 }
 
-export async function createItem(fields) {
-  try {
-    const data = await bucket.addObject(fields)
-    return data
-  } catch (error) {
-    // Don't throw if an slug doesn't exist
-    if (is404(error)) return
-    throw error
-  }
-}
 
-export async function cosmicAuth(fields) {
-  try {
-    const data = await CosmicAuth.authenticate(fields);
-    return data
-  } catch( error ) {
-    return error[ 'message' ];
-  }
-}
-
-export async function getCosmicUser(token) {
-  try {
-    const data = await fetch( 'https://api.cosmicjs.com/v2/user',{
-      method: 'GET',
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    } );
-    return data.json();
-  } catch( error ) {
-    return error[ 'message' ];
-  }
-}
