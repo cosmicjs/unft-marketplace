@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from "react";
+import React, {useState, useCallback, useEffect, useRef} from "react";
 import cn from "classnames";
 import AppLink from '../AppLink';
 import Loader from '../Loader';
@@ -14,6 +14,14 @@ const OAuth = ( { className,handleClose,handleOAuth } ) => {
   const [ { email, password }, setFields ] = useState( () => registerFields );
   const [fillFiledMessage, setFillFiledMessage] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const inputElement = useRef( null );
+
+  useEffect(() => {
+    if (inputElement.current) {
+      inputElement.current.focus();
+    }
+  }, []);
 
   const handleChange = ({ target: { name, value } }) =>
     setFields(prevFields => ({
@@ -80,6 +88,7 @@ const OAuth = ( { className,handleClose,handleOAuth } ) => {
       <form className={styles.form} action="submit" onSubmit={submitForm}>
         <div className={styles.field}>
           <input
+            ref={inputElement}
             className={styles.input}
             type="email"
             name="email"

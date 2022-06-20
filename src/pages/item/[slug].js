@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import cn from "classnames";
 import toast from 'react-hot-toast';
 import { useStateContext } from '../../utils/context/StateContext';
@@ -6,6 +6,8 @@ import Layout from "../../components/Layout";
 import HotBid from "../../components/HotBid";
 import Discover from "../../screens/Home/Discover";
 import Dropdown from "../../components/Dropdown";
+import Modal from "../../components/Modal";
+import OAuth from "../../components/OAuth";
 import Image from "../../components/Image";
 import { getDataBySlug, getAllDataByType, getDataByCategory } from '../../lib/cosmic';
 import getStripe from '../../lib/getStripe';
@@ -13,18 +15,27 @@ import getStripe from '../../lib/getStripe';
 import styles from "../../styles/pages/Item.module.sass";
 
 const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
-  const { onAdd, cartItems } =  useStateContext();
+  const { onAdd, cartItems, cosmicUser } =  useStateContext();
 
   const [ activeIndex, setActiveIndex ] = useState( 0 );
   const [ checkItems, setCheckItems ] = useState( false );
+  const [visibleAuthModal, setVisibleAuthModal] = useState( false );
 
   const counts = itemInfo?.[0]?.metadata?.count ? Array( itemInfo[ 0 ]?.metadata?.count ).fill(1).map( ( _,index ) => index + 1 ) : ['Not Available'];
   const [ option, setOption ] = useState( counts[0] );
 
   const handleAddToCart =() => {
     checkItems && setCheckItems( false );
-    onAdd( itemInfo[0], option )
+    cosmicUser?.hasOwnProperty( 'id' ) ?
+      onAdd( itemInfo[ 0 ],option ) :
+      handleOAuth();
   };
+
+    const handleOAuth = useCallback(async (user) => {
+    !cosmicUser.hasOwnProperty('id') && setVisibleAuthModal( true );
+
+    if( !user && !user?.hasOwnProperty( 'id' ) ) return;
+  }, [cosmicUser]);
 
   const handleCheckout = async () => {
     if( !cartItems.length ) {
@@ -80,7 +91,7 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
                 <div className={cn("status-stroke-green", styles.price)}>
                   {`$${itemInfo[0]?.metadata?.price}`}
                 </div>
-                <div className={styles.counter}>{itemInfo[0]?.metadata?.count} in stock</div>
+              <div className={styles.counter}>{itemInfo[ 0 ]?.metadata?.count ? `${itemInfo[ 0 ]?.metadata?.count} in stock` : 'Not Available'}</div>
               </div>
               <div className={styles.info}>
                 {itemInfo[0]?.metadata?.description}
@@ -131,6 +142,9 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
           <HotBid classSection="section" info={categoriesGroup['groups'][ 0 ]} />
           <Discover info={categoriesGroup['groups']} type={categoriesGroup['type']}/>
         </div>
+        <Modal visible={visibleAuthModal} onClose={() => setVisibleAuthModal(false)}>
+          <OAuth className={styles.steps} handleOAuth={handleOAuth} handleClose={() => setVisibleAuthModal(false)} />
+        </Modal>
       </Layout>
   );
 };

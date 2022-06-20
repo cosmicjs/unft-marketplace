@@ -1,4 +1,4 @@
-import React,{ useState, useCallback } from "react";
+import React,{ useState, useCallback, useEffect } from "react";
 import cn from "classnames";
 import { useStateContext } from "../utils/context/StateContext";
 import Layout from "../components/Layout";
@@ -32,6 +32,18 @@ const Upload = ({navigationItems, categoriesType}) => {
 
   const [ visiblePreview,setVisiblePreview ] = useState( false );
 
+  useEffect(() => {
+    let isMounted = true;
+
+    if(isMounted && !cosmicUser?.hasOwnProperty('id')) {
+      setVisibleAuthModal( true );
+    }
+
+    return () => {
+      isMounted=false;
+    }
+  }, [cosmicUser]);
+
   const handleUploadFile = async ( uploadFile ) => {
     const mediaData = await uploadMediaFiles(uploadFile);
     await setUploadMedia( mediaData?.[ 'media' ] );
@@ -56,7 +68,7 @@ const Upload = ({navigationItems, categoriesType}) => {
   const handleUpload = async ( e ) => {
     setUploadFile( e.target.files[ 0 ] );
 
-    cosmicUser.hasOwnProperty('id') ?
+    cosmicUser?.hasOwnProperty('id') ?
       handleUploadFile( e.target.files[ 0 ] ) :
       handleOAuth();
   };
