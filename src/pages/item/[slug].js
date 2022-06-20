@@ -18,7 +18,7 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
   const [ activeIndex, setActiveIndex ] = useState( 0 );
   const [ checkItems, setCheckItems ] = useState( false );
 
-  const counts = itemInfo?.[0]?.metadata?.count ? Array( itemInfo[ 0 ]?.metadata?.count ).fill(1).map( ( _,index ) => index + 1 ) : 1;
+  const counts = itemInfo?.[0]?.metadata?.count ? Array( itemInfo[ 0 ]?.metadata?.count ).fill(1).map( ( _,index ) => index + 1 ) : ['Not Available'];
   const [ option, setOption ] = useState( counts[0] );
 
   const handleAddToCart =() => {
