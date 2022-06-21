@@ -25,7 +25,7 @@ const Layout = ({ children, title, navigationPaths }) => {
     <>
       <Head>
         <meta charSet="utf-8" />
-        <meta name="Description" CONTENT="uNFT Marketplace with Cosmic CMS React Next.js Stripe" />
+        <meta name="Description" content="uNFT Marketplace with Cosmic CMS React Next.js Stripe" />
         <link rel="icon" href="/favicon.ico" />
         <title>{title || 'Marketplace'}</title>
       </Head>

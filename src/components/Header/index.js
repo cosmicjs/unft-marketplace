@@ -23,15 +23,15 @@ const Headers = ({navigation}) => {
   }, [cosmicUser, setCosmicUser]);
 
   useEffect(() => {
-    let unMount = false;
+    let isMounted = true;
     const uNFTUser = getToken();
 
-    if(!cosmicUser?.hasOwnProperty( 'id' ) && uNFTUser?.hasOwnProperty( 'id' ) ) {
+    if(isMounted && !cosmicUser?.hasOwnProperty( 'id' ) && uNFTUser?.hasOwnProperty( 'id' ) ) {
       setCosmicUser( uNFTUser );
     }
 
     return () => {
-      unMount = true;
+      isMounted = false;
     }
 
   }, [cosmicUser, setCosmicUser]);

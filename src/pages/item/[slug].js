@@ -18,17 +18,18 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
   const { onAdd, cartItems, cosmicUser } =  useStateContext();
 
   const [ activeIndex, setActiveIndex ] = useState( 0 );
-  const [ checkItems, setCheckItems ] = useState( false );
   const [visibleAuthModal, setVisibleAuthModal] = useState( false );
 
   const counts = itemInfo?.[0]?.metadata?.count ? Array( itemInfo[ 0 ]?.metadata?.count ).fill(1).map( ( _,index ) => index + 1 ) : ['Not Available'];
   const [ option, setOption ] = useState( counts[0] );
 
   const handleAddToCart =() => {
-    checkItems && setCheckItems( false );
-    cosmicUser?.hasOwnProperty( 'id' ) ?
-      onAdd( itemInfo[ 0 ],option ) :
+    if(cosmicUser?.hasOwnProperty( 'id' )) {
+      onAdd( itemInfo[ 0 ], option );
+      handleCheckout();
+    } else {
       handleOAuth();
+    }
   };
 
     const handleOAuth = useCallback(async (user) => {
@@ -38,11 +39,6 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
   }, [cosmicUser]);
 
   const handleCheckout = async () => {
-    if( !cartItems.length ) {
-      return setCheckItems( true );
-    }
-    checkItems && setCheckItems(false);
-
     const stripe = await getStripe();
 
     const response = await fetch('/api/stripe', {
@@ -121,21 +117,12 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
               </div>
               <div className={styles.btns}>
                 <button
-                  className={cn( "button-stroke",styles.button )}
+                  className={cn( "button",styles.button )}
                   onClick={handleAddToCart}
                 >
                   Add to Cart
                 </button>
-                <button
-                  className={cn( "button",styles.button )}
-                  onClick={handleCheckout}
-                >
-                  Buy Now
-                </button>
-              </div>
-              {checkItems && <p className={styles.checking}>
-                  Please add to card before buying
-                </p> }
+                </div>
               </div>
             </div>
           </div>

@@ -71,40 +71,6 @@ export async function getSearchDataWith(title) {
     throw error
   }
 }
-
-export async function filterDataByParams( price, color, categories ) {
-  let queryParam = {};
-
-  if( price > MIN ) {
-    queryParam = { ...queryParam, "metadata.price": { "$lte": price },}
-  }
-
-  if( OPTIONS[0]?.toLocaleLowerCase() !== color?.toLocaleLowerCase() ) {
-    queryParam = { ...queryParam, "metadata.color": color,}
-  }
-
-  //TODO need check filter
-  if( categories ) {
-    queryParam = { ...queryParam, "metadata.categories": { $in: categories },}
-  }
-
-  const params = {
-    query: {
-      ...queryParam,
-      type: 'products',
-    },
-    props: 'title,slug,metadata,created_at',
-  }
-
-  try {
-    const data = await bucket.getObjects(params)
-    return data.objects
-  } catch (error) {
-    // Don't throw if an slug doesn't exist
-    if (is404(error)) return
-    throw error
-  }
-}
 export async function getDataBySlug(slug) {
   const params = {
     query: {
@@ -125,7 +91,9 @@ export async function getDataBySlug(slug) {
   }
 }
 
-export async function uploadMediaFiles(file) {
+export async function uploadMediaFiles( file ) {
+  console.log( 'FILE COSMIC',file );
+
   try {
     if( file ) {
       const data = await bucket?.addMedia({media: file})

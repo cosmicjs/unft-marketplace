@@ -42,15 +42,17 @@ const Search = ({categoriesGroup, navigationItems}) => {
 
   const getDataByFilterPrice = useCallback( async ( value ) => {
     setRangeValues( value );
-    const rangeParams = await filterDataByParams( value[0], option );
-    await setSearchResult( rangeParams );
-  },[option] );
+    const result = await fetch(`api/search?price=${value[0]}&color=${option}&categories=${activeIndex}`);
+    const rangeParams = await result.json();
+    await setSearchResult( rangeParams['objects'] );
+  },[option, activeIndex] );
 
   const getDataByFilterOptions = useCallback( async ( color ) => {
-      setOption( color );
-      const optionsParams = await filterDataByParams(rangeValues[0], color);
-      await setSearchResult( optionsParams );
-  },[rangeValues] );
+    setOption( color );
+    const result = await fetch(`api/search?price=${rangeValues[0]}&color=${color}&categories=${activeIndex}`)
+    const optionsParams = await result.json();
+    await setSearchResult( optionsParams['objects'] );
+  },[rangeValues, activeIndex] );
 
   const handleReset = () => {
     setRangeValues([MIN]);
@@ -58,16 +60,19 @@ const Search = ({categoriesGroup, navigationItems}) => {
   }
 
   const getDataBySearch = useCallback( async ( search ) => {
-    handleReset();
-
+      handleReset();
       const searchResult = await getSearchDataWith(search);
       await setSearchResult( searchResult );
     }, []);
 
-  const handleCategoryChange = async ( index ) => {
+  const handleCategoryChange = useCallback(async ( index ) => {
     setActiveIndex( index );
-    setSearchResult( filterByType(categoriesGroupsData, activeIndex) );
-  }
+    setSearchResult( filterByType( categoriesGroupsData,activeIndex ) );
+    
+    // const result = await fetch(`api/search?price=${rangeValues[0]}&color=${option}&categories=${index}`)
+    // const optionsParams = await result.json();
+    // await setSearchResult( optionsParams['objects'] );
+  }, [activeIndex, categoriesGroupsData]);
 
   const handleSubmit = ( e ) => {
     e.preventDefault();

@@ -14,6 +14,7 @@ import FolowSteps from "../screens/UploadDetails/FolowSteps";
 import { getAllDataByType, uploadMediaFiles } from "../lib/cosmic";
 import { OPTIONS } from "../utils/constants/appConstants";
 import createFields from "../utils/constants/createFields";
+import { getToken } from "../utils/token";
 
 import styles from "../styles/pages/UploadDetails.module.sass";
 
@@ -34,8 +35,9 @@ const Upload = ({navigationItems, categoriesType}) => {
 
   useEffect(() => {
     let isMounted = true;
+    const uNFTUser = getToken();
 
-    if(isMounted && !cosmicUser?.hasOwnProperty('id')) {
+    if(isMounted && !cosmicUser?.hasOwnProperty('id') && !uNFTUser?.hasOwnProperty( 'id' )) {
       setVisibleAuthModal( true );
     }
 
@@ -45,17 +47,19 @@ const Upload = ({navigationItems, categoriesType}) => {
   }, [cosmicUser]);
 
   const handleUploadFile = async ( uploadFile ) => {
-    const mediaData = await uploadMediaFiles(uploadFile);
-    await setUploadMedia( mediaData?.[ 'media' ] );
-    
-    // const formData = new FormData();
-    // formData.append( "image", uploadFile );
+    // const mediaData = await uploadMediaFiles(uploadFile);
 
-    // const mediaData = await fetch( 'api/upload',{
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'multipart/form-data', },
-    //   body: formData,
-    // } );
+    const formData = new FormData();
+    formData.append( 'files', uploadFile );
+
+    const upladResult = await fetch( 'api/upload',{
+      method: 'POST',
+      body: formData,
+    } );
+
+    const mediaData = upladResult.json();
+    
+    await setUploadMedia( mediaData?.[ 'media' ] );
   };
 
   const handleOAuth = useCallback(async (user) => {
