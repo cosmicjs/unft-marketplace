@@ -92,7 +92,6 @@ export async function getDataBySlug(slug) {
 }
 
 export async function uploadMediaFiles( file ) {
-  console.log( 'FILE COSMIC',file );
 
   try {
     if( file ) {

@@ -16,9 +16,7 @@ export const config = {
 };
 
 export default async function uploadHandler( req,res ) {
-  console.log( 'file upload API',req.body );
-
-   const form = new formidable.IncomingForm({ multiple: false });
+  const form = new formidable.IncomingForm({ multiple: false });
   
   try {
     form.parse( req, async ( err, fields, files ) => {
@@ -33,10 +31,7 @@ export default async function uploadHandler( req,res ) {
           webkitRelativePath: "",
         };
 
-        // const formData = new FormData();
-        // formData.append( 'media', file );
-
-        const data = await bucket?.addMedia( { media: formData } )
+        const data = await bucket?.addMedia( { media: files['files'] } )
         console.log( 'MEDIA data', data );
         res.status( 200 ).json(data)
       } else {

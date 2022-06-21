@@ -11,7 +11,7 @@ export default async function authHandler( req,res ) {
   let queryParam = {};
 
   if( price > 1 ) {
-    queryParam = { ...queryParam, "metadata.price": { "$lte": price },}
+    queryParam = { ...queryParam, "metadata.price": { "$lte": Number(price) },}
   }
 
   if(color?.toLocaleLowerCase() !== "colors") {
@@ -19,7 +19,7 @@ export default async function authHandler( req,res ) {
   }
 
   if( categories ) {
-    queryParam = { ...queryParam, "metadata.categories": { $in: categories },}
+    queryParam = { ...queryParam, "metadata.categories": categories,}
   }
 
 
@@ -32,9 +32,21 @@ export default async function authHandler( req,res ) {
   }
 
   try {
+    console.log(params)
     const data = await bucket.getObjects(params)
     res.status( 200 ).json(data);
   } catch (error) {
     res.status(404).json(error.message)
   }
 }
+
+
+
+
+
+
+
+
+
+
+

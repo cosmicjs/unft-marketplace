@@ -17,19 +17,16 @@ import styles from "../../styles/pages/Item.module.sass";
 const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
   const { onAdd, cartItems, cosmicUser } =  useStateContext();
 
-  const [ activeIndex, setActiveIndex ] = useState( 0 );
+  const [activeIndex, setActiveIndex] = useState( 0 );
   const [visibleAuthModal, setVisibleAuthModal] = useState( false );
 
   const counts = itemInfo?.[0]?.metadata?.count ? Array( itemInfo[ 0 ]?.metadata?.count ).fill(1).map( ( _,index ) => index + 1 ) : ['Not Available'];
   const [ option, setOption ] = useState( counts[0] );
 
   const handleAddToCart =() => {
-    if(cosmicUser?.hasOwnProperty( 'id' )) {
-      onAdd( itemInfo[ 0 ], option );
-      handleCheckout();
-    } else {
+    cosmicUser?.hasOwnProperty( 'id' ) ?
+      handleCheckout() :
       handleOAuth();
-    }
   };
 
     const handleOAuth = useCallback(async (user) => {
@@ -39,24 +36,28 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
   }, [cosmicUser]);
 
   const handleCheckout = async () => {
-    const stripe = await getStripe();
+    const addCart = await onAdd( itemInfo[0], option );
 
-    const response = await fetch('/api/stripe', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(cartItems),
-    } );
+    if( addCart?.length ) {
+      const stripe = await getStripe();
 
-    if( response.statusCode === 500 ) return;
+      const response = await fetch('/api/stripe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(addCart),
+      } );
 
-    const data = await response.json();
-    toast.loading( 'Redirecting...', {
-        position: "bottom-right"
-    } );
+      if( response.statusCode === 500 ) return;
 
-    stripe.redirectToCheckout({sessionId: data.id})
+      const data = await response.json();
+      toast.loading( 'Redirecting...', {
+          position: "bottom-right"
+      } );
+
+      stripe.redirectToCheckout( { sessionId: data.id } )
+    }
   }
 
   return (
@@ -87,7 +88,7 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
                 <div className={cn("status-stroke-green", styles.price)}>
                   {`$${itemInfo[0]?.metadata?.price}`}
                 </div>
-              <div className={styles.counter}>{itemInfo[ 0 ]?.metadata?.count ? `${itemInfo[ 0 ]?.metadata?.count} in stock` : 'Not Available'}</div>
+              <div className={styles.counter}>{itemInfo[ 0 ]?.metadata?.count ? `${itemInfo[ 0 ]?.metadata?.count} in stock` : 'Not Aviable yet'}</div>
               </div>
               <div className={styles.info}>
                 {itemInfo[0]?.metadata?.description}
@@ -118,11 +119,11 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
               <div className={styles.btns}>
                 <button
                   className={cn( "button",styles.button )}
-                  onClick={handleAddToCart}
+                  onClick={handleCheckout}
                 >
-                  Add to Cart
+                  Buy Now
                 </button>
-                </div>
+              </div>
               </div>
             </div>
           </div>
