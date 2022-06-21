@@ -68,10 +68,6 @@ const Search = ({categoriesGroup, navigationItems}) => {
   const handleCategoryChange = useCallback(async ( index ) => {
     setActiveIndex( index );
     setSearchResult( filterByType( categoriesGroupsData,activeIndex ) );
-    
-    // const result = await fetch(`api/search?price=${rangeValues[0]}&color=${option}&categories=${index}`)
-    // const optionsParams = await result.json();
-    // await setSearchResult( optionsParams['objects'] );
   }, [activeIndex, categoriesGroupsData]);
 
   const handleSubmit = ( e ) => {

@@ -25,8 +25,8 @@ const Group = ({ className, item }) => {
               <p className={styles.link}>{x.title}</p>
             </AppLink>
           ) : (
-            <AppLink href={x.url || '/'} key={index}>
-              <p className={styles.link}>{x.title}</p>
+            <AppLink className={styles.link} href={x.url || '/'} key={index}>
+              <p>{x.title}</p>
             </AppLink>
           )
         )}
