@@ -11,7 +11,7 @@ import OAuth from '../components/OAuth';
 import Preview from "../screens/UploadDetails/Preview";
 import Cards from "../screens/UploadDetails/Cards";
 import FolowSteps from "../screens/UploadDetails/FolowSteps";
-import { getAllDataByType, uploadMediaFiles } from "../lib/cosmic";
+import { getAllDataByType } from "../lib/cosmic";
 import { OPTIONS } from "../utils/constants/appConstants";
 import createFields from "../utils/constants/createFields";
 import { getToken } from "../utils/token";
@@ -47,18 +47,15 @@ const Upload = ({navigationItems, categoriesType}) => {
   }, [cosmicUser]);
 
   const handleUploadFile = async ( uploadFile ) => {
-    // const mediaData = await uploadMediaFiles(uploadFile);
-
     const formData = new FormData();
-    formData.append( 'files', uploadFile );
+    formData.append( 'file', uploadFile );
 
     const upladResult = await fetch( 'api/upload',{
       method: 'POST',
       body: formData,
     } );
 
-    const mediaData = upladResult.json();
-    
+    const mediaData = await upladResult.json();
     await setUploadMedia( mediaData?.[ 'media' ] );
   };
 

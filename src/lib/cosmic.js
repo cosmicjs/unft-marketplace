@@ -1,14 +1,8 @@
 import Cosmic from 'cosmicjs';
-import { OPTIONS,MIN } from '../utils/constants/appConstants';
-
-// Secret environment variables add to the JavaScript bundle, open the next.config.js
-//https://nextjs.org/docs/api-reference/next.config.js/environment-variables
-const WRITE_KEY = process.env.cosmicWriteKey
 
 const bucket = Cosmic().bucket({
   slug: process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG,
   read_key: process.env.NEXT_PUBLIC_COSMIC_READ_KEY,
-  write_key: WRITE_KEY,
 })
 
 const is404 = ( error ) => /not found/i.test( error?.message )
@@ -84,20 +78,6 @@ export async function getDataBySlug(slug) {
   try {
     const data = await bucket.getObjects( params )
     return data.objects
-  } catch (error) {
-    // Don't throw if an slug doesn't exist
-    if (is404(error)) return
-    throw error
-  }
-}
-
-export async function uploadMediaFiles( file ) {
-
-  try {
-    if( file ) {
-      const data = await bucket?.addMedia({media: file})
-      return data
-    }
   } catch (error) {
     // Don't throw if an slug doesn't exist
     if (is404(error)) return

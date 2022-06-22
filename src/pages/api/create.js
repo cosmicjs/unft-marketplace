@@ -4,7 +4,8 @@ const bucket = Cosmic().bucket({
   slug: process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG,
   read_key: process.env.NEXT_PUBLIC_COSMIC_READ_KEY,
   write_key: process.env.COSMIC_WRITE_KEY,
-} )
+});
+
 export default async function createHandler({body: {title, description, price, count, color, image, category,}}, res) {
 
   const createItem = {
