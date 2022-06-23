@@ -17,10 +17,10 @@ import styles from "../../styles/pages/Item.module.sass";
 const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
   const { onAdd, cartItems, cosmicUser } =  useStateContext();
 
-  const [activeIndex, setActiveIndex] = useState( 0 );
-  const [visibleAuthModal, setVisibleAuthModal] = useState( false );
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [visibleAuthModal, setVisibleAuthModal] = useState(false);
 
-  const counts = itemInfo?.[0]?.metadata?.count ? Array( itemInfo[ 0 ]?.metadata?.count ).fill(1).map( ( _,index ) => index + 1 ) : ['Not Available'];
+  const counts = itemInfo?.[0]?.metadata?.count ? Array(itemInfo[ 0 ]?.metadata?.count ).fill(1).map( ( _,index ) => index + 1 ) : ['Not Available'];
   const [ option, setOption ] = useState( counts[0] );
 
   const handleAddToCart =() => {
@@ -119,7 +119,7 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
               <div className={styles.btns}>
                 <button
                   className={cn( "button",styles.button )}
-                  onClick={handleCheckout}
+                  onClick={handleAddToCart}
                 >
                   Buy Now
                 </button>

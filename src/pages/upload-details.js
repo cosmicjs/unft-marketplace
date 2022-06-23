@@ -1,5 +1,7 @@
 import React,{ useState, useCallback, useEffect } from "react";
 import cn from "classnames";
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 import { useStateContext } from "../utils/context/StateContext";
 import Layout from "../components/Layout";
 import Dropdown from "../components/Dropdown";
@@ -10,7 +12,6 @@ import Modal from "../components/Modal";
 import OAuth from '../components/OAuth';
 import Preview from "../screens/UploadDetails/Preview";
 import Cards from "../screens/UploadDetails/Cards";
-import FolowSteps from "../screens/UploadDetails/FolowSteps";
 import { getAllDataByType } from "../lib/cosmic";
 import { OPTIONS } from "../utils/constants/appConstants";
 import createFields from "../utils/constants/createFields";
@@ -20,15 +21,15 @@ import styles from "../styles/pages/UploadDetails.module.sass";
 
 const Upload = ({navigationItems, categoriesType}) => {
   const { categories, navigation, cosmicUser } = useStateContext();
+  const {push} = useRouter();
 
-  const [color, setColor] = useState(OPTIONS[0]);
+  const [color, setColor] = useState(OPTIONS[1]);
   const [uploadMedia, setUploadMedia] = useState( '' );
   const [uploadFile, setUploadFile] = useState( '' );
   const [chooseCategory, setChooseCategory ] = useState( '' );
   const [fillFiledMessage, setFillFiledMessage] = useState(false);
   const [{ title, count, description, price  }, setFields] = useState(() => createFields);
 
-  const [visibleModal, setVisibleModal] = useState(false);
   const [visibleAuthModal, setVisibleAuthModal] = useState( false );
 
   const [ visiblePreview,setVisiblePreview ] = useState( false );
@@ -95,27 +96,34 @@ const Upload = ({navigationItems, categoriesType}) => {
 
   const submitForm = useCallback( async ( e ) => {
     e.preventDefault();
-
     !cosmicUser.hasOwnProperty( 'id') && handleOAuth();
 
     if(cosmicUser && (title && color && count && price && uploadMedia) ) {
       fillFiledMessage && setFillFiledMessage( false );
 
-      await fetch( 'api/create', {
+      const response = await fetch( 'api/create', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({title, description, price, count, color, category: chooseCategory, image: uploadMedia['name'], })
-      });
+      } );
 
-      await setVisibleModal( true );
+      const createdItem = await response.json()
+
+      if(createdItem['object']) {
+        toast.success( `Successfully created ${createdItem[ 'object' ]['title']} item`,{
+          position: "bottom-right"
+        } );
+
+        push(`item/${createdItem['object']['slug']}`)
+      }
 
     } else {
       setFillFiledMessage( true );
     }
-  },[chooseCategory, color, cosmicUser, count, description, fillFiledMessage, handleOAuth, price, title, uploadMedia]);
+  },[chooseCategory, color, cosmicUser, count, description, fillFiledMessage, handleOAuth, price, push, title, uploadMedia]);
 
   return (
       <Layout navigationPaths={navigationItems[0]?.metadata || navigation}>
@@ -249,9 +257,6 @@ const Upload = ({navigationItems, categoriesType}) => {
             />
           </div>
         </div>
-        <Modal visible={visibleModal} onClose={() => setVisibleModal(false)}>
-          <FolowSteps className={styles.steps} />
-        </Modal>
         <Modal visible={visibleAuthModal} onClose={() => setVisibleAuthModal(false)}>
           <OAuth className={styles.steps} handleOAuth={handleOAuth} handleClose={() => setVisibleAuthModal(false)} />
         </Modal>
