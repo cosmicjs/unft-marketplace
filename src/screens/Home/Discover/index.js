@@ -2,14 +2,13 @@ import React, { useState, useCallback } from "react";
 import cn from "classnames";
 import { useRouter } from 'next/router';
 import styles from "./Discover.module.sass";
-import { Range, getTrackBackground } from "react-range";
 import Slider from "react-slick";
 import Icon from "../../../components/Icon";
 import Card from "../../../components/Card";
 import Dropdown from "../../../components/Dropdown";
-import { filterDataByParams } from "../../../lib/cosmic";
-import { filterByType } from '../../../utils/filterDataByType';
-import { ACTIVE_INDEX, OPTIONS, MIN, STEP, MAX } from "../../../utils/constants/appConstants";
+import priceRange from "../../../utils/constants/priceRange";
+import { filterByType } from "../../../utils/filterDataByType";
+import { ACTIVE_INDEX, OPTIONS } from "../../../utils/constants/appConstants";
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
   <button aria-label="arrow" aria-hidden="true" {...props}>{children}</button>
@@ -49,7 +48,8 @@ const Discover = ( { info,type } ) => {
   const [activeIndex, setActiveIndex] = useState(type ? Object.entries(type)[0]?.[0] : ACTIVE_INDEX);
   const [option, setOption] = useState( OPTIONS[ 0 ] );
 
-  const [rangeValues, setRangeValues] = useState([MIN]);
+  const [ {min, max}, setRangeValues ] = useState(()=>priceRange);
+  const [ isApplied,setIsApplied ] = useState( false );
   const [visible, setVisible ] = useState( false );
 
   const [ filterResult, setFilterResult ] = useState( filterByType(info, activeIndex));
@@ -63,17 +63,30 @@ const Discover = ( { info,type } ) => {
     setFilterResult( filterByType(info, activeIndex) );
   }
 
-  const getDataByFilterPrice = useCallback( async ( price ) => {
-      setRangeValues( price );
-      const rangeParams = await filterDataByParams(price[0], option);
-      await setFilterResult( rangeParams );
-  },[option] );
+  const handleChange = ( { target: { name,value } } ) => {
+    isApplied && setIsApplied(false);
+    setRangeValues( prevFields => ( {
+      ...prevFields,
+      [ name ]: value,
+    } ) )
+  };
+
+  const getDataByFilterPrice = useCallback(async ( ) => {
+    if(min || max) {
+      setIsApplied(true);
+      const result = await fetch(`api/search?min=${min}&max=${max}&color=${option}&categories=${activeIndex}`);
+      const rangeParams = await result.json();
+      await setFilterResult( rangeParams['objects'] );
+      await setIsApplied(false);
+    }
+  },[min, max, option, activeIndex] );
 
   const getDataByFilterOptions = useCallback( async ( color ) => {
       setOption( color );
-      const optionsParams = await filterDataByParams(rangeValues[0], color);
+      const result = await fetch(`api/search?min=${min}&max=${max}&color=${color}&categories=${activeIndex}`);
+      const optionsParams = await result.json();
       await setFilterResult( optionsParams );
-  },[rangeValues]);
+  },[activeIndex, max, min]);
 
   return (
     <div className={cn("section", styles.section)}>
@@ -128,80 +141,34 @@ const Discover = ( { info,type } ) => {
           <div className={styles.sorting}>
             <div className={styles.cell}>
               <div className={styles.label}>Price range</div>
-              <Range
-                values={rangeValues}
-                step={STEP}
-                min={MIN}
-                max={MAX}
-                onChange={(rangeValues) => getDataByFilterPrice(rangeValues)}
-                renderTrack={({ props, children }) => (
-                  <div
-                    onMouseDown={props.onMouseDown}
-                    onTouchStart={props.onTouchStart}
-                    style={{
-                      ...props.style,
-                      height: "27px",
-                      display: "flex",
-                      width: "100%",
-                    }}
-                  >
-                    <div
-                      ref={props.ref}
-                      style={{
-                        height: "8px",
-                        width: "100%",
-                        borderRadius: "4px",
-                        background: getTrackBackground({
-                          values: rangeValues,
-                          colors: ["#3772FF", "#E6E8EC"],
-                          min: MIN,
-                          max: MAX,
-                        }),
-                        alignSelf: "center",
-                      }}
-                    >
-                      {children}
-                    </div>
-                  </div>
-                )}
-                renderThumb={({ props, isDragged }) => (
-                  <div
-                    {...props}
-                    style={{
-                      ...props.style,
-                      height: "24px",
-                      width: "24px",
-                      borderRadius: "50%",
-                      backgroundColor: "#3772FF",
-                      border: "4px solid #FCFCFD",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "-33px",
-                        color: "#fff",
-                        fontWeight: "600",
-                        fontSize: "14px",
-                        lineHeight: "18px",
-                        fontFamily: "Poppins",
-                        padding: "4px 8px",
-                        borderRadius: "8px",
-                        backgroundColor: "#141416",
-                      }}
-                    >
-                      {rangeValues[0].toFixed(1)}
-                    </div>
-                  </div>
-                )}
-              />
-              <div className={styles.scale}>
-                <div className={styles.number}>$0</div>
-                <div className={styles.number}>$100</div>
-              </div>
+              <div className={styles.prices}>
+                  <input
+                    className={styles.input}
+                    type="text"
+                    value={min}
+                    onChange={handleChange}
+                    name="min"
+                    placeholder="MIN"
+                    required
+                  />
+                  <p className={styles.separator}>to</p>
+                  <input
+                    className={styles.input}
+                    type="text"
+                    value={max}
+                    onChange={handleChange}
+                    name="max"
+                    placeholder="MAX"
+                    required
+                  />
+                </div>
+                <button
+                  disabled={isApplied}
+                  className={cn( isApplied ? "button": "button-stroke", styles.button )}
+                  onClick={getDataByFilterPrice}
+                >
+                  Apply
+                </button>
             </div>
           </div>
         </div>

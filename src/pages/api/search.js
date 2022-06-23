@@ -5,13 +5,13 @@ const bucket = Cosmic().bucket({
   read_key: process.env.NEXT_PUBLIC_COSMIC_READ_KEY,
 } )
 
-export default async function authHandler( req,res ) {
+export default async function searchHandler( req,res ) {
   const { query: {min, max, color, categories} } = req;
 
   let queryParam = {};
 
   if( min || max ) {
-    queryParam = { ...queryParam, "metadata.price": {"$gte": Number(min), "$lte": Number(max) },}
+    queryParam = { ...queryParam, "metadata.price": {"$gte": Number(min || 1), "$lte": Number(max || 100000) },}
   }
 
   if(color?.toLocaleLowerCase() !== "colors") {
@@ -32,7 +32,6 @@ export default async function authHandler( req,res ) {
   }
 
   try {
-    console.log(params)
     const data = await bucket.getObjects(params)
     res.status( 200 ).json(data);
   } catch (error) {

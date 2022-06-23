@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import cn from "classnames";
 import { useRouter } from 'next/router';
-import { Range,getTrackBackground } from "react-range";
 import useDebounce from '../utils/hooks/useDebounce';
 import Layout from "../components/Layout";
 import Icon from "../components/Icon";
@@ -51,7 +50,7 @@ const Search = ({categoriesGroup, navigationItems}) => {
   };
 
   const getDataByFilterPrice = useCallback(async ( ) => {
-    if(min & max) {
+    if(min || max) {
       setIsApplied(true);
       const result = await fetch(`api/search?min=${min}&max=${max}&color=${option}&categories=${activeIndex}`);
       const rangeParams = await result.json();

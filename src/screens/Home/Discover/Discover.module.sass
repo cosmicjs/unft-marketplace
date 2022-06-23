@@ -149,6 +149,18 @@
     +hairline-2
     color: $neutrals5
 
+.prices
+    display: flex
+    align-items: center
+    justify-content: space-between
+    .separator
+        margin: 0 8px
+        font-weight: 600
+
+.button
+    width: 100%
+    margin: 12px auto
+
 .scale
     display: flex
     justify-content: space-between
@@ -186,3 +198,22 @@
     text-align: center
     +m
         display: none
+
+.input
+    width: 100%
+    height: 48px
+    padding: 0 48px 0 14px
+    border-radius: 12px
+    background: none
+    border: 2px solid $neutrals6
+    +poppins
+    +caption-1
+    color: $neutrals2
+    transition: border-color .2s
+    +dark
+        border-color: $neutrals3
+        color: $neutrals8
+    +placeholder
+        color: $neutrals4
+    &:focus
+        border-color: $neutrals4
