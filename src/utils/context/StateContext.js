@@ -6,10 +6,9 @@ const Context = createContext();
 export const StateContext = ( { children } ) => {
   const [navigation, setNavigation] = useState([]);
   const [cosmicUser, setCosmicUser] = useState({});
-  const [authToken, setAuthToken] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [ totalQuantities,setTotalQuantities ] = useState( 0 );
+  const [totalQuantities, setTotalQuantities ] = useState( 0 );
   const [categories, setCategories] = useState({
     groups: [],
     types: {},
@@ -23,7 +22,11 @@ export const StateContext = ( { children } ) => {
     const checkProductInCart = cartItems.find((item) => item._id === product._id);
 
     setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity);
-    setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + quantity);
+    setTotalQuantities( ( prevTotalQuantities ) => prevTotalQuantities + quantity );
+
+    toast.success(`${quantity} of ${product.title} added to the cart.`, {
+        position: "bottom-right"
+    });
 
     if(checkProductInCart) {
       const updatedCartItems = cartItems.map((cartProduct) => {
@@ -33,16 +36,14 @@ export const StateContext = ( { children } ) => {
         }
       })
 
-      setCartItems(updatedCartItems);
+      setCartItems( updatedCartItems );
+      return updatedCartItems;
     } else {
       product.quantity = quantity;
 
-      setCartItems([...cartItems, { ...product }]);
+      setCartItems( [ ...cartItems,{ ...product } ] );
+      return [ ...cartItems,{ ...product } ];
     }
-
-    toast.success(`${quantity} of ${product.title} added to the cart.`, {
-        position: "bottom-right"
-    });
   }
 
   const onRemove = (product) => {
@@ -70,8 +71,6 @@ export const StateContext = ( { children } ) => {
         onCategoriesChange,
         navigation,
         setNavigation,
-        authToken,
-        setAuthToken,
         cosmicUser,
         setCosmicUser,
       }}

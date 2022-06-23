@@ -1,8 +1,6 @@
 import Stripe from 'stripe';
 
-// Secret environment variables add to the JavaScript bundle, open the next.config.js
-//https://nextjs.org/docs/api-reference/next.config.js/environment-variables
-const stripe = new Stripe( process.env.stripeSecretKey );
+const stripe = new Stripe( process.env.STRIPE_SECRET_KEY );
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {

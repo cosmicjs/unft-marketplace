@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import cn from "classnames";
 import { useRouter } from 'next/router';
-import { Range,getTrackBackground } from "react-range";
 import useDebounce from '../utils/hooks/useDebounce';
 import Layout from "../components/Layout";
 import Icon from "../components/Icon";
 import Card from "../components/Card";
 import Dropdown from "../components/Dropdown";
-import { filterDataByParams, getSearchDataWith } from "../lib/cosmic";
+import { getSearchDataWith } from "../lib/cosmic";
 import { useStateContext } from '../utils/context/StateContext';
 import { filterByType } from '../utils/filterDataByType';
+import priceRange from '../utils/constants/priceRange';
 import { getAllDataByType, getDataByCategory } from '../lib/cosmic';
-import { ACTIVE_INDEX, OPTIONS, MIN, STEP, MAX } from "../utils/constants/appConstants";
+import { ACTIVE_INDEX, OPTIONS } from "../utils/constants/appConstants";
 
 import styles from "../styles/pages/Search.module.sass";
 
@@ -29,8 +29,9 @@ const Search = ({categoriesGroup, navigationItems}) => {
 
   const debouncedSearchTerm = useDebounce(search, 600);
 
-  const [ rangeValues, setRangeValues ] = useState( [MIN] );
+  const [ {min, max}, setRangeValues ] = useState(()=>priceRange);
   const [ option, setOption ] = useState( OPTIONS[ 0 ] );
+  const [ isApplied,setIsApplied ] = useState( false );
 
   const searchElement = useRef( null );
 
@@ -38,19 +39,32 @@ const Search = ({categoriesGroup, navigationItems}) => {
     if (searchElement.current) {
       searchElement.current.focus();
     }
-  }, [query]);
+  },[ query ] );
 
-  const getDataByFilterPrice = useCallback( async ( value ) => {
-    setRangeValues( value );
-    const rangeParams = await filterDataByParams( value[0], option );
-    await setSearchResult( rangeParams );
-  },[option] );
+  const handleChange = ( { target: { name,value } } ) => {
+    isApplied && setIsApplied(false);
+    setRangeValues( prevFields => ( {
+      ...prevFields,
+      [ name ]: value,
+    } ) )
+  };
+
+  const getDataByFilterPrice = useCallback(async ( ) => {
+    if(min || max) {
+      setIsApplied(true);
+      const result = await fetch(`api/search?min=${min}&max=${max}&color=${option}&categories=${activeIndex}`);
+      const rangeParams = await result.json();
+      await setSearchResult( rangeParams['objects'] );
+      await setIsApplied(false);
+    }
+  },[min, max, option, activeIndex] );
 
   const getDataByFilterOptions = useCallback( async ( color ) => {
-      setOption( color );
-      const optionsParams = await filterDataByParams(rangeValues[0], color);
-      await setSearchResult( optionsParams );
-  },[rangeValues] );
+    setOption( color );
+    const result = await fetch(`api/search?price=${rangeValues[0]}&color=${color}&categories=${activeIndex}`)
+    const optionsParams = await result.json();
+    await setSearchResult( optionsParams['objects'] );
+  },[activeIndex] );
 
   const handleReset = () => {
     setRangeValues([MIN]);
@@ -58,16 +72,16 @@ const Search = ({categoriesGroup, navigationItems}) => {
   }
 
   const getDataBySearch = useCallback( async ( search ) => {
-    handleReset();
-
+      handleReset();
       const searchResult = await getSearchDataWith(search);
       await setSearchResult( searchResult );
     }, []);
 
-  const handleCategoryChange = async ( index ) => {
+  const handleCategoryChange = useCallback(async ( index ) => {
+    handleReset();
     setActiveIndex( index );
-    setSearchResult( filterByType(categoriesGroupsData, activeIndex) );
-  }
+    setSearchResult( filterByType( categoriesGroupsData,activeIndex ) );
+  }, [activeIndex, categoriesGroupsData]);
 
   const handleSubmit = ( e ) => {
     e.preventDefault();
@@ -141,84 +155,34 @@ const Search = ({categoriesGroup, navigationItems}) => {
             <div className={styles.filters}>
               <div className={styles.range}>
                 <div className={styles.label}>Price range</div>
-                <Range
-                  values={rangeValues}
-                  step={STEP}
-                  min={MIN}
-                  max={MAX}
-                  onChange={(values) => getDataByFilterPrice(values)}
-                  renderTrack={({ props, children }) => (
-                    <div
-                      onMouseDown={props.onMouseDown}
-                      onTouchStart={props.onTouchStart}
-                      style={{
-                        ...props.style,
-                        height: "36px",
-                        display: "flex",
-                        width: "100%",
-                      }}
-                    >
-                      <div
-                        ref={props.ref}
-                        style={{
-                          height: "8px",
-                          width: "100%",
-                          borderRadius: "4px",
-                          background: getTrackBackground({
-                            values: rangeValues,
-                            colors: ["#3772FF", "#E6E8EC"],
-                            min: MIN,
-                            max: MAX,
-                          }),
-                          alignSelf: "center",
-                        }}
-                      >
-                        {children}
-                      </div>
-                    </div>
-                  )}
-                  renderThumb={({ props, isDragged }) => (
-                    <div
-                      {...props}
-                      style={{
-                        ...props.style,
-                        height: "24px",
-                        width: "24px",
-                        borderRadius: "50%",
-                        backgroundColor: "#3772FF",
-                        border: "4px solid #FCFCFD",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "-33px",
-                          color: "#fff",
-                          fontWeight: "600",
-                          fontSize: "14px",
-                          lineHeight: "18px",
-                          fontFamily: "Poppins",
-                          padding: "4px 8px",
-                          borderRadius: "8px",
-                          backgroundColor: "#141416",
-                        }}
-                      >
-                        {rangeValues[0].toFixed(1)}
-                      </div>
-                    </div>
-                  )}
-                />
-                <div className={styles.scale}>
-                  <div className={styles.number}>$1</div>
-                  <div className={styles.number}>$100</div>
+                <div className={styles.prices}>
+                  <input
+                    className={styles.input}
+                    type="text"
+                    value={min}
+                    onChange={handleChange}
+                    name="min"
+                    placeholder="MIN"
+                    required
+                  />
+                  <p className={styles.separator}>to</p>
+                  <input
+                    className={styles.input}
+                    type="text"
+                    value={max}
+                    onChange={handleChange}
+                    name="max"
+                    placeholder="MAX"
+                    required
+                  />
                 </div>
-              </div>
-              <div className={styles.reset} onClick={handleReset}>
-                <Icon name="close-circle-fill" size="24" />
-                <span>Reset filter</span>
+                <button
+                  disabled={isApplied}
+                  className={cn( isApplied ? "button": "button-stroke", styles.button )}
+                  onClick={getDataByFilterPrice}
+                >
+                  Apply
+                </button>
               </div>
             </div>
             <div className={styles.wrapper}>

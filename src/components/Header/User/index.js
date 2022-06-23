@@ -1,21 +1,31 @@
 import React, { useState } from "react";
 import cn from "classnames";
+import { useRouter } from 'next/router';
 import OutsideClickHandler from "react-outside-click-handler";
 import Image from '../../Image';
 import AppLink from '../../AppLink';
 import styles from "./User.module.sass";
 import Icon from "../../Icon";
-import Theme from "../../Theme";
+import { removeToken } from '../../../utils/token';
+import { useStateContext } from "../../../utils/context/StateContext";
 
-const items = [
+const User = ( { className,user } ) => {
+  const { setCosmicUser } = useStateContext();
+  
+  const [visible, setVisible] = useState(false);
+  const {push} = useRouter();
+
+  const items = [
   {
     title: "Disconnect",
     icon: "exit",
+    callback: () => {
+      setCosmicUser({});
+      push('/');
+      removeToken();
+    },
   },
 ];
-
-const User = ({ className, user }) => {
-  const [visible, setVisible] = useState(false);
 
   return (
     <OutsideClickHandler onOutsideClick={() => setVisible(false)}>
@@ -63,7 +73,7 @@ const User = ({ className, user }) => {
                     </AppLink>
                   )
                 ) : (
-                  <div className={styles.item} key={index}>
+                  <div className={styles.item} key={index} onClick={x.callback}>
                     <div className={styles.icon}>
                       <Icon name={x.icon} size="20" />
                     </div>

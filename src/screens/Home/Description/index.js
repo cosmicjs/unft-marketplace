@@ -40,7 +40,7 @@ const Description = ( { info } ) => {
         </div>
         <div className={styles.gallery}>
             <Image
-              size={{width: '100%', height: '100vh'}}
+              size={{width: '100%', height: '100vmin'}}
               className={styles.preview}
               src={info?.metadata?.image?.imgix_url}
               srcDark={info?.metadata?.image?.imgix_url}

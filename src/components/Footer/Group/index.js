@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Link from "next/link";
+import AppLink from "../../AppLink";
 import cn from "classnames";
 import styles from "./Group.module.sass";
 import Icon from "../../Icon";
@@ -16,18 +16,18 @@ const Group = ({ className, item }) => {
       <div className={styles.menu}>
         {item.menu.map((x, index) =>
           x.url.startsWith("http") ? (
-            <Link
+            <AppLink
               href={x.url || '/'}
               target="_blank"
               rel="noopener noreferrer"
               key={index}
             >
               <p className={styles.link}>{x.title}</p>
-            </Link>
+            </AppLink>
           ) : (
-            <Link href={x.url || '/'} key={index}>
-              <p className={styles.link}>{x.title}</p>
-            </Link>
+            <AppLink className={styles.link} href={x.url || '/'} key={index}>
+              <p>{x.title}</p>
+            </AppLink>
           )
         )}
       </div>

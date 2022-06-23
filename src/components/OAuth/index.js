@@ -1,13 +1,27 @@
-import React, {useState, useCallback} from "react";
+import React, {useState, useCallback, useEffect, useRef} from "react";
 import cn from "classnames";
 import AppLink from '../AppLink';
+import Loader from '../Loader';
 import registerFields from "../../utils/constants/registerFields";
-import { cosmicAuth } from '../../lib/cosmic';
+import { useStateContext } from "../../utils/context/StateContext";
+import { setToken } from "../../utils/token";
+
 import styles from "./OAuth.module.sass";
 
-const OAuth = ( { className, handleClose, handleOAuth } ) => {
+const OAuth = ( { className,handleClose,handleOAuth } ) => {
+  const { setCosmicUser } = useStateContext();
+
   const [ { email, password }, setFields ] = useState( () => registerFields );
   const [fillFiledMessage, setFillFiledMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const inputElement = useRef( null );
+
+  useEffect(() => {
+    if (inputElement.current) {
+      inputElement.current.focus();
+    }
+  }, []);
 
   const handleChange = ({ target: { name, value } }) =>
     setFields(prevFields => ({
@@ -18,26 +32,40 @@ const OAuth = ( { className, handleClose, handleOAuth } ) => {
   const submitForm = useCallback( async ( e ) => {
     e.preventDefault();
     fillFiledMessage?.length && setFillFiledMessage( '' );
+    setLoading(true);
 
     if( email, password ) {
-      const token = await cosmicAuth( {
-        email: `${email}`,
-        password: `${password}`,
+      const auth = await fetch( 'api/auth',{
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email, password})
       } );
 
-      if( token?.hasOwnProperty('token') ) {
+      const cosmicUser = await auth.json();
+
+      if( cosmicUser?.hasOwnProperty( 'user' ) ) {
+        setCosmicUser( cosmicUser[ 'user' ] );
+        setToken( {
+          id: cosmicUser[ 'user' ]['id'],
+          first_name: cosmicUser[ 'user' ]['first_name'],
+          avatar_url: cosmicUser[ 'user' ]['avatar_url'],
+        } );
+
         setFillFiledMessage( 'Congrats!' );
-        handleOAuth( token );
+        handleOAuth(cosmicUser['user']);
         setFields( registerFields );
         handleClose();
       } else {
-        setFillFiledMessage(token || 'Please first register in Cosmic' );
+        setFillFiledMessage('Please first register in Cosmic' );
       }
-
     } else {
       setFillFiledMessage( 'Please first all filed' )
     }
-  },[ email,password,fillFiledMessage,handleOAuth,handleClose ] );
+    setLoading(false);
+  },[fillFiledMessage?.length, email, password, setCosmicUser, handleOAuth, handleClose] );
 
   return (
     <div className={cn( className,styles.transfer )}>
@@ -60,6 +88,7 @@ const OAuth = ( { className, handleClose, handleOAuth } ) => {
       <form className={styles.form} action="submit" onSubmit={submitForm}>
         <div className={styles.field}>
           <input
+            ref={inputElement}
             className={styles.input}
             type="email"
             name="email"
@@ -81,7 +110,11 @@ const OAuth = ( { className, handleClose, handleOAuth } ) => {
           />
         </div>
       <div className={styles.btns}>
-        <button type="submit" className={cn("button", styles.button)}>Continue</button>
+          <button type="submit" className={cn( "button",styles.button )}>{
+            loading ?
+            <Loader /> :
+            'Continue'
+          }</button>
         <button onClick={handleClose} className={cn("button-stroke", styles.button)}>Cancel</button>
       </div>
       </form>

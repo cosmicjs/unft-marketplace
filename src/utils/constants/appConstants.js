@@ -6,4 +6,6 @@ const STEP = 1;
 const MIN = 1;
 const MAX = 100;
 
-export {STEP, MIN, MAX, ACTIVE_INDEX, OPTIONS};
+const APP_KEY = 'uNFT-user';
+
+export {STEP, MIN, MAX, ACTIVE_INDEX, OPTIONS, APP_KEY};
