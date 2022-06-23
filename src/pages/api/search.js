@@ -6,12 +6,12 @@ const bucket = Cosmic().bucket({
 } )
 
 export default async function authHandler( req,res ) {
-  const { query: {price, color, categories} } = req;
+  const { query: {min, max, color, categories} } = req;
 
   let queryParam = {};
 
-  if( price > 1 ) {
-    queryParam = { ...queryParam, "metadata.price": { "$lte": Number(price) },}
+  if( min || max ) {
+    queryParam = { ...queryParam, "metadata.price": {"$gte": Number(min), "$lte": Number(max) },}
   }
 
   if(color?.toLocaleLowerCase() !== "colors") {
