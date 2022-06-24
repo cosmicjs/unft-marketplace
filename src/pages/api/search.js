@@ -10,18 +10,17 @@ export default async function searchHandler( req,res ) {
 
   let queryParam = {};
 
-  if( min || max ) {
-    queryParam = { ...queryParam, "metadata.price": {"$gte": Number(min || 1), "$lte": Number(max || 100000) },}
+  if( (typeof min !== 'undefined' && min !== 'undefined') || (typeof max !== 'undefined' && max !== 'undefined')) {
+    queryParam = { ...queryParam, "metadata.price": {"$gte": Number(min) || 1, "$lte": Number(max) || 100000 },}
   }
 
-  if(color?.toLocaleLowerCase() !== "colors") {
+  if(typeof color !== 'undefined' && color !== 'undefined' && color?.toLocaleLowerCase() !== "colors") {
     queryParam = { ...queryParam, "metadata.color": color,}
   }
 
-  if( categories ) {
+  if(typeof categories !== 'undefined' && categories ) {
     queryParam = { ...queryParam, "metadata.categories": categories,}
   }
-
 
   const params = {
     query: {

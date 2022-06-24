@@ -46,6 +46,7 @@ const Description = ( { info } ) => {
               srcDark={info?.metadata?.image?.imgix_url}
               objectFit="contain"
               alt="Team"
+              priority
             />
         </div>
       </div>

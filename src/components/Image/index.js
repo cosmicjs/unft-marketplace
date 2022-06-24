@@ -2,7 +2,7 @@ import React from "react";
 import Image from 'next/image';
 import useDarkMode from "use-dark-mode";
 
-const ImageApp = ({ className, src, srcDark, alt, size, objectFit="contain" }) => {
+const ImageApp = ({ className, src, srcDark, alt, size, priority, objectFit="contain" }) => {
   const darkMode = useDarkMode(false);
 
   return (
@@ -14,6 +14,7 @@ const ImageApp = ({ className, src, srcDark, alt, size, objectFit="contain" }) =
         objectFit={objectFit}
         placeholder="blur"
         blurDataURL={`${src}?w=10`}
+        priority={priority}
       />
   </div>
   );

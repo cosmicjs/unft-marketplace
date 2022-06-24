@@ -10,27 +10,28 @@ import { getSearchDataWith } from "../lib/cosmic";
 import { useStateContext } from '../utils/context/StateContext';
 import { filterByType } from '../utils/filterDataByType';
 import priceRange from '../utils/constants/priceRange';
+import handleQueryParams from '../utils/queryParams';
 import { getAllDataByType, getDataByCategory } from '../lib/cosmic';
 import { ACTIVE_INDEX, OPTIONS } from "../utils/constants/appConstants";
 
 import styles from "../styles/pages/Search.module.sass";
 
 const Search = ({categoriesGroup, navigationItems}) => {
-  const { query } = useRouter();
+  const { query, push } = useRouter();
   const { categories } = useStateContext();
 
   const categoriesTypeData = categoriesGroup['type'] || categories[ 'type' ];
   const categoriesGroupsData = categoriesGroup['groups'] || categories[ 'groups' ];
 
   const [activeIndex, setActiveIndex] = useState( query['id'] || ACTIVE_INDEX );
-  const [searchResult, setSearchResult] = useState( filterByType(categoriesGroupsData, query['id']));
+  const [searchResult, setSearchResult] = useState([]);
 
   const [search, setSearch] = useState( "" );
 
   const debouncedSearchTerm = useDebounce(search, 600);
 
   const [ {min, max}, setRangeValues ] = useState(()=>priceRange);
-  const [ option, setOption ] = useState( OPTIONS[ 0 ] );
+  const [ option, setOption ] = useState(query['color'] || OPTIONS[ 0 ] );
   const [ isApplied,setIsApplied ] = useState( false );
 
   const searchElement = useRef( null );
@@ -49,25 +50,48 @@ const Search = ({categoriesGroup, navigationItems}) => {
     } ) )
   };
 
-  const getDataByFilterPrice = useCallback(async ( ) => {
+  const handleFilterDataByParams = useCallback(async (id, color, min, max) => {
+      push({
+        pathname: '/search',
+        query: handleQueryParams({
+          id,
+          color,
+          min,
+          max,
+        })
+          },undefined,{ shallow: true } );
+
+      const result = await fetch(`api/search?min=${min}&max=${max}&color=${color}&categories=${id}`);
+      const filterResult = await result.json();
+      await setSearchResult( filterResult['objects'] );
+  },[push] );
+
+  const getDataByFilterPrice = useCallback(() => {
     if(min || max) {
       setIsApplied(true);
-      const result = await fetch(`api/search?min=${min}&max=${max}&color=${option}&categories=${activeIndex}`);
-      const rangeParams = await result.json();
-      await setSearchResult( rangeParams['objects'] );
-      await setIsApplied(false);
+      handleFilterDataByParams(activeIndex, option, min, max);
     }
-  },[min, max, option, activeIndex] );
+  },[handleFilterDataByParams] );
 
   const getDataByFilterOptions = useCallback( async ( color ) => {
     setOption( color );
-    const result = await fetch(`api/search?price=${rangeValues[0]}&color=${color}&categories=${activeIndex}`)
+    push({
+      pathname: '/search',
+      query: handleQueryParams({
+        id: activeIndex,
+        color,
+        min,
+        max,
+      })
+    }, undefined, { shallow: true });
+
+    const result = await fetch(`api/search?min=${min}&max=${max}&color=${color}&categories=${activeIndex}`)
     const optionsParams = await result.json();
     await setSearchResult( optionsParams['objects'] );
-  },[activeIndex] );
+  },[activeIndex, max, min, push] );
 
   const handleReset = () => {
-    setRangeValues([MIN]);
+    setRangeValues(priceRange);
     setOption(OPTIONS[0]);
   }
 
@@ -94,7 +118,14 @@ const Search = ({categoriesGroup, navigationItems}) => {
     if( debouncedSearchTerm?.length &&  isMounted) {
         getDataBySearch( debouncedSearchTerm.toLowerCase().trim() );
     } else {
-      setSearchResult(filterByType(categoriesGroupsData, activeIndex ));
+      (query?.id && (query?.min || query?.max || query?.color)) ?
+      ( async () => {
+        const result = await fetch( `api/search?min=${query?.min}&max=${query?.max}&color=${query?.color}&categories=${query?.id || activeIndex}` );
+        const filterParams = await result.json();
+
+        setSearchResult( filterParams['objects'] );
+        } )() :
+        setSearchResult(filterByType(categoriesGroupsData, activeIndex ));
     };
 
     return () => {

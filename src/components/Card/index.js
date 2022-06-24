@@ -39,7 +39,7 @@ const Card = ({ className, item }) => {
       <div className={styles.foot}>
             <div className={styles.status}>
               <p>{item?.title}</p>
-              <p className={styles.count}>{`${item?.metadata?.count} Items`}</p>
+              <p className={styles.count}>{item?.metadata?.count > 0 ?  `${item?.metadata?.count} Items` : 'Not Available'}</p>
             </div>
             <div
               className={styles.bid}
