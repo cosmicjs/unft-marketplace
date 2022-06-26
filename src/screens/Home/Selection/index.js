@@ -110,7 +110,7 @@ const Selection = ( { info,type } ) => {
             <div className={styles.list}>
               {type?.map( ( x,index ) => (
                   <div className={styles.user} key={index}>
-                    <AppLink href={`/search?id=${x.id}`} >
+                    <AppLink href={`/search?categories=${x.id}`} >
                     <div className={styles.avatar}>
                       <Image
                         size={{ width: "56px", height: "56px" }}

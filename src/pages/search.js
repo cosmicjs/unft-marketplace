@@ -12,7 +12,8 @@ import { filterByType } from '../utils/filterDataByType';
 import priceRange from '../utils/constants/priceRange';
 import handleQueryParams from '../utils/queryParams';
 import { getAllDataByType, getDataByCategory } from '../lib/cosmic';
-import { ACTIVE_INDEX, OPTIONS } from "../utils/constants/appConstants";
+import { ACTIVE_INDEX,OPTIONS } from "../utils/constants/appConstants";
+import useFetchData from '../utils/hooks/useFetchData'; 
 
 import styles from "../styles/pages/Search.module.sass";
 
@@ -21,16 +22,17 @@ const Search = ({categoriesGroup, navigationItems}) => {
   const { categories } = useStateContext();
 
   const categoriesTypeData = categoriesGroup['type'] || categories[ 'type' ];
-  const categoriesGroupsData = categoriesGroup['groups'] || categories[ 'groups' ];
 
-  const [activeIndex, setActiveIndex] = useState( query['id'] || ACTIVE_INDEX );
+  const [activeIndex, setActiveIndex] = useState( query['categories'] || ACTIVE_INDEX );
   const [searchResult, setSearchResult] = useState([]);
+
+  const {data, fetchData, hasError } = useFetchData([]);
 
   const [search, setSearch] = useState( "" );
 
   const debouncedSearchTerm = useDebounce(search, 600);
 
-  const [ {min, max}, setRangeValues ] = useState(()=>priceRange);
+  const [ {min, max}, setRangeValues ] = useState((query['min'] || query['max']) ? {min: query['min'] || 1, max: query['max']} : priceRange);
   const [ option, setOption ] = useState(query['color'] || OPTIONS[ 0 ] );
   const [ isApplied,setIsApplied ] = useState( false );
 
@@ -50,45 +52,41 @@ const Search = ({categoriesGroup, navigationItems}) => {
     } ) )
   };
 
-  const handleFilterDataByParams = useCallback(async (id, color, min, max) => {
+  const handleFilterDataByParams = useCallback(async (categories, color, min, max) => {
       push({
         pathname: '/search',
         query: handleQueryParams({
-          id,
+          categories,
           color,
           min,
           max,
         })
           },undefined,{ shallow: true } );
 
-      const result = await fetch(`api/search?min=${min}&max=${max}&color=${color}&categories=${id}`);
-      const filterResult = await result.json();
-      await setSearchResult( filterResult['objects'] );
-  },[push] );
+      // const result = await fetch(`api/filter?min=${min}&max=${max}&color=${color}&categories=${categories}`);
+      // const filterResult = await result.json();
+      // await setSearchResult( filterResult['objects'] );
+    fetchData( `api/filter?min=${min}&max=${max}&color=${color}&categories=${categories}` );
+  },[fetchData, push] );
+
+  console.log( 'Fetch DATA',data );
 
   const getDataByFilterPrice = useCallback(() => {
     if(min || max) {
       setIsApplied(true);
       handleFilterDataByParams(activeIndex, option, min, max);
     }
-  },[handleFilterDataByParams] );
+  },[handleFilterDataByParams, activeIndex, option, min, max] );
 
   const getDataByFilterOptions = useCallback( async ( color ) => {
     setOption( color );
-    push({
-      pathname: '/search',
-      query: handleQueryParams({
-        id: activeIndex,
-        color,
-        min,
-        max,
-      })
-    }, undefined, { shallow: true });
+    handleFilterDataByParams(activeIndex, color, min, max);
+  },[activeIndex, handleFilterDataByParams, max, min] );
 
-    const result = await fetch(`api/search?min=${min}&max=${max}&color=${color}&categories=${activeIndex}`)
-    const optionsParams = await result.json();
-    await setSearchResult( optionsParams['objects'] );
-  },[activeIndex, max, min, push] );
+  const handleCategoryChange = useCallback(async ( index ) => {
+    setActiveIndex( index );
+    handleFilterDataByParams(index, option, min, max);
+  }, [handleFilterDataByParams, option, max, min]);
 
   const handleReset = () => {
     setRangeValues(priceRange);
@@ -97,15 +95,11 @@ const Search = ({categoriesGroup, navigationItems}) => {
 
   const getDataBySearch = useCallback( async ( search ) => {
       handleReset();
-      const searchResult = await getSearchDataWith(search);
-      await setSearchResult( searchResult );
-    }, []);
 
-  const handleCategoryChange = useCallback(async ( index ) => {
-    handleReset();
-    setActiveIndex( index );
-    setSearchResult( filterByType( categoriesGroupsData,activeIndex ) );
-  }, [activeIndex, categoriesGroupsData]);
+    const result = await fetch(`api/search?title=${search}`);
+      const filterResult = await result.json();
+      await setSearchResult( filterResult['objects'] );
+    }, []);
 
   const handleSubmit = ( e ) => {
     e.preventDefault();
@@ -115,23 +109,16 @@ const Search = ({categoriesGroup, navigationItems}) => {
   useEffect(() => {
     let isMounted = true;
 
-    if( debouncedSearchTerm?.length &&  isMounted) {
-        getDataBySearch( debouncedSearchTerm.toLowerCase().trim() );
+    if(isMounted && debouncedSearchTerm?.length) {
+      getDataBySearch( debouncedSearchTerm.toLowerCase().trim() );
     } else {
-      (query?.id && (query?.min || query?.max || query?.color)) ?
-      ( async () => {
-        const result = await fetch( `api/search?min=${query?.min}&max=${query?.max}&color=${query?.color}&categories=${query?.id || activeIndex}` );
-        const filterParams = await result.json();
-
-        setSearchResult( filterParams['objects'] );
-        } )() :
-        setSearchResult(filterByType(categoriesGroupsData, activeIndex ));
+      handleFilterDataByParams(activeIndex, option, min, max);
     };
 
     return () => {
       isMounted = false;
     }
-  },[query, debouncedSearchTerm, getDataBySearch, categories, activeIndex, categoriesGroup, categoriesGroupsData] );
+  },[debouncedSearchTerm] );
 
   return (
     <Layout navigationPaths={navigationItems[0]?.metadata}>
@@ -218,9 +205,11 @@ const Search = ({categoriesGroup, navigationItems}) => {
             </div>
             <div className={styles.wrapper}>
               <div className={styles.list}>
-                {searchResult?.length && searchResult?.map((x, index) => (
-                  <Card className={styles.card} item={x} key={index} />
-                ))}
+                {searchResult?.length ? 
+                  searchResult?.map((x, index) => (
+                    <Card className={styles.card} item={x} key={index} />
+                  )) :
+                  <p className={styles.inform}>Try another category!</p>}
               </div>
             </div>
           </div>

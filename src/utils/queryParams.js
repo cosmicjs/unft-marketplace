@@ -1,5 +1,5 @@
-const handleQueryParams = ({color, min, max, id}) => {
-  let queryParam = {id};
+const handleQueryParams = ({color, min, max, categories}) => {
+  let queryParam = {categories};
 
   if(color?.toLocaleLowerCase() !== "colors") {
     queryParam = { ...queryParam, color};

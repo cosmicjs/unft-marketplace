@@ -98,7 +98,7 @@ const Discover = ( { info,type } ) => {
           <div className={styles.header}>
             <h3 className={cn("h3", styles.title)}>Discover</h3>
               <button
-                onClick={() => handleClick( `/search?id=${activeIndex}` )}
+                onClick={() => handleClick( `/search?categories=${activeIndex}` )}
                 className={cn( "button-stroke",styles.button )} >
                 Start search
               </button>

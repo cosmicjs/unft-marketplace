@@ -6,28 +6,15 @@ const bucket = Cosmic().bucket({
 } )
 
 export default async function searchHandler( req,res ) {
-  const { query: {min, max, color, categories} } = req;
-
-  let queryParam = {};
-
-  if( (typeof min !== 'undefined' && min !== 'undefined') || (typeof max !== 'undefined' && max !== 'undefined')) {
-    queryParam = { ...queryParam, "metadata.price": {"$gte": Number(min) || 1, "$lte": Number(max) || 100000 },}
-  }
-
-  if(typeof color !== 'undefined' && color !== 'undefined' && color?.toLocaleLowerCase() !== "colors") {
-    queryParam = { ...queryParam, "metadata.color": color,}
-  }
-
-  if(typeof categories !== 'undefined' && categories ) {
-    queryParam = { ...queryParam, "metadata.categories": categories,}
-  }
+  const { query: {title} } = req;
 
   const params = {
     query: {
-      ...queryParam,
+      "title": { "$regex": title, "$options": "i" },
       type: 'products',
     },
     props: 'title,slug,metadata,created_at',
+    sort: '-created_at',
   }
 
   try {
