@@ -88,7 +88,7 @@ const Item = ({ itemInfo, categoriesGroup, navigationItems }) => {
                 <div className={cn("status-stroke-green", styles.price)}>
                   {`$${itemInfo[0]?.metadata?.price}`}
                 </div>
-              <div className={styles.counter}>{itemInfo[ 0 ]?.metadata?.count ? `${itemInfo[ 0 ]?.metadata?.count} in stock` : 'Not Aviable yet'}</div>
+              <div className={styles.counter}>{itemInfo[ 0 ]?.metadata?.count > 0 ? `${itemInfo[ 0 ]?.metadata?.count} in stock` : 'Not Available'}</div>
               </div>
               <div className={styles.info}>
                 {itemInfo[0]?.metadata?.description}

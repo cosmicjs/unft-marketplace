@@ -6,32 +6,30 @@ import Layout from "../components/Layout";
 import Icon from "../components/Icon";
 import Card from "../components/Card";
 import Dropdown from "../components/Dropdown";
-import { getSearchDataWith } from "../lib/cosmic";
 import { useStateContext } from '../utils/context/StateContext';
-import { filterByType } from '../utils/filterDataByType';
 import priceRange from '../utils/constants/priceRange';
+import handleQueryParams from '../utils/queryParams';
 import { getAllDataByType, getDataByCategory } from '../lib/cosmic';
-import { ACTIVE_INDEX, OPTIONS } from "../utils/constants/appConstants";
+import { ACTIVE_INDEX,OPTIONS } from "../utils/constants/appConstants";
+import useFetchData from '../utils/hooks/useFetchData';
 
 import styles from "../styles/pages/Search.module.sass";
 
-const Search = ({categoriesGroup, navigationItems}) => {
-  const { query } = useRouter();
+const Search = ({categoriesGroup, navigationItems, categoryData}) => {
+  const { query, push } = useRouter();
   const { categories } = useStateContext();
 
-  const categoriesTypeData = categoriesGroup['type'] || categories[ 'type' ];
-  const categoriesGroupsData = categoriesGroup['groups'] || categories[ 'groups' ];
+  const {data: searchResult, fetchData } = useFetchData(categoryData?.length ? categoryData : []);
 
-  const [activeIndex, setActiveIndex] = useState( query['id'] || ACTIVE_INDEX );
-  const [searchResult, setSearchResult] = useState( filterByType(categoriesGroupsData, query['id']));
+  const categoriesTypeData = categoriesGroup[ 'type' ] || categories[ 'type' ];
 
-  const [search, setSearch] = useState( "" );
-
+  const [search, setSearch] = useState(query['search'] || "" );
   const debouncedSearchTerm = useDebounce(search, 600);
 
-  const [ {min, max}, setRangeValues ] = useState(()=>priceRange);
-  const [ option, setOption ] = useState( OPTIONS[ 0 ] );
-  const [ isApplied,setIsApplied ] = useState( false );
+  const [activeIndex, setActiveIndex] = useState( query['category'] || ACTIVE_INDEX );
+  const [ {min, max}, setRangeValues ] = useState((query['min'] || query['max']) ? {min: query['min'] || 1, max: query['max']} : priceRange);
+  const [ option, setOption ] = useState(query['color'] || OPTIONS[ 0 ] );
+  const [ isApplied, setIsApplied ] = useState( false );
 
   const searchElement = useRef( null );
 
@@ -49,39 +47,56 @@ const Search = ({categoriesGroup, navigationItems}) => {
     } ) )
   };
 
-  const getDataByFilterPrice = useCallback(async ( ) => {
+  const handleFilterDataByParams = useCallback( async ( category,color,min,max ) => {
+    search.length && setSearch( "" );
+
+      push({
+        pathname: '/search',
+        query: handleQueryParams({
+          category,
+          color,
+          min,
+          max,
+        })
+      },undefined,{ shallow: true } );
+
+      fetchData( `/api/filter?min=${min}&max=${max}&color=${color}&category=${category}` );
+  },[fetchData, push, search.length] );
+
+  const getDataByFilterPrice = useCallback(() => {
     if(min || max) {
       setIsApplied(true);
-      const result = await fetch(`api/search?min=${min}&max=${max}&color=${option}&categories=${activeIndex}`);
-      const rangeParams = await result.json();
-      await setSearchResult( rangeParams['objects'] );
-      await setIsApplied(false);
+      handleFilterDataByParams(activeIndex, option, min, max);
     }
-  },[min, max, option, activeIndex] );
+  },[handleFilterDataByParams, activeIndex, option, min, max] );
 
   const getDataByFilterOptions = useCallback( async ( color ) => {
     setOption( color );
-    const result = await fetch(`api/search?price=${rangeValues[0]}&color=${color}&categories=${activeIndex}`)
-    const optionsParams = await result.json();
-    await setSearchResult( optionsParams['objects'] );
-  },[activeIndex] );
+    handleFilterDataByParams(activeIndex, color, min, max);
+  },[activeIndex, handleFilterDataByParams, max, min] );
+
+  const handleCategoryChange = useCallback(async ( index ) => {
+    setActiveIndex( index );
+    handleFilterDataByParams(index, option, min, max);
+  }, [handleFilterDataByParams, option, max, min]);
 
   const handleReset = () => {
-    setRangeValues([MIN]);
+    setRangeValues(priceRange);
     setOption(OPTIONS[0]);
   }
 
   const getDataBySearch = useCallback( async ( search ) => {
       handleReset();
-      const searchResult = await getSearchDataWith(search);
-      await setSearchResult( searchResult );
-    }, []);
+      push({
+        pathname: '/search',
+        query: handleQueryParams( {
+          category: activeIndex,
+          search
+        })
+      },undefined,{ shallow: true } );
 
-  const handleCategoryChange = useCallback(async ( index ) => {
-    handleReset();
-    setActiveIndex( index );
-    setSearchResult( filterByType( categoriesGroupsData,activeIndex ) );
-  }, [activeIndex, categoriesGroupsData]);
+      fetchData( `/api/search?title=${search}` );
+    }, [activeIndex, fetchData, push]);
 
   const handleSubmit = ( e ) => {
     e.preventDefault();
@@ -91,16 +106,16 @@ const Search = ({categoriesGroup, navigationItems}) => {
   useEffect(() => {
     let isMounted = true;
 
-    if( debouncedSearchTerm?.length &&  isMounted) {
-        getDataBySearch( debouncedSearchTerm.toLowerCase().trim() );
+    if(isMounted && debouncedSearchTerm?.length) {
+      getDataBySearch(debouncedSearchTerm.toLowerCase().trim());
     } else {
-      setSearchResult(filterByType(categoriesGroupsData, activeIndex ));
+      !categoryData?.length && handleFilterDataByParams(activeIndex, option, min, max);
     };
 
     return () => {
       isMounted = false;
     }
-  },[query, debouncedSearchTerm, getDataBySearch, categories, activeIndex, categoriesGroup, categoriesGroupsData] );
+  },[debouncedSearchTerm] );
 
   return (
     <Layout navigationPaths={navigationItems[0]?.metadata}>
@@ -111,7 +126,7 @@ const Search = ({categoriesGroup, navigationItems}) => {
             <form
               className={styles.search}
               action=""
-              onSubmit={(e) => handleSubmit(e)}
+              onSubmit={handleSubmit}
             >
               <input
                 ref={searchElement}
@@ -187,9 +202,11 @@ const Search = ({categoriesGroup, navigationItems}) => {
             </div>
             <div className={styles.wrapper}>
               <div className={styles.list}>
-                {searchResult?.length && searchResult?.map((x, index) => (
-                  <Card className={styles.card} item={x} key={index} />
-                ))}
+                {searchResult?.length ? 
+                  searchResult?.map((x, index) => (
+                    <Card className={styles.card} item={x} key={index} />
+                  )) :
+                  <p className={styles.inform}>Try another category!</p>}
               </div>
             </div>
           </div>
@@ -201,13 +218,17 @@ const Search = ({categoriesGroup, navigationItems}) => {
 
 export default Search;
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps( { query } ) {
   const navigationItems = await getAllDataByType( 'navigation' ) || [];
 
   const categoryTypes = await getAllDataByType( 'categories' ) || [];
   const categoriesData = await Promise.all( categoryTypes?.map( ( category ) => {
       return getDataByCategory( category?.id );
   } ) );
+
+  const categoryData = query?.hasOwnProperty( 'category' )  ?
+    await getDataByCategory( query[ 'category' ] ) :
+    {};
 
   const categoriesGroups = categoryTypes?.map(({ id }, index) => {
       return { [id]: categoriesData[index] };
@@ -220,6 +241,6 @@ export async function getServerSideProps({ params }) {
   const categoriesGroup = { groups: categoriesGroups, type: categoriesType }
 
   return {
-    props: { navigationItems, categoriesGroup },
+    props: { navigationItems, categoriesGroup, categoryData },
   };
 }

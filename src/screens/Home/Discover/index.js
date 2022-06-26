@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import cn from "classnames";
 import { useRouter } from 'next/router';
 import styles from "./Discover.module.sass";
@@ -7,7 +7,7 @@ import Icon from "../../../components/Icon";
 import Card from "../../../components/Card";
 import Dropdown from "../../../components/Dropdown";
 import priceRange from "../../../utils/constants/priceRange";
-import { filterByType } from "../../../utils/filterDataByType";
+import useFetchData from "../../../utils/hooks/useFetchData";
 import { ACTIVE_INDEX, OPTIONS } from "../../../utils/constants/appConstants";
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
@@ -43,27 +43,27 @@ const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
     ],
   };
 
-const Discover = ( { info,type } ) => {
+const Discover = ({ info, type }) => {
   const { push } = useRouter();
+  const { data: filterResult, fetchData } = useFetchData( [] );
+
   const [activeIndex, setActiveIndex] = useState(type ? Object.entries(type)[0]?.[0] : ACTIVE_INDEX);
   const [option, setOption] = useState( OPTIONS[ 0 ] );
 
-  const [ {min, max}, setRangeValues ] = useState(()=>priceRange);
-  const [ isApplied,setIsApplied ] = useState( false );
-  const [visible, setVisible ] = useState( false );
-
-  const [ filterResult, setFilterResult ] = useState( filterByType(info, activeIndex));
+  const [{min, max}, setRangeValues] = useState(()=>priceRange);
+  const [isApplied, setIsApplied] = useState( false );
+  const [visible, setVisible] = useState( false );
 
   const handleClick = ( href ) => {
     push( href );
   }
 
-  const handleCategoryChange = ( index ) => {
+  const handleCategoryChange = useCallback( ( index ) => {
     setActiveIndex( index );
-    setFilterResult( filterByType(info, activeIndex) );
-  }
+    fetchData( `/api/filter?min=${min}&max=${max}&color=${option}&category=${index}` );
+  },[fetchData, max, min, option] );
 
-  const handleChange = ( { target: { name,value } } ) => {
+  const handleChange = ({ target: { name, value } }) => {
     isApplied && setIsApplied(false);
     setRangeValues( prevFields => ( {
       ...prevFields,
@@ -71,22 +71,29 @@ const Discover = ( { info,type } ) => {
     } ) )
   };
 
-  const getDataByFilterPrice = useCallback(async ( ) => {
+  const getDataByFilterPrice = useCallback(() => {
     if(min || max) {
       setIsApplied(true);
-      const result = await fetch(`api/search?min=${min}&max=${max}&color=${option}&categories=${activeIndex}`);
-      const rangeParams = await result.json();
-      await setFilterResult( rangeParams['objects'] );
-      await setIsApplied(false);
+      fetchData( `/api/filter?min=${min}&max=${max}&color=${option}&category=${activeIndex}` );
     }
-  },[min, max, option, activeIndex] );
+  },[min, max, fetchData, option, activeIndex] );
 
   const getDataByFilterOptions = useCallback( async ( color ) => {
       setOption( color );
-      const result = await fetch(`api/search?min=${min}&max=${max}&color=${color}&categories=${activeIndex}`);
-      const optionsParams = await result.json();
-      await setFilterResult( optionsParams );
-  },[activeIndex, max, min]);
+      fetchData( `/api/filter?min=${min}&max=${max}&color=${color}&category=${activeIndex}` );
+  },[activeIndex, fetchData, max, min]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if(isMounted) {
+      fetchData( `/api/filter?category=${activeIndex}` );
+    };
+
+    return () => {
+      isMounted = false;
+    }
+  },[] );
 
   return (
     <div className={cn("section", styles.section)}>
@@ -98,7 +105,7 @@ const Discover = ( { info,type } ) => {
           <div className={styles.header}>
             <h3 className={cn("h3", styles.title)}>Discover</h3>
               <button
-                onClick={() => handleClick( `/search?id=${activeIndex}` )}
+                onClick={() => handleClick( `/search?category=${activeIndex}` )}
                 className={cn( "button-stroke",styles.button )} >
                 Start search
               </button>
