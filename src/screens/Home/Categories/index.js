@@ -52,7 +52,7 @@ const Categories = ( { info, type } ) => {
               <Slider className="collection-slider" {...settings}>
                 {info?.length && info?.map(( category ) => (
                   Object.keys(category)?.map((key, index ) => (
-                    <Link className={styles.item} href={`/search?categories=${key}` || '/'} key={index}>
+                    <Link className={styles.item} href={`/search?category=${key}` || '/'} key={index}>
                     <div className={styles.cart}>
                       <div className={styles.gallery}>
                         {category[key]?.slice(0, 7)?.map((intro, index) => (

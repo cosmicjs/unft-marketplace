@@ -8,7 +8,7 @@ const useFetchData = (
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchData = useCallback(async (url, data) => {
+  const fetchData = useCallback(async (url, body) => {
     if (!url) return;
     setIsLoading(true);
     hasError && setHasError(false);
@@ -18,12 +18,12 @@ const useFetchData = (
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify( { data } )
+      body,
     } );
-    console.log( 'RESPONSE HOOK',response );
 
-    if (response.ok) {
-      setData(response['objects']);
+    if( response.ok ) {
+      const result = await response.json();
+      setData(result['objects']);
     } else {
       setData(initialData);
       !hasError && setHasError(true);
@@ -33,7 +33,7 @@ const useFetchData = (
     return response;
   }, [hasError, initialData, method]);
 
-  return { data, fetchData, isLoading, setData, hasError };
+  return { data, fetchData, isLoading, hasError };
 };
 
 export default useFetchData;

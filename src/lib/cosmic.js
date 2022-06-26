@@ -45,26 +45,6 @@ export async function getAllDataByType(dataType = 'categories') {
     throw error
   }
 }
-
-export async function getSearchDataWith(title) {
-  const params = {
-    query: {
-      "title": { "$regex": title, "$options": "i" },
-      type: 'products',
-    },
-    props: 'title,slug,metadata,created_at',
-    sort: '-created_at',
-  }
-
-  try {
-    const data = await bucket.getObjects( params )
-    return data.objects
-  } catch (error) {
-    // Don't throw if an slug doesn't exist
-    if (is404(error)) return
-    throw error
-  }
-}
 export async function getDataBySlug(slug) {
   const params = {
     query: {

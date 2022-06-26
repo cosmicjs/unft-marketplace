@@ -6,7 +6,7 @@ const bucket = Cosmic().bucket({
 } )
 
 export default async function filterHandler( req,res ) {
-  const { query: {min, max, color, categories} } = req;
+  const { query: {min, max, color, category} } = req;
 
   let queryParam = {};
 
@@ -18,8 +18,8 @@ export default async function filterHandler( req,res ) {
     queryParam = { ...queryParam, "metadata.color": color,}
   }
 
-  if(typeof categories !== 'undefined' && categories ) {
-    queryParam = { ...queryParam, "metadata.categories": categories,}
+  if(typeof category !== 'undefined' && category !== 'undefined' ) {
+    queryParam = { ...queryParam, "metadata.categories": category,}
   }
 
   const params = {
@@ -34,7 +34,7 @@ export default async function filterHandler( req,res ) {
     const data = await bucket.getObjects(params)
     res.status( 200 ).json(data);
   } catch (error) {
-    res.status(404).json(error.message)
+    res.status(404).json(error)
   }
 }
 
