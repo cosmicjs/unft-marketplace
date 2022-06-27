@@ -1,6 +1,6 @@
 const ACTIVE_INDEX = '627e23f18bb13a000911ea55';
 
-const OPTIONS = ["Colors","Red","Blue","Black","Purple" ];
+const OPTIONS = ["Any color","Red","Blue","Black","Purple" ];
 
 const STEP = 1;
 const MIN = 1;

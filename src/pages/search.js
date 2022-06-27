@@ -31,14 +31,6 @@ const Search = ({categoriesGroup, navigationItems, categoryData}) => {
   const [ option, setOption ] = useState(query['color'] || OPTIONS[ 0 ] );
   const [ isApplied, setIsApplied ] = useState( false );
 
-  const searchElement = useRef( null );
-
-  useEffect(() => {
-    if (searchElement.current) {
-      searchElement.current.focus();
-    }
-  },[ query ] );
-
   const handleChange = ( { target: { name,value } } ) => {
     isApplied && setIsApplied(false);
     setRangeValues( prevFields => ( {
@@ -121,53 +113,43 @@ const Search = ({categoriesGroup, navigationItems, categoryData}) => {
     <Layout navigationPaths={navigationItems[0]?.metadata}>
       <div className={cn("section-pt80", styles.section)}>
         <div className={cn("container", styles.container)}>
-          <div className={styles.top}>
-            <div className={styles.title}>Type your keywords</div>
-            <form
-              className={styles.search}
-              action=""
-              onSubmit={handleSubmit}
-            >
-              <input
-                ref={searchElement}
-                className={styles.input}
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                name="search"
-                placeholder="Search ..."
-                required
-              />
-              <button className={styles.result}>
-                <Icon name="search" size="16" />
-              </button>
-            </form>
-          </div>
-          <div className={styles.sorting}>
-            <div className={styles.dropdown}>
-              <Dropdown
-                className={styles.dropdown}
-                value={option}
-                setValue={getDataByFilterOptions}
-                options={OPTIONS}
-              />
-            </div>
-            <div className={styles.nav}>
-              {categoriesTypeData && Object.entries(categoriesTypeData)?.map((item, index) => (
-                <button
-                  className={cn(styles.link, {
-                    [styles.active]: item[0] === activeIndex,
-                  })}
-                  onClick={() => handleCategoryChange(item[0])}
-                  key={index}
-                >
-                  {item[1]}
-                </button>
-              ))}
-            </div>
-          </div>
           <div className={styles.row}>
             <div className={styles.filters}>
+              <div className={styles.top}>
+                <div className={styles.title}>Search</div>
+              </div>
+              <div>
+                <div className={styles.label}>Search keyword</div>
+                <form
+                  className={styles.search}
+                  action=""
+                  onSubmit={handleSubmit}
+                >
+                  <input
+                    className={styles.input}
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    name="search"
+                    placeholder="Search..."
+                    required
+                  />
+                  <button className={styles.result}>
+                    <Icon name="search" size="16" />
+                  </button>
+                </form>
+              </div>
+              <div className={styles.sorting}>
+                <div className={styles.dropdown}>
+                  <div className={styles.label}>Select color</div>
+                  <Dropdown
+                    className={styles.dropdown}
+                    value={option}
+                    setValue={getDataByFilterOptions}
+                    options={OPTIONS}
+                  />
+                </div>
+              </div>
               <div className={styles.range}>
                 <div className={styles.label}>Price range</div>
                 <div className={styles.prices}>
@@ -201,6 +183,19 @@ const Search = ({categoriesGroup, navigationItems, categoryData}) => {
               </div>
             </div>
             <div className={styles.wrapper}>
+              <div className={styles.nav}>
+                {categoriesTypeData && Object.entries(categoriesTypeData)?.map((item, index) => (
+                  <button
+                    className={cn(styles.link, {
+                      [styles.active]: item[0] === activeIndex,
+                    })}
+                    onClick={() => handleCategoryChange(item[0])}
+                    key={index}
+                  >
+                    {item[1]}
+                  </button>
+                ))}
+              </div>
               <div className={styles.list}>
                 {searchResult?.length ? 
                   searchResult?.map((x, index) => (
