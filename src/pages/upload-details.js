@@ -51,7 +51,7 @@ const Upload = ({navigationItems, categoriesType}) => {
     const formData = new FormData();
     formData.append( 'file', uploadFile );
 
-    const uploadResult = await fetch( 'api/upload',{
+    const uploadResult = await fetch( '/api/upload',{
       method: 'POST',
       body: formData,
     } );
@@ -64,7 +64,7 @@ const Upload = ({navigationItems, categoriesType}) => {
     !cosmicUser.hasOwnProperty('id') && setVisibleAuthModal( true );
 
     if( !user && !user?.hasOwnProperty( 'id' ) ) return;
-    user && await handleUploadFile( uploadFile );
+    user && uploadFile && await handleUploadFile( uploadFile );
   }, [cosmicUser, uploadFile]);
 
   const handleUpload = async ( e ) => {
@@ -101,7 +101,7 @@ const Upload = ({navigationItems, categoriesType}) => {
     if(cosmicUser && (title && color && count && price && uploadMedia) ) {
       fillFiledMessage && setFillFiledMessage( false );
 
-      const response = await fetch( 'api/create', {
+      const response = await fetch( '/api/create', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

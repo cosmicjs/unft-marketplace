@@ -35,7 +35,7 @@ const OAuth = ( { className,handleClose,handleOAuth } ) => {
     setLoading(true);
 
     if( email, password ) {
-      const auth = await fetch( 'api/auth',{
+      const auth = await fetch( '/api/auth',{
         method: 'POST',
         headers: {
           'Accept': 'application/json',
