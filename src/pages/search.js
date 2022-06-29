@@ -118,7 +118,7 @@ const Search = ({categoriesGroup, navigationItems, categoryData}) => {
               <div className={styles.top}>
                 <div className={styles.title}>Search</div>
               </div>
-              <div>
+              <div className={styles.form}>
                 <div className={styles.label}>Search keyword</div>
                 <form
                   className={styles.search}

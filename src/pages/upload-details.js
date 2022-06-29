@@ -51,12 +51,12 @@ const Upload = ({navigationItems, categoriesType}) => {
     const formData = new FormData();
     formData.append( 'file', uploadFile );
 
-    const upladResult = await fetch( 'api/upload',{
+    const uploadResult = await fetch( 'api/upload',{
       method: 'POST',
       body: formData,
     } );
 
-    const mediaData = await upladResult.json();
+    const mediaData = await uploadResult.json();
     await setUploadMedia( mediaData?.[ 'media' ] );
   };
 
@@ -71,7 +71,7 @@ const Upload = ({navigationItems, categoriesType}) => {
     setUploadFile( e.target.files[ 0 ] );
 
     cosmicUser?.hasOwnProperty('id') ?
-      handleUploadFile( e.target.files[ 0 ] ) :
+      handleUploadFile(e.target.files[0]) :
       handleOAuth();
   };
 
