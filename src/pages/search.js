@@ -27,7 +27,7 @@ const Search = ({categoriesGroup, navigationItems, categoryData}) => {
   const debouncedSearchTerm = useDebounce(search, 600);
 
   const [activeIndex, setActiveIndex] = useState( query['category'] || ACTIVE_INDEX );
-  const [ {min, max}, setRangeValues ] = useState((query['min'] || query['max']) ? {min: query['min'] || 1, max: query['max']} : priceRange);
+  const [ {min, max}, setRangeValues ] = useState((query['min'] || query['max']) ? {min: query['min'] || 1, max: query['max'] || 100000} : priceRange);
   const [ option, setOption ] = useState(query['color'] || OPTIONS[ 0 ] );
   const [ isApplied, setIsApplied ] = useState( false );
 
@@ -41,18 +41,21 @@ const Search = ({categoriesGroup, navigationItems, categoryData}) => {
 
   const handleFilterDataByParams = useCallback( async ( category,color,min,max ) => {
     search.length && setSearch( "" );
+    const params = handleQueryParams( {
+      category,
+      color,
+      min,
+      max,
+    } );
 
       push({
         pathname: '/search',
-        query: handleQueryParams({
-          category,
-          color,
-          min,
-          max,
-        })
+        query: params,
       },undefined,{ shallow: true } );
 
-      fetchData( `/api/filter?min=${min}&max=${max}&color=${color}&category=${category}` );
+    let filterParam = Object.keys(params).reduce((acc, key) => acc + `&${key}=`+`${params[key]}`, "");
+
+    fetchData( `/api/filter?${filterParam}` );
   },[fetchData, push, search.length] );
 
   const getDataByFilterPrice = useCallback(() => {
@@ -107,7 +110,7 @@ const Search = ({categoriesGroup, navigationItems, categoryData}) => {
     return () => {
       isMounted = false;
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   },[debouncedSearchTerm] );
 
   return (
@@ -224,7 +227,7 @@ export async function getServerSideProps( { query } ) {
 
   const categoryData = query?.hasOwnProperty( 'category' )  ?
     await getDataByCategory( query[ 'category' ] ) :
-    {};
+    [];
 
   const categoriesGroups = categoryTypes?.map(({ id }, index) => {
       return { [id]: categoriesData[index] };
