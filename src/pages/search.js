@@ -26,92 +26,71 @@ const Search = ({categoriesGroup, navigationItems, categoryData}) => {
   const [search, setSearch] = useState(query['search'] || "" );
   const debouncedSearchTerm = useDebounce(search, 600);
 
-  const [activeIndex, setActiveIndex] = useState( query['category'] || ACTIVE_INDEX );
   const [ {min, max}, setRangeValues ] = useState((query['min'] || query['max']) ? {min: query['min'] || 1, max: query['max'] || 100000} : priceRange);
+  const debouncedMinTerm = useDebounce(min, 700);
+  const debouncedMaxTerm = useDebounce(max, 700);
+
+  const [activeIndex, setActiveIndex] = useState( query['category'] || ACTIVE_INDEX );
   const [ option, setOption ] = useState(query['color'] || OPTIONS[ 0 ] );
-  const [ isApplied, setIsApplied ] = useState( false );
 
   const handleChange = ( { target: { name,value } } ) => {
-    isApplied && setIsApplied(false);
     setRangeValues( prevFields => ( {
       ...prevFields,
       [ name ]: value,
     } ) )
   };
 
-  const handleFilterDataByParams = useCallback( async ( category,color,min,max ) => {
-    search.length && setSearch( "" );
+  const handleFilterDataByParams = useCallback( async ({category=activeIndex, color=option, min=debouncedMinTerm, max=debouncedMaxTerm, search=debouncedSearchTerm}) => {
+    console.log( 'category, color, min, max, search',category,color,min,max,search );
+
     const params = handleQueryParams( {
       category,
       color,
-      min,
-      max,
+      min: min.trim(),
+      max: max.trim(),
+      search: search.toLowerCase().trim(),
     } );
 
-      push({
-        pathname: '/search',
-        query: params,
-      },undefined,{ shallow: true } );
+    push({
+      pathname: '/search',
+      query: params,
+    },undefined,{ shallow: true } );
 
-    let filterParam = Object.keys(params).reduce((acc, key) => acc + `&${key}=`+`${params[key]}`, "");
+    const filterParam = Object.keys(params).reduce((acc, key) => acc + `&${key}=`+`${params[key]}`, "");
 
     fetchData( `/api/filter?${filterParam}` );
-  },[fetchData, push, search.length] );
-
-  const getDataByFilterPrice = useCallback(() => {
-    if(min || max) {
-      setIsApplied(true);
-      handleFilterDataByParams(activeIndex, option, min, max);
-    }
-  },[handleFilterDataByParams, activeIndex, option, min, max] );
+  },[activeIndex, debouncedSearchTerm, debouncedMinTerm, debouncedMaxTerm, fetchData, option, push] );
 
   const getDataByFilterOptions = useCallback( async ( color ) => {
     setOption( color );
-    handleFilterDataByParams(activeIndex, color, min, max);
-  },[activeIndex, handleFilterDataByParams, max, min] );
+    handleFilterDataByParams( {color } );
+  },[handleFilterDataByParams]);
 
-  const handleCategoryChange = useCallback(async ( index ) => {
-    setActiveIndex( index );
-    handleFilterDataByParams(index, option, min, max);
-  }, [handleFilterDataByParams, option, max, min]);
-
-  const handleReset = () => {
-    setRangeValues(priceRange);
-    setOption(OPTIONS[0]);
-  }
-
-  const getDataBySearch = useCallback( async ( search ) => {
-      handleReset();
-      push({
-        pathname: '/search',
-        query: handleQueryParams( {
-          category: activeIndex,
-          search
-        })
-      },undefined,{ shallow: true } );
-
-      fetchData( `/api/search?title=${search}` );
-    }, [activeIndex, fetchData, push]);
+  const handleCategoryChange = useCallback(async ( category ) => {
+    setActiveIndex( category );
+    handleFilterDataByParams({category});
+  }, [handleFilterDataByParams]);
 
   const handleSubmit = ( e ) => {
     e.preventDefault();
-    getDataBySearch( debouncedSearchTerm.toLowerCase().trim() );
+    handleFilterDataByParams({ search: debouncedSearchTerm });
   };
 
   useEffect(() => {
-    let isMounted = true;
+    let isMount = true;
 
-    if(isMounted && debouncedSearchTerm?.length) {
-      getDataBySearch(debouncedSearchTerm.toLowerCase().trim());
+    if(isMount && (debouncedSearchTerm?.length || debouncedMinTerm?.length || debouncedMaxTerm?.length)) {
+      handleFilterDataByParams({ min: debouncedMinTerm, max: debouncedMaxTerm, search: debouncedSearchTerm });
     } else {
-      !categoryData?.length && handleFilterDataByParams(activeIndex, option, min, max);
+      !categoryData?.length && handleFilterDataByParams({category: activeIndex, color: option, min: debouncedMinTerm, max: debouncedMaxTerm, search: debouncedSearchTerm});
     };
 
     return () => {
-      isMounted = false;
+      isMount = false;
     }
 
-  },[debouncedSearchTerm] );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[debouncedSearchTerm, debouncedMinTerm, debouncedMaxTerm] );
 
   return (
     <Layout navigationPaths={navigationItems[0]?.metadata}>
@@ -177,13 +156,6 @@ const Search = ({categoriesGroup, navigationItems, categoryData}) => {
                     required
                   />
                 </div>
-                <button
-                  disabled={isApplied}
-                  className={cn( isApplied ? "button": "button-stroke", styles.button )}
-                  onClick={getDataByFilterPrice}
-                >
-                  Apply
-                </button>
               </div>
             </div>
             <div className={styles.wrapper}>
