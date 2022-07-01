@@ -41,8 +41,6 @@ const Search = ({categoriesGroup, navigationItems, categoryData}) => {
   };
 
   const handleFilterDataByParams = useCallback( async ({category=activeIndex, color=option, min=debouncedMinTerm, max=debouncedMaxTerm, search=debouncedSearchTerm}) => {
-    console.log( 'category, color, min, max, search',category,color,min,max,search );
-
     const params = handleQueryParams( {
       category,
       color,

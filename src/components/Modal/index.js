@@ -11,6 +11,7 @@ const Modal = ({
   visible,
   onClose,
   children,
+  disable,
 } ) => {
   const escFunction = useCallback(
     (e) => {
@@ -22,26 +23,28 @@ const Modal = ({
   );
 
   useEffect( () => {
-    if( typeof window === 'object' ) {
+    if( typeof window === 'object' && !disable ) {
       document.addEventListener( "keydown",escFunction,false );
     };
 
     return () => {
       document.removeEventListener("keydown", escFunction, false);
     };
-  }, [escFunction]);
+  }, [escFunction, disable]);
 
 
   return (typeof window !== 'undefined' && visible) ? (createPortal(
     (
       <div className={styles.modal}>
         <div className={cn(styles.outer, outerClassName)}>
-          <OutsideClickHandler onOutsideClick={onClose}>
+          <OutsideClickHandler onOutsideClick={disable ? ()=>{} : onClose}>
             <div className={cn(styles.container, containerClassName)}>
               {children}
-              <button className={styles.close} onClick={onClose}>
-                <Icon name="close" size="14" />
-              </button>
+              {!disable &&
+                <button className={styles.close} onClick={onClose}>
+                  <Icon name="close" size="14" />
+                </button>
+              }
             </div>
           </OutsideClickHandler>
         </div>
