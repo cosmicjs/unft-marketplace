@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import cn from "classnames";
 import { useRouter } from 'next/router';
+import { useStateContext } from '../utils/context/StateContext';
 import useDebounce from '../utils/hooks/useDebounce';
+import useFetchData from '../utils/hooks/useFetchData';
+import { getAllDataByType, getDataByCategory } from '../lib/cosmic';
+
 import Layout from "../components/Layout";
 import Icon from "../components/Icon";
 import Card from "../components/Card";
 import Dropdown from "../components/Dropdown";
-import { useStateContext } from '../utils/context/StateContext';
 import priceRange from '../utils/constants/priceRange';
 import handleQueryParams from '../utils/queryParams';
-import { getAllDataByType, getDataByCategory } from '../lib/cosmic';
 import { ACTIVE_INDEX,OPTIONS } from "../utils/constants/appConstants";
-import useFetchData from '../utils/hooks/useFetchData';
 
 import styles from "../styles/pages/Search.module.sass";
 
@@ -80,7 +81,7 @@ const Search = ({categoriesGroup, navigationItems, categoryData}) => {
     if(isMount && (debouncedSearchTerm?.length || debouncedMinTerm?.length || debouncedMaxTerm?.length)) {
       handleFilterDataByParams({ min: debouncedMinTerm, max: debouncedMaxTerm, search: debouncedSearchTerm });
     } else {
-      !categoryData?.length && handleFilterDataByParams({category: activeIndex, color: option, min: debouncedMinTerm, max: debouncedMaxTerm, search: debouncedSearchTerm});
+      !categoryData?.length && handleFilterDataByParams({category: activeIndex});
     };
 
     return () => {
