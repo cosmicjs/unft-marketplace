@@ -26,8 +26,6 @@ export default async function filterHandler( req,res ) {
     queryParam = { ...queryParam, "title": { "$regex": search, "$options": "i" },}
   }
 
-  console.log( 'queryParam',queryParam );
-
   const params = {
     query: {
       ...queryParam,

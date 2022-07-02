@@ -23,14 +23,14 @@ export default async function createHandler({body: {title, description, price, c
       {
         title: "Price",
         key: "price",
-        type: "text",
-        value: price
+        type: "number",
+        value: Number(price)
       },
       {
         title: "Count",
         key: "count",
-        type: "text",
-        value: count
+        type: "number",
+        value: Number(count)
       },
       {
         title: "Color",
