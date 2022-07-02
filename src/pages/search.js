@@ -28,8 +28,8 @@ const Search = ({categoriesGroup, navigationItems, categoryData}) => {
   const debouncedSearchTerm = useDebounce(search, 600);
 
   const [ {min, max}, setRangeValues ] = useState((query['min'] || query['max']) ? {min: query['min'] || 1, max: query['max'] || 100000} : priceRange);
-  const debouncedMinTerm = useDebounce(min, 700);
-  const debouncedMaxTerm = useDebounce(max, 700);
+  const debouncedMinTerm = useDebounce(min, 600);
+  const debouncedMaxTerm = useDebounce(max, 600);
 
   const [activeIndex, setActiveIndex] = useState( query['category'] || ACTIVE_INDEX );
   const [ option, setOption ] = useState(query['color'] || OPTIONS[ 0 ] );
