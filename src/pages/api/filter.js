@@ -6,12 +6,12 @@ const bucket = Cosmic().bucket({
 } )
 
 export default async function filterHandler( req,res ) {
-  const { query: {min, max, color, category} } = req;
+  const { query: {min, max, color, category, search} } = req;
 
   let queryParam = {};
 
   if( (typeof min !== 'undefined' && min !== 'undefined') || (typeof max !== 'undefined' && max !== 'undefined')) {
-    queryParam = { ...queryParam, "metadata.price": {"$gte": min !== 'undefined' ? Number(min) : 1, "$lte": max !== 'undefined' ? Number(max) : 10000000 },}
+    queryParam = { ...queryParam, "metadata.price": {"$gte": typeof min !== 'undefined' ? Number(min) : 1, "$lte": typeof max !== 'undefined' ? Number(max) : 1000000000 },}
   }
 
   if(typeof color !== 'undefined' && color !== 'undefined' && color?.toLocaleLowerCase() !== "any color") {
@@ -20,6 +20,10 @@ export default async function filterHandler( req,res ) {
 
   if(typeof category !== 'undefined' && category !== 'undefined' ) {
     queryParam = { ...queryParam, "metadata.categories": category,}
+  }
+
+  if(search && typeof search !== 'undefined' && search !== 'undefined') {
+    queryParam = { ...queryParam, "title": { "$regex": search, "$options": "i" },}
   }
 
   const params = {

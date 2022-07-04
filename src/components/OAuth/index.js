@@ -1,5 +1,6 @@
 import React, {useState, useCallback, useEffect, useRef} from "react";
 import cn from "classnames";
+import {useRouter} from 'next/router';
 import AppLink from '../AppLink';
 import Loader from '../Loader';
 import registerFields from "../../utils/constants/registerFields";
@@ -8,8 +9,9 @@ import { setToken } from "../../utils/token";
 
 import styles from "./OAuth.module.sass";
 
-const OAuth = ( { className,handleClose,handleOAuth } ) => {
+const OAuth = ( { className,handleClose,handleOAuth, disable } ) => {
   const { setCosmicUser } = useStateContext();
+  const { push } = useRouter();
 
   const [ { email, password }, setFields ] = useState( () => registerFields );
   const [fillFiledMessage, setFillFiledMessage] = useState('');
@@ -21,7 +23,11 @@ const OAuth = ( { className,handleClose,handleOAuth } ) => {
     if (inputElement.current) {
       inputElement.current.focus();
     }
-  }, []);
+  },[ disable ] );
+
+  const handleGoHome = () => {
+    push( '/' );
+  };
 
   const handleChange = ({ target: { name, value } }) =>
     setFields(prevFields => ({
@@ -110,12 +116,20 @@ const OAuth = ( { className,handleClose,handleOAuth } ) => {
           />
         </div>
       <div className={styles.btns}>
-          <button type="submit" className={cn( "button",styles.button )}>{
-            loading ?
-            <Loader /> :
-            'Continue'
-          }</button>
-        <button onClick={handleClose} className={cn("button-stroke", styles.button)}>Cancel</button>
+          <button type="submit" className={cn( "button",styles.button )}>
+            {
+              loading ?
+              <Loader /> :
+              'Continue'
+            }
+          </button>
+          <button onClick={disable ? handleGoHome : handleClose} className={cn( "button-stroke",styles.button )}>
+            {
+              disable ?
+                'Return Home Page' :
+                'Cancel'
+            }
+          </button>
       </div>
       </form>
     </div>

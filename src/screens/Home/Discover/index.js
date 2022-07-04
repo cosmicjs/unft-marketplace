@@ -1,14 +1,18 @@
 import React, { useState, useCallback, useEffect } from "react";
 import cn from "classnames";
 import { useRouter } from 'next/router';
-import styles from "./Discover.module.sass";
+import useFetchData from "../../../utils/hooks/useFetchData";
+import useDebounce from '../../../utils/hooks/useDebounce';
+import handleQueryParams from '../../../utils/queryParams';
+
 import Slider from "react-slick";
 import Icon from "../../../components/Icon";
 import Card from "../../../components/Card";
 import Dropdown from "../../../components/Dropdown";
 import priceRange from "../../../utils/constants/priceRange";
-import useFetchData from "../../../utils/hooks/useFetchData";
 import { ACTIVE_INDEX, OPTIONS } from "../../../utils/constants/appConstants";
+
+import styles from "./Discover.module.sass";
 
 const SlickArrow = ({ currentSlide, slideCount, children, ...props }) => (
   <button aria-label="arrow" aria-hidden="true" {...props}>{children}</button>
@@ -49,51 +53,61 @@ const Discover = ({ info, type }) => {
 
   const [activeIndex, setActiveIndex] = useState(type ? Object.entries(type)[0]?.[0] : ACTIVE_INDEX);
   const [option, setOption] = useState( OPTIONS[ 0 ] );
-
-  const [{min, max}, setRangeValues] = useState(()=>priceRange);
-  const [isApplied, setIsApplied] = useState( false );
   const [visible, setVisible] = useState( false );
+
+  const [ {min, max}, setRangeValues ] = useState(()=>priceRange);
+  const debouncedMinTerm = useDebounce(min, 700);
+  const debouncedMaxTerm = useDebounce(max, 700);
 
   const handleClick = ( href ) => {
     push( href );
   }
 
-  const handleCategoryChange = useCallback( ( index ) => {
-    setActiveIndex( index );
-    fetchData( `/api/filter?min=${min}&max=${max}&color=${option}&category=${index}` );
-  },[fetchData, max, min, option] );
+  const handleFilterDataByParams = useCallback( async ({category=activeIndex, color=option, min=debouncedMinTerm, max=debouncedMaxTerm}) => {
+    const params = handleQueryParams( {
+      category,
+      color,
+      min: min.trim(),
+      max: max.trim(),
+    } );
+
+    const filterParam = Object.keys(params).reduce((acc, key) => acc + `&${key}=`+`${params[key]}`, "");
+
+    fetchData( `/api/filter?${filterParam}` );
+  },[activeIndex, debouncedMinTerm, debouncedMaxTerm, fetchData, option] );
+
+  const handleCategoryChange = useCallback(async ( category ) => {
+    setActiveIndex( category );
+    handleFilterDataByParams({category});
+  }, [handleFilterDataByParams]);
 
   const handleChange = ({ target: { name, value } }) => {
-    isApplied && setIsApplied(false);
     setRangeValues( prevFields => ( {
       ...prevFields,
       [ name ]: value,
     } ) )
   };
 
-  const getDataByFilterPrice = useCallback(() => {
-    if(min || max) {
-      setIsApplied(true);
-      fetchData( `/api/filter?min=${min}&max=${max}&color=${option}&category=${activeIndex}` );
-    }
-  },[min, max, fetchData, option, activeIndex] );
-
   const getDataByFilterOptions = useCallback( async ( color ) => {
-      setOption( color );
-      fetchData( `/api/filter?min=${min}&max=${max}&color=${color}&category=${activeIndex}` );
-  },[activeIndex, fetchData, max, min]);
+    setOption( color );
+    handleFilterDataByParams( {color } );
+  },[handleFilterDataByParams]);
 
   useEffect(() => {
-    let isMounted = true;
+    let isMount = true;
 
-    if(isMounted) {
-      fetchData( `/api/filter?category=${activeIndex}` );
+    if(isMount && (debouncedMinTerm?.length || debouncedMaxTerm?.length)) {
+      handleFilterDataByParams({ min: debouncedMinTerm, max: debouncedMaxTerm });
+    } else {
+      handleFilterDataByParams({category: activeIndex});
     };
 
     return () => {
-      isMounted = false;
+      isMount = false;
     }
-  },[] );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[debouncedMaxTerm, debouncedMinTerm] );
 
   return (
     <div className={cn("section", styles.section)}>
@@ -169,13 +183,6 @@ const Discover = ({ info, type }) => {
                     required
                   />
                 </div>
-                <button
-                  disabled={isApplied}
-                  className={cn( isApplied ? "button": "button-stroke", styles.button )}
-                  onClick={getDataByFilterPrice}
-                >
-                  Apply
-                </button>
             </div>
           </div>
         </div>
@@ -185,9 +192,10 @@ const Discover = ({ info, type }) => {
             className={cn("discover-slider", styles.slider)}
             {...settings}
           >
-            {filterResult?.length && filterResult?.map( ( info,index ) => (
+            {filterResult?.length ? filterResult?.map( ( info,index ) => (
                 <Card className={styles.card} item={info} key={index} />
-            ))}
+              )) :
+                <p className={styles.inform}>Try another category!</p>}
           </Slider>
         </div>
       </div>

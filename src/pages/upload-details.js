@@ -257,8 +257,13 @@ const Upload = ({navigationItems, categoriesType}) => {
             />
           </div>
         </div>
-        <Modal visible={visibleAuthModal} onClose={() => setVisibleAuthModal(false)}>
-          <OAuth className={styles.steps} handleOAuth={handleOAuth} handleClose={() => setVisibleAuthModal(false)} />
+        <Modal visible={visibleAuthModal} disable={!cosmicUser?.hasOwnProperty('id')} onClose={() => setVisibleAuthModal(false)}>
+          <OAuth
+            className={styles.steps}
+            handleOAuth={handleOAuth}
+            handleClose={() => setVisibleAuthModal( false )}
+            disable={!cosmicUser?.hasOwnProperty('id')}
+          />
         </Modal>
       </Layout>
   );
