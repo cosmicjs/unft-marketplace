@@ -4,15 +4,15 @@ For building this uNFT marketplace app we are going to use Next.js, Cosmic, and 
 
 ## Tools we’ll be using
 
-[Next.js](https://nextjs.org/) - scalable and high-performance **React.js** framework for modern web development. Provides a large set of features, such as hybrid rendering, route prefetching, automatic image optimization, and internationalization, out of the box.
-[Cosmic](https://www.cosmicjs.com/) - fast, fully managed [headless CMS](https://www.cosmicjs.com/headless-cms) that enables us to quickly manage and create website content including UGC (user-generated content).
-[Stripe](https://stripe.com/) - payments infrastructure that provides API tools to receive one-time and subscription payments.
+- [Next.js](https://nextjs.org/) - scalable and high-performance **React.js** framework for modern web development. Provides a large set of features, such as hybrid rendering, route prefetching, automatic image optimization, and internationalization, out of the box.
+- [Cosmic](https://www.cosmicjs.com/) - fast, fully managed [headless CMS](https://www.cosmicjs.com/headless-cms) that enables us to quickly manage and create website content including UGC (user-generated content).
+- [Stripe](https://stripe.com/) - payments infrastructure that provides API tools to receive one-time and subscription payments.
 
 ### TL;DR
 
-[Check out the code](https://github.com/cosmicjs/unft-marketplace)
-[View the live demo](https://unft-marketplace-cosmicjs.vercel.app/)
-[Install the App Template](https://www.cosmicjs.com/apps/unft-marketplace)
+- [Check out the code](https://github.com/cosmicjs/unft-marketplace)
+- [View the live demo](https://unft-marketplace-cosmicjs.vercel.app/)
+- [Install the App Template](https://www.cosmicjs.com/apps/unft-marketplace)
 
 ![template](https://imgix.cosmicjs.com/f4ec2670-0089-11ed-b9bb-f5281b8ef713-Cosmic-uNFT.gif)
 
