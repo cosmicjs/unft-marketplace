@@ -9,28 +9,7 @@ import SocialMedia from '../SocialMedia';
 
 import styles from "./Footer.module.sass";
 
-const items = [
-  {
-    title: "Info",
-    menu: [
-      {
-        title: "Search",
-        url: '/search',
-      },
-      {
-        title: "Create item",
-        url: "/upload-details",
-      },
-      {
-        title: "About Us",
-        url: "/about",
-      },
-    ],
-  },
-];
-
-const Footers = ({navigation}) => {
-  const [email, setEmail] = useState("");
+const Footers = ( { navigation } ) => {
 
   return (
     <footer className={styles.footer}>
@@ -54,35 +33,29 @@ const Footers = ({navigation}) => {
             </div>
           </div>
           <div className={styles.col}>
-            {items?.map((x, index) => (
-              <Group className={styles.group} item={x} key={index} />
-            ))}
+              <Group className={styles.group} item={navigation?.['menu']} />
           </div>
           <div className={styles.col}>
             <AppLink
-              target='_blank'
               href={`https://www.cosmicjs.com/features`}>
-              <div className={styles.category}>
+              <p className={styles.category}>
                 About Cosmic
-              </div>
+              </p>
             </AppLink>
             <AppLink
-              target='_blank'
               href={`https://docs.cosmicjs.com/`}>
-              <div className={styles.text}>
-                <p>Documentation</p>
-              </div>
+              <p className={styles.text}>
+                Documentation
+              </p>
             </AppLink>
             <AppLink
-              target='_blank'
               href={`https://www.cosmicjs.com/contact`}>
-              <div className={styles.text}>
-                <p>Contact Us</p>
-              </div>
+              <p className={styles.text}>
+                Contact Us
+              </p>
             </AppLink>
             <SocialMedia className={styles.form} />
             <AppLink
-              target='_blank'
               href={`https://cosmicjs.us5.list-manage.com/subscribe/post?u=15433aab34aefd5450c23fd94&id=028c29b6ca`}>
               <button
                 aria-hidden="true"
@@ -93,10 +66,7 @@ const Footers = ({navigation}) => {
           </div>
         </div>
       </div>
-      <AppLink
-              target='_blank'
-              href={`https://www.cosmicjs.com`}
-          >
+      <AppLink href={`https://www.cosmicjs.com`}>
           <div className={styles.copyright} aria-hidden="true">
             <p className={styles.powered}>
               Powered by{' '}
