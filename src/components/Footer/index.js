@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import cn from "classnames";
 import AppLink from "../AppLink";
 import Group from "./Group";
-import Form from "../Form";
 import Theme from "../Theme";
 import Image from "../Image";
 import SocialMedia from '../SocialMedia';

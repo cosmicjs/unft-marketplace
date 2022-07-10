@@ -13,10 +13,10 @@ function AppLink({ href, className, children }) {
       href={href}
       passHref
       aria-hidden="true"
-      target={hrefPath && "_blank"}
+      target={hrefPath ? "_blank" : "_self"}
       rel={hrefPath && "noopener noreferrer"}
     >
-      <a target={hrefPath && "_blank"} className={className} aria-hidden="true">
+      <a target={hrefPath ? "_blank" : "_self"} className={className} aria-hidden="true">
         {children}
       </a>
     </Link>

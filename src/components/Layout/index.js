@@ -2,6 +2,7 @@ import React,{ useEffect,useState,useCallback } from "react";
 import Head from 'next/head';
 import Header from "../Header";
 import Footer from "../Footer";
+import AppLink from "../AppLink";
 import { useStateContext } from '../../utils/context/StateContext';
 
 import styles from "./Layout.module.sass";
@@ -29,6 +30,9 @@ const Layout = ({ children, title, navigationPaths }) => {
         <link rel="icon" href="/favicon.ico" />
         <title>{title || 'uNFT Marketplace'}</title>
       </Head>
+      <AppLink className={styles.github} href="https://github.com/cosmicjs/unft-marketplace">
+        <p className={styles.source}>The source code available on <span className={styles.github}> GitHub.</span></p>
+      </AppLink>
       <div className={styles.page}>
         <Header navigation={navigationPaths || navigation} />
         <main className={styles.inner}>
