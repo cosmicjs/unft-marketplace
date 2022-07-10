@@ -14,7 +14,7 @@ For building this uNFT marketplace app we are going to use Next.js, Cosmic, and 
 - [View the live demo](https://unft-marketplace-cosmicjs.vercel.app/)
 - [Install the App Template](https://www.cosmicjs.com/apps/unft-marketplace)
 
-![template](https://imgix.cosmicjs.com/f4ec2670-0089-11ed-b9bb-f5281b8ef713-Cosmic-uNFT.gif)
+![Cosmic uNFT](https://user-images.githubusercontent.com/34789741/178161188-4b899373-e919-4036-9b72-61422c7a786d.gif)
 
 ## Getting started
 
