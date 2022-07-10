@@ -2,6 +2,8 @@
 
 The uNFT Marketplace app is a template that you can use to get your own digital storefront up and running in minutes. Download and use for free.
 
+![Cosmic uNFT](https://user-images.githubusercontent.com/34789741/178161188-4b899373-e919-4036-9b72-61422c7a786d.gif)
+
 ## Tools we’ll be using
 This template uses the following technologies:
 
@@ -14,8 +16,6 @@ This template uses the following technologies:
 - [Check out the code](https://github.com/cosmicjs/unft-marketplace)
 - [View the live demo](https://unft-marketplace-cosmicjs.vercel.app/)
 - [Install the App Template](https://www.cosmicjs.com/apps/unft-marketplace)
-
-![Cosmic uNFT](https://user-images.githubusercontent.com/34789741/178161188-4b899373-e919-4036-9b72-61422c7a786d.gif)
 
 ## Getting started
 
