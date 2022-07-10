@@ -1,6 +1,6 @@
 ## uNFT Marketplace
 
-The uNFT Marketplace app is a template that you can use to get your own digital storefront up and running in minutes. Download and use for free.
+The uNFT Marketplace app is a template that you can use to get your own digital storefront up and running in minutes enabling can buy and sell digital art. Download and use for free.
 
 ![Cosmic uNFT](https://user-images.githubusercontent.com/34789741/178161188-4b899373-e919-4036-9b72-61422c7a786d.gif)
 
