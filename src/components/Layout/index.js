@@ -31,7 +31,7 @@ const Layout = ({ children, title, navigationPaths }) => {
         <title>{title || 'uNFT Marketplace'}</title>
       </Head>
       <AppLink className={styles.github} href="https://github.com/cosmicjs/unft-marketplace">
-        <p className={styles.source}>The source code available on <span className={styles.github}> GitHub.</span></p>
+        <p className={styles.source}>The source code for this marketplace app is <span className={styles.github}>available on GitHub</span>.</p>
       </AppLink>
       <div className={styles.page}>
         <Header navigation={navigationPaths || navigation} />
