@@ -28,16 +28,21 @@ yarn
 
 ## Environment Variables
 
-You'll need to create an .env file in the root of the project. Log in to Cosmic and from Bucket Settings > API Access take the following values:
+You'll need to create an .env file in the root of the project. Log in to [Cosmic](https://app.cosmicjs.com/) and from **Bucket Settings > API Access** take the following values:
 
 ```bash
 //.env
 NEXT_PUBLIC_COSMIC_BUCKET_SLUG=your_cosmic_slug
 NEXT_PUBLIC_COSMIC_READ_KEY=your_cosmic_read_key
 COSMIC_WRITE_KEY=your_cosmic_write_key
+
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
 ```
 
-## Then run the development server:
+The same way log in to [Stripe](https://dashboard.stripe.com/) and **for developers** section take your keys.
+
+## Then run the development server
 
 ```bash
 npm run dev
