@@ -1,8 +1,9 @@
-## Build an uNFT marketplace with Next.js, Cosmic and Stripe integration
+## uNFT Marketplace
 
-For building this uNFT marketplace app we are going to use Next.js, Cosmic, and Stripe. After we are done, you will be equipped with a foundation to build your own ideas and projects using these powerful, modern tools.
+The uNFT Marketplace app is a template that you can use to get your own digital storefront up and running in minutes. Download and use for free.
 
 ## Tools we’ll be using
+This template uses the following technologies:
 
 - [Next.js](https://nextjs.org/) - scalable and high-performance **React.js** framework for modern web development. Provides a large set of features, such as hybrid rendering, route prefetching, automatic image optimization, and internationalization, out of the box.
 - [Cosmic](https://www.cosmicjs.com/) - fast, fully managed [headless CMS](https://www.cosmicjs.com/headless-cms) that enables us to quickly manage and create website content including UGC (user-generated content).
@@ -21,9 +22,11 @@ For building this uNFT marketplace app we are going to use Next.js, Cosmic, and 
 ```bash
 git clone https://github.com/cosmicjs/unft-marketplace.git
 cd unft-marketplace
-npm install
+pnpm install
 # or
 yarn
+# or
+npm install
 ```
 
 ## Environment Variables
