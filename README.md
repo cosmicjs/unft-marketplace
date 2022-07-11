@@ -62,9 +62,7 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 <a href="https://vercel.com/import/git?c=1&s=https://vercel.com/import/git?c=1&s=https://github.com/cosmicjs/nextjs-restaurant-website-cms&env=NEXT_PUBLIC_COSMIC_BUCKET_SLUG,NEXT_PUBLIC_COSMIC_READ_KEY,COSMIC_WRITE_KEY,NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,STRIPE_SECRET_KEY" rel="noopener noreferrer" target="_blank"><img src="https://cdn.cosmicjs.com/d3f0d5e0-c064-11ea-9a05-6f8a16b0b14c-deploy-to-vercel.svg" style="width: 100px;" class="fr-fic fr-dib fr-fil"></a>
 </p>
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-Your feedback and contributions are welcome!
+Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 ## License
 
