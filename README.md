@@ -4,7 +4,7 @@ The uNFT Marketplace is a template that you can use to start your own digital ar
 
 ![Cosmic uNFT](https://user-images.githubusercontent.com/34789741/178161188-4b899373-e919-4036-9b72-61422c7a786d.gif)
 
-## Tools we’ll be using
+## Technology used
 This template uses the following technologies:
 
 - [Next.js](https://nextjs.org/) - scalable and high-performance **React.js** framework for modern web development. Provides a large set of features, such as hybrid rendering, route prefetching, automatic image optimization, and internationalization, out of the box.
@@ -29,7 +29,7 @@ yarn
 npm install
 ```
 
-## Environment Variables
+## Environment variables
 
 You'll need to create an .env file in the root of the project. Log in to [Cosmic](https://app.cosmicjs.com/) and from **Bucket Settings > API Access** take the following values:
 
