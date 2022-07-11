@@ -15,7 +15,7 @@ This template uses the following technologies:
 ### TL;DR
 
 - [View the live demo](https://unft-marketplace-cosmicjs.vercel.app/)
-- [Install the App Template](https://www.cosmicjs.com/apps/unft-marketplace) with demo content
+- [Install the app template](https://www.cosmicjs.com/apps/unft-marketplace) with demo content
 - [Read how it was built](https://www.cosmicjs.com/articles/build-a-digital-art-marketplace-with-nextjs-cosmic-and-stripe)
 
 ## Getting started
