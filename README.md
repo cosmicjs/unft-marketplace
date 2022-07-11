@@ -32,7 +32,7 @@ npm install
 
 ## Environment variables
 
-You'll need to create a .env file in the root of the project. Log in to [Cosmic](https://app.cosmicjs.com/) and from **Bucket Settings > API Access** take the following values:
+You'll need to create a `.env` file in the root of the project. Log in to [Cosmic](https://app.cosmicjs.com/) and from **Bucket Settings > API Access** get your API access keys. Then log in to [Stripe](https://dashboard.stripe.com/) and get your keys in the **for developers** section. Add your keys to the `.env` file like so:
 
 ```bash
 //.env
@@ -43,8 +43,6 @@ COSMIC_WRITE_KEY=your_cosmic_write_key
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_key
 STRIPE_SECRET_KEY=your_stripe_secret_key
 ```
-
-The same way log in to [Stripe](https://dashboard.stripe.com/) and **for developers** section take your keys.
 
 ## Then run the development server
 
@@ -59,7 +57,7 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 ## Deploy on Vercel
 
-<p>Use the following button to deploy to <a href="https://vercel.com/" rel="noopener noreferrer" target="_blank">Vercel</a>. You will need to add your Bucket API access keys as environment variables. Find these in <em>Bucket Settings &gt; API Access</em><em>.</em></p>
+<p>Use the following button to deploy to <a href="https://vercel.com/" rel="noopener noreferrer" target="_blank">Vercel</a>. You will need to add your environment variables before deployment.</p>
 <p>
 <a href="https://vercel.com/import/git?c=1&s=https://vercel.com/import/git?c=1&s=https://github.com/cosmicjs/nextjs-restaurant-website-cms&env=NEXT_PUBLIC_COSMIC_BUCKET_SLUG,NEXT_PUBLIC_COSMIC_READ_KEY,COSMIC_WRITE_KEY,NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,STRIPE_SECRET_KEY" rel="noopener noreferrer" target="_blank"><img src="https://cdn.cosmicjs.com/d3f0d5e0-c064-11ea-9a05-6f8a16b0b14c-deploy-to-vercel.svg" style="width: 100px;" class="fr-fic fr-dib fr-fil"></a>
 </p>
