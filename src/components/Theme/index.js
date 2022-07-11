@@ -1,17 +1,17 @@
-import React from "react";
-import cn from "classnames";
-import styles from "./Theme.module.sass";
-import useDarkMode from "use-dark-mode";
+import React from 'react'
+import cn from 'classnames'
+import styles from './Theme.module.sass'
+import useDarkMode from 'use-dark-mode'
 
 const Theme = ({ className }) => {
-  const darkMode = useDarkMode(false);
+  const darkMode = useDarkMode(false)
 
   return (
     <label
       className={cn(
         styles.theme,
-        { [styles.theme]: className === "theme" },
-        { [styles.themeBig]: className === "theme-big" }
+        { [styles.theme]: className === 'theme' },
+        { [styles.themeBig]: className === 'theme-big' }
       )}
     >
       <input
@@ -24,7 +24,7 @@ const Theme = ({ className }) => {
         <span className={styles.box}></span>
       </span>
     </label>
-  );
-};
+  )
+}
 
-export default Theme;
+export default Theme

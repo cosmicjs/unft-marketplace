@@ -3,6 +3,6 @@ const createFields = {
   count: '',
   description: '',
   price: '',
-};
+}
 
-export default createFields;
+export default createFields

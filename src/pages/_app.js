@@ -1,10 +1,9 @@
-import { Toaster } from 'react-hot-toast';
-import { StateContext } from '../utils/context/StateContext';
+import { Toaster } from 'react-hot-toast'
+import { StateContext } from '../utils/context/StateContext'
 
 import '../styles/app.sass'
 
-function MyApp( { Component,pageProps } ) {
-
+function MyApp({ Component, pageProps }) {
   return (
     <StateContext>
       <Toaster />

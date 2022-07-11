@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import cn from 'classnames';
-import AppLink from '../AppLink';
-import Group from './Group';
-import Theme from '../Theme';
-import Image from '../Image';
-import SocialMedia from '../SocialMedia';
+import React, { useState } from 'react'
+import cn from 'classnames'
+import AppLink from '../AppLink'
+import Group from './Group'
+import Theme from '../Theme'
+import Image from '../Image'
+import SocialMedia from '../SocialMedia'
 
-import styles from './Footer.module.sass';
+import styles from './Footer.module.sass'
 
 const Footers = ({ navigation }) => {
   return (
@@ -45,10 +45,12 @@ const Footers = ({ navigation }) => {
             </AppLink>
             <SocialMedia className={styles.form} />
             <AppLink
-              href={`https://cosmicjs.us5.list-manage.com/subscribe/post?u=15433aab34aefd5450c23fd94&id=028c29b6ca`}>
+              href={`https://cosmicjs.us5.list-manage.com/subscribe/post?u=15433aab34aefd5450c23fd94&id=028c29b6ca`}
+            >
               <button
                 aria-hidden="true"
-                className={cn('button', styles.button)}>
+                className={cn('button', styles.button)}
+              >
                 Subscribe Newsletter
               </button>
             </AppLink>
@@ -72,7 +74,7 @@ const Footers = ({ navigation }) => {
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footers;
+export default Footers

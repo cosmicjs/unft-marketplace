@@ -1,7 +1,13 @@
-import { FiFacebook, FiTwitter, FiYoutube, FiLinkedin, FiSlack } from 'react-icons/fi';
-import AppLink from '../AppLink';
+import {
+  FiFacebook,
+  FiTwitter,
+  FiYoutube,
+  FiLinkedin,
+  FiSlack,
+} from 'react-icons/fi'
+import AppLink from '../AppLink'
 
-import styles from './SocialMedia.module.sass';
+import styles from './SocialMedia.module.sass'
 
 const socialMedia = [
   {
@@ -23,23 +29,19 @@ const socialMedia = [
   {
     Icon: FiSlack,
     url: 'https://cosmicslack.herokuapp.com/',
-  }
+  },
 ]
 
 const SocialMedia = () => {
   return (
     <div className={styles.social}>
-      {socialMedia?.map( ( { Icon,url },index ) => (
-        <AppLink
-              key={index}
-              target='_blank'
-              href={url}
-              >
-          <Icon className={styles.icon}/>
+      {socialMedia?.map(({ Icon, url }, index) => (
+        <AppLink key={index} target="_blank" href={url}>
+          <Icon className={styles.icon} />
         </AppLink>
       ))}
     </div>
   )
 }
 
-export default SocialMedia;
+export default SocialMedia

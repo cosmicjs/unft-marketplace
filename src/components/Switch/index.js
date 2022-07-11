@@ -1,6 +1,6 @@
-import React from "react";
-import cn from "classnames";
-import styles from "./Switch.module.sass";
+import React from 'react'
+import cn from 'classnames'
+import styles from './Switch.module.sass'
 
 const Switch = ({ className, value, setValue }) => {
   return (
@@ -15,7 +15,7 @@ const Switch = ({ className, value, setValue }) => {
         <span className={styles.box}></span>
       </span>
     </label>
-  );
-};
+  )
+}
 
-export default Switch;
+export default Switch

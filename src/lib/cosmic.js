@@ -1,16 +1,16 @@
-import Cosmic from 'cosmicjs';
+import Cosmic from 'cosmicjs'
 
 const bucket = Cosmic().bucket({
   slug: process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG,
   read_key: process.env.NEXT_PUBLIC_COSMIC_READ_KEY,
 })
 
-const is404 = ( error ) => /not found/i.test( error?.message )
+const is404 = error => /not found/i.test(error?.message)
 
 export async function getDataByCategory(id) {
   const params = {
     query: {
-      "metadata.categories": [`${id}`],
+      'metadata.categories': [`${id}`],
       type: 'products',
     },
     props: 'title,slug,metadata,created_at',
@@ -18,7 +18,7 @@ export async function getDataByCategory(id) {
   }
 
   try {
-    const data = await bucket.getObjects( params )
+    const data = await bucket.getObjects(params)
     return data.objects
   } catch (error) {
     // Don't throw if an slug doesn't exist
@@ -37,7 +37,7 @@ export async function getAllDataByType(dataType = 'categories') {
   }
 
   try {
-    const data = await bucket.getObjects( params )
+    const data = await bucket.getObjects(params)
     return data.objects
   } catch (error) {
     // Don't throw if an slug doesn't exist
@@ -56,7 +56,7 @@ export async function getDataBySlug(slug) {
   }
 
   try {
-    const data = await bucket.getObjects( params )
+    const data = await bucket.getObjects(params)
     return data.objects
   } catch (error) {
     // Don't throw if an slug doesn't exist
@@ -64,5 +64,3 @@ export async function getDataBySlug(slug) {
     throw error
   }
 }
-
-
