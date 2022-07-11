@@ -35,7 +35,7 @@ npm install
 ### Environment variables
 You'll need to create a `.env` file in the root of the project and add the access keys for Cosmic and Stripe.
 
-**Cosmic**: Go to [Cosmic](https://app.cosmicjs.com/) and from the Bucket that you installed the app template go to **Bucket Settings > API Access** and get your API access keys.
+**Cosmic**: Go to [Cosmic](https://app.cosmicjs.com/) and from the Bucket that you installed the app template go to _Bucket Settings > API Access_ and get your API access keys.
 
 **Stripe**: Log in to [Stripe](https://dashboard.stripe.com/) and get your keys in the **for developers** section.
 
