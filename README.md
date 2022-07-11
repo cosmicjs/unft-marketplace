@@ -1,6 +1,6 @@
 ## uNFT Marketplace
 
-The uNFT Marketplace is a template that you can use to start your own digital art marketplace. Download for free. Note: You will need to install the [App Template](https://www.cosmicjs.com/apps/unft-marketplace) to display demo content.
+The uNFT Marketplace is a template that you can use to start your own digital art marketplace. Download for free.
 
 ![Cosmic uNFT](https://user-images.githubusercontent.com/1950722/178328933-c6f0008f-a188-4678-9420-404dd1f02871.gif)
 
@@ -19,6 +19,8 @@ This template uses the following technologies:
 - [Read how it was built](https://www.cosmicjs.com/articles/build-a-digital-art-marketplace-with-nextjs-cosmic-and-stripe)
 
 ## Getting started
+1. First, install the [app template](https://www.cosmicjs.com/apps/unft-marketplace).
+2. Then download and install the code on your machine.
 
 ```bash
 git clone https://github.com/cosmicjs/unft-marketplace.git
@@ -30,9 +32,14 @@ yarn
 npm install
 ```
 
-## Environment variables
+### Environment variables
+You'll need to create a `.env` file in the root of the project and add the access keys for Cosmic and Stripe.
 
-You'll need to create a `.env` file in the root of the project. Log in to [Cosmic](https://app.cosmicjs.com/) and from **Bucket Settings > API Access** get your API access keys. Then log in to [Stripe](https://dashboard.stripe.com/) and get your keys in the **for developers** section. Add your keys to the `.env` file like so:
+**Cosmic**: Go to [Cosmic](https://app.cosmicjs.com/) and from the Bucket that you installed the app template go to **Bucket Settings > API Access** and get your API access keys.
+
+**Stripe**: Log in to [Stripe](https://dashboard.stripe.com/) and get your keys in the **for developers** section.
+
+Add your keys to the `.env` file like so:
 
 ```bash
 //.env
@@ -44,7 +51,7 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_key
 STRIPE_SECRET_KEY=your_stripe_secret_key
 ```
 
-## Then run the development server
+### Then run the development server
 
 ```bash
 npm run dev
