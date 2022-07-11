@@ -19,7 +19,7 @@ This template uses the following technologies:
 - [Read how it was built](https://www.cosmicjs.com/articles/build-a-digital-art-marketplace-with-nextjs-cosmic-and-stripe)
 
 ## Getting started
-1. First, install the [app template](https://www.cosmicjs.com/apps/unft-marketplace) into your Cosmic account.
+1. First, install the [app template](https://www.cosmicjs.com/apps/unft-marketplace) into your Cosmic account to get the demo content ready.
 2. Then download and install the code on your machine.
 
 ```bash
