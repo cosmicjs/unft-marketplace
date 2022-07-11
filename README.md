@@ -66,3 +66,7 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 Your feedback and contributions are welcome!
+
+## License
+
+This project is published under the [MIT](LICENSE) license.
