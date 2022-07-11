@@ -32,7 +32,7 @@ npm install
 
 ## Environment variables
 
-You'll need to create an .env file in the root of the project. Log in to [Cosmic](https://app.cosmicjs.com/) and from **Bucket Settings > API Access** take the following values:
+You'll need to create a .env file in the root of the project. Log in to [Cosmic](https://app.cosmicjs.com/) and from **Bucket Settings > API Access** take the following values:
 
 ```bash
 //.env
