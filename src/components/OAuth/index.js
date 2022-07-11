@@ -82,7 +82,7 @@ const OAuth = ( { className,handleClose,handleOAuth, disable } ) => {
         >
           Cosmic
         </AppLink></div>
-      <div className={styles.text}>For create item you need register to {' '}
+      <div className={styles.text}>To create an item you need to register an account at {' '}
         <AppLink
               target='_blank'
               href={`https://www.cosmicjs.com`}

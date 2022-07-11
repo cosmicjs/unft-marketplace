@@ -38,7 +38,7 @@ const Headers = ({navigation}) => {
 
   return (
     <>
-    <header className={styles.header}>
+      <header className={styles.header}>
       <div className={cn("container", styles.container)} aria-hidden="true">
         <AppLink className={styles.logo} href="/">
           <Image
