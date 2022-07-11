@@ -1,7 +1,9 @@
 ## uNFT Marketplace
 
 The uNFT Marketplace is a template that you can use to start your own digital art marketplace. Download for free.
-![Cosmic uNFT](https://user-images.githubusercontent.com/1950722/178328480-d95821b6-ab29-48f6-8e72-167d9d80441e.gif)
+
+![Cosmic uNFT](https://user-images.githubusercontent.com/1950722/178328933-c6f0008f-a188-4678-9420-404dd1f02871.gif)
+
 
 ## Technology used
 This template uses the following technologies:
