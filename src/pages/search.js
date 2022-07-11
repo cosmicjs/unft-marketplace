@@ -18,7 +18,6 @@ import styles from '../styles/pages/Search.module.sass';
 import { PageMeta } from '../components/Meta';
 
 const Search = ({ categoriesGroup, navigationItems, categoryData }) => {
-  console.log(navigationItems);
   const { query, push } = useRouter();
   const { categories } = useStateContext();
 
