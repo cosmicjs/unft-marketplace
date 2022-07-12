@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import cn from 'classnames'
 import AppLink from '../AppLink'
 import Icon from '../Icon'
-import Image from '../Image'
+import Image from 'next/image'
 import User from './User'
 import Theme from '../Theme'
 import Modal from '../Modal'
@@ -50,11 +50,15 @@ const Headers = ({ navigation }) => {
         <div className={cn('container', styles.container)} aria-hidden="true">
           <AppLink className={styles.logo} href="/">
             <Image
-              size={{ width: '128px', height: '60px' }}
+              width={128}
+              height={60}
+              quality={60}
+              objectFit='contain'
               className={styles.pic}
               src={navigation['logo']?.imgix_url}
               srcDark={navigation['logo']?.imgix_url}
               alt="Logo"
+              priority
             />
           </AppLink>
           <div className={cn(styles.wrapper, { [styles.active]: visibleNav })}>

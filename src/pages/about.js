@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import cn from 'classnames'
 import { useStateContext } from '../utils/context/StateContext'
 import Layout from '../components/Layout'
-import Image from '../components/Image'
+import Image from 'next/image'
 import chooseBySlug from '../utils/chooseBySlug'
 import { getAllDataByType } from '../lib/cosmic'
 
@@ -30,12 +30,17 @@ const AboutUs = ({ navigationItems, landing }) => {
       <div className={cn('section', styles.section)}>
         <div className={cn('container', styles.container)}>
           <div className={styles.wrap}>
-            <div className={styles.preview}>
+            <div className={styles.heroWrapper}>
               <Image
-                size={{ width: '100%', height: '50vh' }}
+                quality={60}
+                layout="fill"
                 src={infoAbout?.metadata?.image?.imgix_url}
                 srcDark={infoAbout?.metadata?.image?.imgix_url}
+                placeholder="blur"
+                blurDataURL={`${infoAbout?.metadata?.image?.imgix_url}?auto=format,compress&q=1&blur=500&w=2`}
+                objectFit="cover"
                 alt="Figures"
+                priority
               />
             </div>
             <h2 className={cn('h2', styles.title)}>

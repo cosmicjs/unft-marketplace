@@ -1,7 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
 import { useRouter } from 'next/router'
-import Image from '../../../components/Image'
+import Image from 'next/image'
 
 import styles from './Description.module.sass'
 
@@ -37,15 +37,20 @@ const Description = ({ info }) => {
           </div>
         </div>
         <div className={styles.gallery}>
-          <Image
-            size={{ width: '100%', height: '100vmin' }}
-            className={styles.preview}
-            src={info?.metadata?.image?.imgix_url}
-            srcDark={info?.metadata?.image?.imgix_url}
-            objectFit="contain"
-            alt="Team"
-            priority
-          />
+          <div className={styles.heroWrapper}>
+            <Image
+              quality={60}
+              className={styles.preview}
+              layout="fill"
+              src={info?.metadata?.image?.imgix_url}
+              srcDark={info?.metadata?.image?.imgix_url}
+              placeholder="blur"
+              blurDataURL={`${info?.metadata?.image?.imgix_url}?auto=format,compress&q=1&blur=500&w=2`}
+              objectFit="cover"
+              alt="Team"
+              priority
+            />
+          </div>
         </div>
       </div>
     </div>
