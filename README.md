@@ -54,9 +54,11 @@ STRIPE_SECRET_KEY=your_stripe_secret_key
 ### Then run the development server
 
 ```bash
-npm run dev
-# or
+pnpm dev
+# OR
 yarn dev
+# OR
+npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
