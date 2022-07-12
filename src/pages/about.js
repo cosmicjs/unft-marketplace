@@ -35,7 +35,6 @@ const AboutUs = ({ navigationItems, landing }) => {
                 quality={60}
                 layout="fill"
                 src={infoAbout?.metadata?.image?.imgix_url}
-                srcDark={infoAbout?.metadata?.image?.imgix_url}
                 placeholder="blur"
                 blurDataURL={`${infoAbout?.metadata?.image?.imgix_url}?auto=format,compress&q=1&blur=500&w=2`}
                 objectFit="cover"
