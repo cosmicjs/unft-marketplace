@@ -19,9 +19,10 @@ const ImageApp = ({
         src={darkMode.value && srcDark ? srcDark : src}
         alt={alt}
         layout="fill"
+        quality={60}
         objectFit={objectFit}
         placeholder="blur"
-        blurDataURL={`${src}?w=10`}
+        blurDataURL={`${src}?auto=format,compress&q=1&blur=500&w=2`}
         priority={priority}
       />
     </div>
