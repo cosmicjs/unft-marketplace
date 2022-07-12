@@ -1,116 +1,116 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import cn from 'classnames';
-import toast from 'react-hot-toast';
-import { useRouter } from 'next/router';
-import { useStateContext } from '../utils/context/StateContext';
-import Layout from '../components/Layout';
-import Dropdown from '../components/Dropdown';
-import Icon from '../components/Icon';
-import TextInput from '../components/TextInput';
-import Loader from '../components/Loader';
-import Modal from '../components/Modal';
-import OAuth from '../components/OAuth';
-import Preview from '../screens/UploadDetails/Preview';
-import Cards from '../screens/UploadDetails/Cards';
-import { getAllDataByType } from '../lib/cosmic';
-import { OPTIONS } from '../utils/constants/appConstants';
-import createFields from '../utils/constants/createFields';
-import { getToken } from '../utils/token';
+import React, { useState, useCallback, useEffect } from 'react'
+import cn from 'classnames'
+import toast from 'react-hot-toast'
+import { useRouter } from 'next/router'
+import { useStateContext } from '../utils/context/StateContext'
+import Layout from '../components/Layout'
+import Dropdown from '../components/Dropdown'
+import Icon from '../components/Icon'
+import TextInput from '../components/TextInput'
+import Loader from '../components/Loader'
+import Modal from '../components/Modal'
+import OAuth from '../components/OAuth'
+import Preview from '../screens/UploadDetails/Preview'
+import Cards from '../screens/UploadDetails/Cards'
+import { getAllDataByType } from '../lib/cosmic'
+import { OPTIONS } from '../utils/constants/appConstants'
+import createFields from '../utils/constants/createFields'
+import { getToken } from '../utils/token'
 
-import styles from '../styles/pages/UploadDetails.module.sass';
-import { PageMeta } from '../components/Meta';
+import styles from '../styles/pages/UploadDetails.module.sass'
+import { PageMeta } from '../components/Meta'
 
 const Upload = ({ navigationItems, categoriesType }) => {
-  const { categories, navigation, cosmicUser } = useStateContext();
-  const { push } = useRouter();
+  const { categories, navigation, cosmicUser } = useStateContext()
+  const { push } = useRouter()
 
-  const [color, setColor] = useState(OPTIONS[1]);
-  const [uploadMedia, setUploadMedia] = useState('');
-  const [uploadFile, setUploadFile] = useState('');
-  const [chooseCategory, setChooseCategory] = useState('');
-  const [fillFiledMessage, setFillFiledMessage] = useState(false);
+  const [color, setColor] = useState(OPTIONS[1])
+  const [uploadMedia, setUploadMedia] = useState('')
+  const [uploadFile, setUploadFile] = useState('')
+  const [chooseCategory, setChooseCategory] = useState('')
+  const [fillFiledMessage, setFillFiledMessage] = useState(false)
   const [{ title, count, description, price }, setFields] = useState(
     () => createFields
-  );
+  )
 
-  const [visibleAuthModal, setVisibleAuthModal] = useState(false);
+  const [visibleAuthModal, setVisibleAuthModal] = useState(false)
 
-  const [visiblePreview, setVisiblePreview] = useState(false);
+  const [visiblePreview, setVisiblePreview] = useState(false)
 
   useEffect(() => {
-    let isMounted = true;
-    const uNFTUser = getToken();
+    let isMounted = true
+    const uNFTUser = getToken()
 
     if (
       isMounted &&
       !cosmicUser?.hasOwnProperty('id') &&
       !uNFTUser?.hasOwnProperty('id')
     ) {
-      setVisibleAuthModal(true);
+      setVisibleAuthModal(true)
     }
 
     return () => {
-      isMounted = false;
-    };
-  }, [cosmicUser]);
+      isMounted = false
+    }
+  }, [cosmicUser])
 
-  const handleUploadFile = async (uploadFile) => {
-    const formData = new FormData();
-    formData.append('file', uploadFile);
+  const handleUploadFile = async uploadFile => {
+    const formData = new FormData()
+    formData.append('file', uploadFile)
 
     const uploadResult = await fetch('/api/upload', {
       method: 'POST',
       body: formData,
-    });
+    })
 
-    const mediaData = await uploadResult.json();
-    await setUploadMedia(mediaData?.['media']);
-  };
+    const mediaData = await uploadResult.json()
+    await setUploadMedia(mediaData?.['media'])
+  }
 
   const handleOAuth = useCallback(
-    async (user) => {
-      !cosmicUser.hasOwnProperty('id') && setVisibleAuthModal(true);
+    async user => {
+      !cosmicUser.hasOwnProperty('id') && setVisibleAuthModal(true)
 
-      if (!user && !user?.hasOwnProperty('id')) return;
-      user && uploadFile && (await handleUploadFile(uploadFile));
+      if (!user && !user?.hasOwnProperty('id')) return
+      user && uploadFile && (await handleUploadFile(uploadFile))
     },
     [cosmicUser, uploadFile]
-  );
+  )
 
-  const handleUpload = async (e) => {
-    setUploadFile(e.target.files[0]);
+  const handleUpload = async e => {
+    setUploadFile(e.target.files[0])
 
     cosmicUser?.hasOwnProperty('id')
       ? handleUploadFile(e.target.files[0])
-      : handleOAuth();
-  };
+      : handleOAuth()
+  }
 
   const handleChange = ({ target: { name, value } }) =>
-    setFields((prevFields) => ({
+    setFields(prevFields => ({
       ...prevFields,
       [name]: value,
-    }));
+    }))
 
-  const handleChooseCategory = useCallback((index) => {
-    setChooseCategory(index);
-  }, []);
+  const handleChooseCategory = useCallback(index => {
+    setChooseCategory(index)
+  }, [])
 
   const previewForm = useCallback(() => {
     if (title && count && price && uploadMedia) {
-      fillFiledMessage && setFillFiledMessage(false);
-      setVisiblePreview(true);
+      fillFiledMessage && setFillFiledMessage(false)
+      setVisiblePreview(true)
     } else {
-      setFillFiledMessage(true);
+      setFillFiledMessage(true)
     }
-  }, [count, fillFiledMessage, price, title, uploadMedia]);
+  }, [count, fillFiledMessage, price, title, uploadMedia])
 
   const submitForm = useCallback(
-    async (e) => {
-      e.preventDefault();
-      !cosmicUser.hasOwnProperty('id') && handleOAuth();
+    async e => {
+      e.preventDefault()
+      !cosmicUser.hasOwnProperty('id') && handleOAuth()
 
       if (cosmicUser && title && color && count && price && uploadMedia) {
-        fillFiledMessage && setFillFiledMessage(false);
+        fillFiledMessage && setFillFiledMessage(false)
 
         const response = await fetch('/api/create', {
           method: 'POST',
@@ -127,9 +127,9 @@ const Upload = ({ navigationItems, categoriesType }) => {
             category: chooseCategory,
             image: uploadMedia['name'],
           }),
-        });
+        })
 
-        const createdItem = await response.json();
+        const createdItem = await response.json()
 
         if (createdItem['object']) {
           toast.success(
@@ -137,12 +137,12 @@ const Upload = ({ navigationItems, categoriesType }) => {
             {
               position: 'bottom-right',
             }
-          );
+          )
 
-          push(`item/${createdItem['object']['slug']}`);
+          push(`item/${createdItem['object']['slug']}`)
         }
       } else {
-        setFillFiledMessage(true);
+        setFillFiledMessage(true)
       }
     },
     [
@@ -158,7 +158,7 @@ const Upload = ({ navigationItems, categoriesType }) => {
       title,
       uploadMedia,
     ]
-  );
+  )
 
   return (
     <Layout navigationPaths={navigationItems[0]?.metadata || navigation}>
@@ -274,13 +274,15 @@ const Upload = ({ navigationItems, categoriesType }) => {
                 <button
                   className={cn('button-stroke tablet-show', styles.button)}
                   onClick={previewForm}
-                  type="button">
+                  type="button"
+                >
                   Preview
                 </button>
                 <button
                   className={cn('button', styles.button)}
                   onClick={submitForm}
-                  type="submit">
+                  type="submit"
+                >
                   <span>Create item</span>
                   <Icon name="arrow-next" size="10" />
                 </button>
@@ -304,7 +306,8 @@ const Upload = ({ navigationItems, categoriesType }) => {
       <Modal
         visible={visibleAuthModal}
         disable={!cosmicUser?.hasOwnProperty('id')}
-        onClose={() => setVisibleAuthModal(false)}>
+        onClose={() => setVisibleAuthModal(false)}
+      >
         <OAuth
           className={styles.steps}
           handleOAuth={handleOAuth}
@@ -313,20 +316,20 @@ const Upload = ({ navigationItems, categoriesType }) => {
         />
       </Modal>
     </Layout>
-  );
-};
+  )
+}
 
-export default Upload;
+export default Upload
 
 export async function getServerSideProps() {
-  const navigationItems = (await getAllDataByType('navigation')) || [];
-  const categoryTypes = (await getAllDataByType('categories')) || [];
+  const navigationItems = (await getAllDataByType('navigation')) || []
+  const categoryTypes = (await getAllDataByType('categories')) || []
 
   const categoriesType = categoryTypes?.reduce((arr, { title, id }) => {
-    return { ...arr, [id]: title };
-  }, {});
+    return { ...arr, [id]: title }
+  }, {})
 
   return {
     props: { navigationItems, categoriesType },
-  };
+  }
 }

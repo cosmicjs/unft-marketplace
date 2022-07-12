@@ -1,23 +1,23 @@
-const handleQueryParams = ({color, min, max, category, search}) => {
-  let queryParam = {category};
+const handleQueryParams = ({ color, min, max, category, search }) => {
+  let queryParam = { category }
 
-  if(color && color?.toLocaleLowerCase() !== "any color") {
-    queryParam = { ...queryParam, color};
+  if (color && color?.toLocaleLowerCase() !== 'any color') {
+    queryParam = { ...queryParam, color }
   }
 
-  if(min && Number(min) > 0 ) {
-    queryParam = { ...queryParam, min};
+  if (min && Number(min) > 0) {
+    queryParam = { ...queryParam, min }
   }
 
-  if(max && Number(max) > Number(min) ) {
-    queryParam = { ...queryParam, max};
+  if (max && Number(max) > Number(min)) {
+    queryParam = { ...queryParam, max }
   }
 
-  if(search && search?.length ) {
-    queryParam = { ...queryParam, search};
+  if (search && search?.length) {
+    queryParam = { ...queryParam, search }
   }
 
-  return queryParam;
+  return queryParam
 }
 
-export default handleQueryParams;
+export default handleQueryParams

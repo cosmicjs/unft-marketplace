@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import cn from "classnames";
-import styles from "./Add.module.sass";
-import Icon from "../../../../components/Icon";
+import React, { useState } from 'react'
+import cn from 'classnames'
+import styles from './Add.module.sass'
+import Icon from '../../../../components/Icon'
 
 const Add = ({ className }) => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
 
   return (
     <button
@@ -16,7 +16,7 @@ const Add = ({ className }) => {
       <Icon name="add-square" size="24" />
       <Icon name="minus-square" size="24" />
     </button>
-  );
-};
+  )
+}
 
-export default Add;
+export default Add

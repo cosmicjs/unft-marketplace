@@ -1,20 +1,20 @@
-import React from "react";
-import cn from "classnames";
-import { useRouter } from 'next/router';
-import Icon from "../../../components/Icon";
+import React from 'react'
+import cn from 'classnames'
+import { useRouter } from 'next/router'
+import Icon from '../../../components/Icon'
 
-import styles from "./FolowSteps.module.sass";
+import styles from './FolowSteps.module.sass'
 
-const FolowSteps = ( { className } ) => {
-  const { push } = useRouter();
+const FolowSteps = ({ className }) => {
+  const { push } = useRouter()
 
   const handleGoHomePage = () => {
-    push('/');
-  };
+    push('/')
+  }
 
   return (
     <div className={cn(className, styles.steps)}>
-      <div className={cn("h4", styles.title)}>Folow steps</div>
+      <div className={cn('h4', styles.title)}>Folow steps</div>
       <div className={styles.list}>
         <div className={cn(styles.item, styles.done)}>
           <div className={styles.head}>
@@ -27,11 +27,16 @@ const FolowSteps = ( { className } ) => {
           </div>
         </div>
         <div className={styles.item}>
-          <button onClick={handleGoHomePage} className={cn("button", styles.button)}>Start now</button>
+          <button
+            onClick={handleGoHomePage}
+            className={cn('button', styles.button)}
+          >
+            Start now
+          </button>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FolowSteps;
+export default FolowSteps

@@ -4,8 +4,8 @@ The uNFT Marketplace is a template that you can use to start your own digital ar
 
 ![Cosmic uNFT](https://user-images.githubusercontent.com/1950722/178328933-c6f0008f-a188-4678-9420-404dd1f02871.gif)
 
-
 ## Technology used
+
 This template uses the following technologies:
 
 - [Next.js](https://nextjs.org/) - scalable and high-performance **React.js** framework for modern web development. Provides a large set of features, such as hybrid rendering, route prefetching, automatic image optimization, and internationalization, out of the box.

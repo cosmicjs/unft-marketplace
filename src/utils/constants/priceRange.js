@@ -1,6 +1,6 @@
 const priceRange = {
   min: '',
   max: '',
-};
+}
 
-export default priceRange;
+export default priceRange

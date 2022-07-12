@@ -1,4 +1,4 @@
-import Head from 'next/head';
+import Head from 'next/head'
 
 export const Meta = () => {
   return (
@@ -32,8 +32,8 @@ export const Meta = () => {
       <meta name="theme-color" content="#000" />
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
     </Head>
-  );
-};
+  )
+}
 
 export const PageMeta = ({ title, description }) => {
   return (
@@ -55,5 +55,5 @@ export const PageMeta = ({ title, description }) => {
         content="https://imgix.cosmicjs.com/5df3a450-0160-11ed-b7be-d956591ad437-unft-2.png?w=1000"
       />
     </Head>
-  );
-};
+  )
+}

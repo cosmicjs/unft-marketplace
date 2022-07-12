@@ -1,60 +1,71 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { toast } from 'react-hot-toast';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react'
+import { toast } from 'react-hot-toast'
 
-const Context = createContext();
+const Context = createContext()
 
-export const StateContext = ( { children } ) => {
-  const [navigation, setNavigation] = useState([]);
-  const [cosmicUser, setCosmicUser] = useState({});
-  const [cartItems, setCartItems] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [totalQuantities, setTotalQuantities ] = useState( 0 );
+export const StateContext = ({ children }) => {
+  const [navigation, setNavigation] = useState([])
+  const [cosmicUser, setCosmicUser] = useState({})
+  const [cartItems, setCartItems] = useState([])
+  const [totalPrice, setTotalPrice] = useState(0)
+  const [totalQuantities, setTotalQuantities] = useState(0)
   const [categories, setCategories] = useState({
     groups: [],
     types: {},
-  } );
+  })
 
-  const onCategoriesChange = useCallback( (content) => {
-    setCategories( prevFields => ( {...prevFields, ...content} ));
-  },[] );
+  const onCategoriesChange = useCallback(content => {
+    setCategories(prevFields => ({ ...prevFields, ...content }))
+  }, [])
 
   const onAdd = (product, quantity) => {
-    const checkProductInCart = cartItems.find((item) => item._id === product._id);
+    const checkProductInCart = cartItems.find(item => item._id === product._id)
 
-    setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity);
-    setTotalQuantities( ( prevTotalQuantities ) => prevTotalQuantities + quantity );
+    setTotalPrice(prevTotalPrice => prevTotalPrice + product.price * quantity)
+    setTotalQuantities(prevTotalQuantities => prevTotalQuantities + quantity)
 
     toast.success(`${quantity} of ${product.title} added to the cart.`, {
-        position: "bottom-right"
-    });
+      position: 'bottom-right',
+    })
 
-    if(checkProductInCart) {
-      const updatedCartItems = cartItems.map((cartProduct) => {
-        if(cartProduct.id === product.id) return {
-          ...cartProduct,
-          quantity: cartProduct.quantity + quantity
-        }
+    if (checkProductInCart) {
+      const updatedCartItems = cartItems.map(cartProduct => {
+        if (cartProduct.id === product.id)
+          return {
+            ...cartProduct,
+            quantity: cartProduct.quantity + quantity,
+          }
       })
 
-      setCartItems( updatedCartItems );
-      return updatedCartItems;
+      setCartItems(updatedCartItems)
+      return updatedCartItems
     } else {
-      product.quantity = quantity;
+      product.quantity = quantity
 
-      setCartItems( [ ...cartItems,{ ...product } ] );
-      return [ ...cartItems,{ ...product } ];
+      setCartItems([...cartItems, { ...product }])
+      return [...cartItems, { ...product }]
     }
   }
 
-  const onRemove = (product) => {
-    foundProduct = cartItems.find((item) => item._id === product._id);
-    const newCartItems = cartItems.filter((item) => item._id !== product._id);
+  const onRemove = product => {
+    foundProduct = cartItems.find(item => item._id === product._id)
+    const newCartItems = cartItems.filter(item => item._id !== product._id)
 
-    setTotalPrice((prevTotalPrice) => prevTotalPrice -foundProduct.price * foundProduct.quantity);
-    setTotalQuantities(prevTotalQuantities => prevTotalQuantities - foundProduct.quantity);
-    setCartItems(newCartItems);
+    setTotalPrice(
+      prevTotalPrice =>
+        prevTotalPrice - foundProduct.price * foundProduct.quantity
+    )
+    setTotalQuantities(
+      prevTotalQuantities => prevTotalQuantities - foundProduct.quantity
+    )
+    setCartItems(newCartItems)
   }
-
 
   return (
     <Context.Provider
@@ -80,4 +91,4 @@ export const StateContext = ( { children } ) => {
   )
 }
 
-export const useStateContext = () => useContext(Context);
+export const useStateContext = () => useContext(Context)

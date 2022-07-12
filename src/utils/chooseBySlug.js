@@ -1,10 +1,10 @@
 const chooseBySlug = (data, slugName) => {
-  if( data && slugName ) {
-    const chooseBySlug = data?.filter(content => Object.values(content).includes(slugName.toLowerCase()));
-    return chooseBySlug ? chooseBySlug[0] : [];
+  if (data && slugName) {
+    const chooseBySlug = data?.filter(content =>
+      Object.values(content).includes(slugName.toLowerCase())
+    )
+    return chooseBySlug ? chooseBySlug[0] : []
   }
 }
 
-export default chooseBySlug;
-
-
+export default chooseBySlug

@@ -1,6 +1,6 @@
-import React from "react";
-import cn from "classnames";
-import styles from "./Checkbox.module.sass";
+import React from 'react'
+import cn from 'classnames'
+import styles from './Checkbox.module.sass'
 
 const Checkbox = ({ className, content, value, onChange }) => {
   return (
@@ -16,7 +16,7 @@ const Checkbox = ({ className, content, value, onChange }) => {
         <span className={styles.text}>{content}</span>
       </span>
     </label>
-  );
-};
+  )
+}
 
-export default Checkbox;
+export default Checkbox

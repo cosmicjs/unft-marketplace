@@ -1,10 +1,10 @@
-import React from "react";
-import cn from "classnames";
-import Image from '../../../components/Image';
-import styles from "./Preview.module.sass";
-import Icon from "../../../components/Icon";
+import React from 'react'
+import cn from 'classnames'
+import Image from '../../../components/Image'
+import styles from './Preview.module.sass'
+import Icon from '../../../components/Icon'
 
-const Preview = ( { className, onClose, info, image } ) => {
+const Preview = ({ className, onClose, info, image }) => {
   return (
     <div className={cn(className, styles.wrap)}>
       <div className={styles.inner}>
@@ -15,7 +15,7 @@ const Preview = ( { className, onClose, info, image } ) => {
         <div className={styles.card}>
           <div className={styles.preview}>
             <Image
-              size={{ width: "100%", height: "100%" }}
+              size={{ width: '100%', height: '100%' }}
               srcSet={image || '/images/content/upload-pic.jpg'}
               src={image || '/images/content/upload-pic.jpg'}
               alt="Card"
@@ -48,7 +48,7 @@ const Preview = ( { className, onClose, info, image } ) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Preview;
+export default Preview

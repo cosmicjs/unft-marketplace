@@ -1,7 +1,7 @@
-import React from "react";
-import cn from "classnames";
-import styles from "./Form.module.sass";
-import Icon from "../Icon";
+import React from 'react'
+import cn from 'classnames'
+import styles from './Form.module.sass'
+import Icon from '../Icon'
 
 const Form = ({
   className,
@@ -18,7 +18,7 @@ const Form = ({
         className={styles.input}
         type={type}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={e => setValue(e.target.value)}
         name={name}
         placeholder={placeholder}
         required
@@ -27,7 +27,7 @@ const Form = ({
         <Icon name="arrow-next" size="14" />
       </button>
     </form>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form

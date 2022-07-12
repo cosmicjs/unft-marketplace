@@ -1,31 +1,31 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import Head from 'next/head';
-import Header from '../Header';
-import Footer from '../Footer';
-import AppLink from '../AppLink';
-import { useStateContext } from '../../utils/context/StateContext';
+import React, { useEffect, useState, useCallback } from 'react'
+import Head from 'next/head'
+import Header from '../Header'
+import Footer from '../Footer'
+import AppLink from '../AppLink'
+import { useStateContext } from '../../utils/context/StateContext'
 
-import styles from './Layout.module.sass';
-import { Meta, PageMeta } from '../Meta';
+import styles from './Layout.module.sass'
+import { Meta, PageMeta } from '../Meta'
 
 const Layout = ({ children, title, navigationPaths }) => {
-  const { navigation, setNavigation } = useStateContext();
+  const { navigation, setNavigation } = useStateContext()
 
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true
 
     if (
       !navigation?.hasOwnProperty('menu') &&
       navigationPaths?.hasOwnProperty('menu') &&
       isMounted
     ) {
-      setNavigation(navigationPaths);
+      setNavigation(navigationPaths)
     }
 
     return () => {
-      isMounted = false;
-    };
-  }, [navigation, navigationPaths, setNavigation]);
+      isMounted = false
+    }
+  }, [navigation, navigationPaths, setNavigation])
 
   return (
     <>
@@ -43,7 +43,8 @@ const Layout = ({ children, title, navigationPaths }) => {
             <a
               className={styles.github}
               href="https://github.com/cosmicjs/unft-marketplace"
-              target="_parent">
+              target="_parent"
+            >
               available on GitHub
             </a>
           </span>
@@ -56,7 +57,7 @@ const Layout = ({ children, title, navigationPaths }) => {
         <Footer navigation={navigationPaths || navigation} />
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

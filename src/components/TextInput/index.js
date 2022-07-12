@@ -1,6 +1,6 @@
-import React from "react";
-import cn from "classnames";
-import styles from "./TextInput.module.sass";
+import React from 'react'
+import cn from 'classnames'
+import styles from './TextInput.module.sass'
 
 const TextInput = ({ className, label, ...props }) => {
   return (
@@ -10,7 +10,7 @@ const TextInput = ({ className, label, ...props }) => {
         <input className={styles.input} {...props} />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TextInput;
+export default TextInput
