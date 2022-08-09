@@ -12,7 +12,7 @@ This template uses the following technologies:
 - [Cosmic](https://www.cosmicjs.com/) - fast, fully managed [headless CMS](https://www.cosmicjs.com/headless-cms) that enables us to quickly manage and create website content including UGC (user-generated content).
 - [Stripe](https://stripe.com/) - payments infrastructure that provides API tools to receive one-time and subscription payments.
 
-### TL;DR
+### Links
 
 - [View the live demo](https://unft-marketplace-cosmicjs.vercel.app/)
 - [Install the app template](https://www.cosmicjs.com/apps/unft-marketplace)
