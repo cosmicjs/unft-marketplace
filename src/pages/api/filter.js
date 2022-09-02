@@ -41,16 +41,12 @@ export default async function filterHandler(req, res) {
     queryParam = { ...queryParam, title: { $regex: search, $options: 'i' } }
   }
 
-  const params = {
-    query: {
+  try {
+    const data = await bucket.objects
+      .find({
       ...queryParam,
       type: 'products',
-    },
-    props: 'title,slug,metadata,created_at',
-  }
-
-  try {
-    const data = await bucket.getObjects(params)
+    }).props('title,slug,metadata,created_at');
     res.status(200).json(data)
   } catch (error) {
     res.status(404).json(error)

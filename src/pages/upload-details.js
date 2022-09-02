@@ -64,7 +64,6 @@ const Upload = ({ navigationItems, categoriesType }) => {
     })
 
     const mediaData = await uploadResult.json();
-    console.log('media data', mediaData)
     await setUploadMedia(mediaData?.['media'])
   }
 

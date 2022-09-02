@@ -38,10 +38,8 @@ const saveFile = async file => {
       media: media_object,
     })
     await fs.unlinkSync(file?.filepath)
-    console.log('cosmic_res', cosmic_res);
     return cosmic_res
   } catch (error) {
-    console.log(error)
     return
   }
 }
