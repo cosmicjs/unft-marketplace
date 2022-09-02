@@ -15,7 +15,7 @@ export async function getDataByCategory(id) {
   };
 
   try {
-    const data = await bucket.objects.find(query).props('title,slug,metadata,created_at');
+    const data = await bucket.objects.find(query).props('title,slug,id,metadata,created_at');
     return data.objects
   } catch (error) {
     // Don't throw if an slug doesn't exist
@@ -40,7 +40,7 @@ export async function getDataBySlug(slug) {
     const data = await bucket.objects.find({
       slug,
       type: 'products',
-    }).props('title,slug,metadata,created_at')
+    }).props('title,slug,id,metadata,created_at')
     return data.objects
   } catch (error) {
     // Don't throw if an slug doesn't exist

@@ -46,7 +46,7 @@ export default async function filterHandler(req, res) {
       .find({
       ...queryParam,
       type: 'products',
-    }).props('title,slug,metadata,created_at');
+    }).props('title,slug,id,metadata,created_at');
     res.status(200).json(data)
   } catch (error) {
     res.status(404).json(error)
