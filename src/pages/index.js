@@ -75,6 +75,7 @@ export default Home
 
 export async function getServerSideProps() {
   const reviews = (await getAllDataByType('reviews')) || []
+  console.log('reviews', reviews);
   const landing = (await getAllDataByType('landings')) || []
   const categoryTypes = (await getAllDataByType('categories')) || []
   const categoriesData = await Promise.all(
