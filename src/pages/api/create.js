@@ -51,8 +51,7 @@ export default async function createHandler(
 
   try {
     const data = await bucket.objects.insertOne({title: title,
-    type: 'products',
-    slug: 'products',
+      type: 'products',
       thumbnail: image,
       metafields,
     })
