@@ -11,7 +11,7 @@
   "dependencies": {
     "@stripe/stripe-js": "^1.31.0",
     "classnames": "^2.3.1",
-    "cosmicjs": "^4.1.7",
+    "cosmicjs": "^4.2.9",
     "formidable": "^2.0.1",
     "fs": "^0.0.1-security",
     "next": "12.1.6",

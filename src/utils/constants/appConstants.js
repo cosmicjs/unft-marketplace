@@ -1,4 +1,4 @@
-const ACTIVE_INDEX = '627e23f18bb13a000911ea55'
+const ACTIVE_INDEX = '62dacb8860f5290e67727b25'
 
 const OPTIONS = ['Any color', 'Red', 'Blue', 'Black', 'Purple']
 

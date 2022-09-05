@@ -80,7 +80,7 @@ const Search = ({ categoriesGroup, navigationItems, categoryData }) => {
         ''
       )
 
-      fetchData(`/api/filter?${filterParam}`)
+      await fetchData(`/api/filter?${filterParam}`)
     },
     [
       activeIndex,
@@ -137,7 +137,6 @@ const Search = ({ categoriesGroup, navigationItems, categoryData }) => {
       isMount = false
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm, debouncedMinTerm, debouncedMaxTerm])
 
   return (

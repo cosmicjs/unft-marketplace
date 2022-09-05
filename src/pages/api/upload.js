@@ -34,13 +34,12 @@ const saveFile = async file => {
 
   try {
     // Add media to Cosmic Bucket
-    const cosmic_res = await bucket.addMedia({
+    const cosmic_res = await bucket.media.insertOne({
       media: media_object,
     })
     await fs.unlinkSync(file?.filepath)
     return cosmic_res
   } catch (error) {
-    console.log(error)
     return
   }
 }

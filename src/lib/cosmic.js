@@ -7,37 +7,26 @@ const bucket = Cosmic().bucket({
 
 const is404 = error => /not found/i.test(error?.message)
 
+// new versions 
 export async function getDataByCategory(id) {
-  const params = {
-    query: {
-      'metadata.categories': [`${id}`],
-      type: 'products',
-    },
-    props: 'title,slug,metadata,created_at',
-    sort: '-created_at',
-  }
+  const query = {
+    'metadata.categories': [`${id}`],
+    type: 'products',
+  };
 
   try {
-    const data = await bucket.getObjects(params)
+    const data = await bucket.objects.find(query).props('title,slug,id,metadata,created_at');
     return data.objects
   } catch (error) {
     // Don't throw if an slug doesn't exist
     if (is404(error)) return
     throw error
   }
-}
+};
 
 export async function getAllDataByType(dataType = 'categories') {
-  const params = {
-    query: {
-      type: dataType,
-    },
-    props: 'title,slug,id,metadata',
-    sort: '-created_at',
-  }
-
   try {
-    const data = await bucket.getObjects(params)
+    const data = await bucket.objects.find({type: dataType}).props('title,slug,id,metadata')
     return data.objects
   } catch (error) {
     // Don't throw if an slug doesn't exist
@@ -45,18 +34,13 @@ export async function getAllDataByType(dataType = 'categories') {
     throw error
   }
 }
+
 export async function getDataBySlug(slug) {
-  const params = {
-    query: {
+  try {
+    const data = await bucket.objects.find({
       slug,
       type: 'products',
-    },
-    props: 'title,slug,metadata,created_at',
-    sort: '-created_at',
-  }
-
-  try {
-    const data = await bucket.getObjects(params)
+    }).props('title,slug,id,metadata,created_at')
     return data.objects
   } catch (error) {
     // Don't throw if an slug doesn't exist
