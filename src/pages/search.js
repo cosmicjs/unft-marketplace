@@ -12,7 +12,7 @@ import Card from '../components/Card'
 import Dropdown from '../components/Dropdown'
 import priceRange from '../utils/constants/priceRange'
 import handleQueryParams from '../utils/queryParams'
-import { ACTIVE_INDEX, OPTIONS } from '../utils/constants/appConstants'
+import { OPTIONS } from '../utils/constants/appConstants'
 
 import styles from '../styles/pages/Search.module.sass'
 import { PageMeta } from '../components/Meta'
@@ -39,7 +39,7 @@ const Search = ({ categoriesGroup, navigationItems, categoryData }) => {
   const debouncedMaxTerm = useDebounce(max, 600)
 
   const [activeIndex, setActiveIndex] = useState(
-    query['category'] || ACTIVE_INDEX
+    query['category'] || ''
   )
   const [option, setOption] = useState(query['color'] || OPTIONS[0])
 
@@ -213,6 +213,14 @@ const Search = ({ categoriesGroup, navigationItems, categoryData }) => {
             </div>
             <div className={styles.wrapper}>
               <div className={styles.nav}>
+                <button
+                  className={cn(styles.link, {
+                    [styles.active]: '' === activeIndex,
+                  })}
+                  onClick={() => handleCategoryChange('')}
+                >
+                  All
+                </button>
                 {categoriesTypeData &&
                   Object.entries(categoriesTypeData)?.map((item, index) => (
                     <button
