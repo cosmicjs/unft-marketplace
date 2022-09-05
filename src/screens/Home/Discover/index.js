@@ -10,7 +10,7 @@ import Icon from '../../../components/Icon'
 import Card from '../../../components/Card'
 import Dropdown from '../../../components/Dropdown'
 import priceRange from '../../../utils/constants/priceRange'
-import { ACTIVE_INDEX, OPTIONS } from '../../../utils/constants/appConstants'
+import { OPTIONS } from '../../../utils/constants/appConstants'
 
 import styles from './Discover.module.sass'
 
@@ -54,7 +54,7 @@ const Discover = ({ info, type }) => {
   const { data: filterResult, fetchData } = useFetchData([])
 
   const [activeIndex, setActiveIndex] = useState(
-    type ? Object.entries(type)[0]?.[0] : ACTIVE_INDEX
+    type ? Object.entries(type)[0]?.[0] : ''
   )
   const [option, setOption] = useState(OPTIONS[0])
   const [visible, setVisible] = useState(false)
