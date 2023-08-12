@@ -61,7 +61,7 @@ const Footers = ({ navigation }) => {
         <div className={styles.copyright} aria-hidden="true">
           <span className={styles.cosmicGroup}>
             <p className={styles.powered}>Powered by </p>
-            <a href="https://cosmicjs.com/">
+            <a href="https://www.cosmicjs.com">
               <Image
                 className={styles.cosmic}
                 size={{ width: '110px', height: '90px' }}

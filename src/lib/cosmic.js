@@ -1,32 +1,38 @@
-import Cosmic from 'cosmicjs'
+import { createBucketClient } from '@cosmicjs/sdk'
 
-const bucket = Cosmic().bucket({
-  slug: process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG,
-  read_key: process.env.NEXT_PUBLIC_COSMIC_READ_KEY,
+const cosmic = createBucketClient({
+  bucketSlug: process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG,
+  readKey: process.env.NEXT_PUBLIC_COSMIC_READ_KEY,
 })
 
 const is404 = error => /not found/i.test(error?.message)
 
-// new versions 
+// new versions
 export async function getDataByCategory(id) {
   const query = {
     'metadata.categories': [`${id}`],
     type: 'products',
-  };
+  }
 
   try {
-    const data = await bucket.objects.find(query).props('title,slug,id,metadata,created_at');
+    const data = await cosmic.objects
+      .find(query)
+      .props('title,slug,id,metadata,created_at')
+      .depth(1)
     return data.objects
   } catch (error) {
     // Don't throw if an slug doesn't exist
     if (is404(error)) return
     throw error
   }
-};
+}
 
 export async function getAllDataByType(dataType = 'categories') {
   try {
-    const data = await bucket.objects.find({type: dataType}).props('title,slug,id,metadata')
+    const data = await cosmic.objects
+      .find({ type: dataType })
+      .props('title,slug,id,metadata')
+      .depth(1)
     return data.objects
   } catch (error) {
     // Don't throw if an slug doesn't exist
@@ -37,10 +43,13 @@ export async function getAllDataByType(dataType = 'categories') {
 
 export async function getDataBySlug(slug) {
   try {
-    const data = await bucket.objects.find({
-      slug,
-      type: 'products',
-    }).props('title,slug,id,metadata,created_at')
+    const data = await cosmic.objects
+      .find({
+        slug,
+        type: 'products',
+      })
+      .props('title,slug,id,metadata,created_at')
+      .depth(1)
     return data.objects
   } catch (error) {
     // Don't throw if an slug doesn't exist

@@ -19,11 +19,12 @@ This template uses the following technologies:
 - [Read how it was built](https://www.cosmicjs.com/articles/build-a-digital-art-marketplace-with-nextjs-cosmic-and-stripe)
 
 ## Getting started
-1. First, install the [app template](https://www.cosmicjs.com/apps/unft-marketplace) into your Cosmic account to get the demo content ready.
+
+1. First, install the [template](https://www.cosmicjs.com/marketplace/templates/unft-marketplace) into your Cosmic account to get the demo content ready.
 2. Then download and install the code on your machine.
 
 ```bash
-git clone https://github.com/cosmicjs/unft-marketplace.git
+git clone https://github.com/cosmicjs/unft-marketplace
 cd unft-marketplace
 pnpm install
 # or
@@ -33,7 +34,12 @@ npm install
 ```
 
 ### Environment variables
-You'll need to create a `.env` file in the root of the project and add the access keys for Cosmic and Stripe.
+
+You'll need to create a `.env` file in the root of the project and add the access keys for Cosmic and Stripe. This can be done by copying the `.env.example`.
+
+```bash
+cp .env.example .env
+```
 
 **Cosmic**: Go to [Cosmic](https://app.cosmicjs.com/) and from the Bucket that you installed the app template go to _Bucket Settings > API Access_ and get your API access keys.
 
@@ -42,7 +48,7 @@ You'll need to create a `.env` file in the root of the project and add the acces
 Add your keys to the `.env` file like so:
 
 ```bash
-//.env
+# .env
 NEXT_PUBLIC_COSMIC_BUCKET_SLUG=your_cosmic_slug
 NEXT_PUBLIC_COSMIC_READ_KEY=your_cosmic_read_key
 COSMIC_WRITE_KEY=your_cosmic_write_key

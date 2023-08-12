@@ -40,7 +40,6 @@ const OAuth = ({ className, handleClose, handleOAuth, disable }) => {
       e.preventDefault()
       fillFiledMessage?.length && setFillFiledMessage('')
       setLoading(true)
-
       if ((email, password)) {
         const auth = await fetch('/api/auth', {
           method: 'POST',
@@ -50,9 +49,7 @@ const OAuth = ({ className, handleClose, handleOAuth, disable }) => {
           },
           body: JSON.stringify({ email, password }),
         })
-
         const cosmicUser = await auth.json()
-
         if (cosmicUser?.hasOwnProperty('user')) {
           setCosmicUser(cosmicUser['user'])
           setToken({
@@ -69,7 +66,7 @@ const OAuth = ({ className, handleClose, handleOAuth, disable }) => {
           setFillFiledMessage('Please first register in Cosmic')
         }
       } else {
-        setFillFiledMessage('Please first all filed')
+        setFillFiledMessage('Please fill all fields')
       }
       setLoading(false)
     },
