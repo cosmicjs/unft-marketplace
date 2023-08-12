@@ -11,12 +11,12 @@ import styles from './SocialMedia.module.sass'
 
 const socialMedia = [
   {
-    Icon: FiFacebook,
-    url: 'https://www.facebook.com/cosmicjs',
-  },
-  {
     Icon: FiTwitter,
     url: 'https://twitter.com/cosmicjs',
+  },
+  {
+    Icon: FiFacebook,
+    url: 'https://www.facebook.com/cosmicjs',
   },
   {
     Icon: FiLinkedin,
@@ -24,11 +24,11 @@ const socialMedia = [
   },
   {
     Icon: FiYoutube,
-    url: 'https://www.youtube.com/channel/UCDzCWWJLVWLpoHB5oGH0H-A',
+    url: 'https://www.youtube.com/cosmicjs',
   },
   {
     Icon: FiSlack,
-    url: 'https://cosmicslack.herokuapp.com/',
+    url: 'https://cosmcijs.slack.com',
   },
 ]
 
