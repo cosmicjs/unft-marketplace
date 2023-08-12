@@ -1,59 +1,29 @@
-import Cosmic from 'cosmicjs'
+import { createBucketClient } from '@cosmicjs/sdk'
 
-const bucket = Cosmic().bucket({
-  slug: process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG,
-  read_key: process.env.NEXT_PUBLIC_COSMIC_READ_KEY,
-  write_key: process.env.COSMIC_WRITE_KEY,
+const cosmic = createBucketClient({
+  bucketSlug: process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG,
+  readKey: process.env.NEXT_PUBLIC_COSMIC_READ_KEY,
+  writeKey: process.env.COSMIC_WRITE_KEY,
 })
 
 export default async function createHandler(
-  { body: { title, description, price, count, color, image, category } },
+  { body: { title, description, price, count, color, image, categories } },
   res
 ) {
-  const metafields = [
-    {
-      title: 'Description',
-      key: 'description',
-      type: 'textarea',
-      value: description,
-    },
-    {
-      title: 'Price',
-      key: 'price',
-      type: 'number',
-      value: Number(price),
-    },
-    {
-      title: 'Count',
-      key: 'count',
-      type: 'number',
-      value: Number(count),
-    },
-    {
-      title: 'Color',
-      key: 'color',
-      type: 'text',
-      value: color,
-    },
-    {
-      title: 'Image',
-      key: 'image',
-      type: 'file',
-      value: image,
-    },
-    {
-      title: 'Categories',
-      key: 'categories',
-      type: 'objects',
-      value: category,
-    },
-  ];
-
+  const metadata = {
+    description,
+    price: Number(price),
+    count: Number(count),
+    color,
+    image,
+    categories,
+  }
   try {
-    const data = await bucket.objects.insertOne({title: title,
+    const data = await cosmic.objects.insertOne({
+      title: title,
       type: 'products',
       thumbnail: image,
-      metafields,
+      metadata,
     })
     res.status(200).json(data)
   } catch (error) {

@@ -1,11 +1,11 @@
-import Cosmic from 'cosmicjs'
+import { createBucketClient } from '@cosmicjs/sdk'
 import formidable from 'formidable'
 import fs from 'fs'
 
-const bucket = Cosmic().bucket({
-  slug: process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG,
-  read_key: process.env.NEXT_PUBLIC_COSMIC_READ_KEY,
-  write_key: process.env.COSMIC_WRITE_KEY,
+const cosmic = createBucketClient({
+  bucketSlug: process.env.NEXT_PUBLIC_COSMIC_BUCKET_SLUG,
+  readKey: process.env.NEXT_PUBLIC_COSMIC_READ_KEY,
+  writeKey: process.env.COSMIC_WRITE_KEY,
 })
 
 export const config = {
@@ -15,12 +15,12 @@ export const config = {
 }
 
 export default async function uploadHandler(req, res) {
-  const form = new formidable.IncomingForm({ multiple: false })
+  const form = formidable({})
 
   try {
     form.parse(req, async (err, fields, files) => {
       if (err) return reject(err)
-      const cosmicRes = await saveFile(files.file)
+      const cosmicRes = await saveFile(files.file[0])
       res.status(200).json(cosmicRes)
     })
   } catch (error) {
@@ -30,16 +30,19 @@ export default async function uploadHandler(req, res) {
 
 const saveFile = async file => {
   const filedata = fs.readFileSync(file?.filepath)
-  const media_object = { originalname: file.originalFilename, buffer: filedata }
-
+  const media = {
+    originalname: file.originalFilename,
+    buffer: filedata,
+  }
   try {
     // Add media to Cosmic Bucket
-    const cosmic_res = await bucket.media.insertOne({
-      media: media_object,
+    const cosmic_res = await cosmic.media.insertOne({
+      media,
     })
     await fs.unlinkSync(file?.filepath)
-    return cosmic_res
+    return await cosmic.media.insertOne({ media })
   } catch (error) {
-    return
+    console.log(error)
+    return error
   }
 }

@@ -54,7 +54,7 @@ const Upload = ({ navigationItems, categoriesType }) => {
     }
   }, [cosmicUser])
 
-  const handleUploadFile = async (uploadFile) => {
+  const handleUploadFile = async uploadFile => {
     const formData = new FormData()
     formData.append('file', uploadFile)
 
@@ -63,7 +63,7 @@ const Upload = ({ navigationItems, categoriesType }) => {
       body: formData,
     })
 
-    const mediaData = await uploadResult.json();
+    const mediaData = await uploadResult.json()
     await setUploadMedia(mediaData?.['media'])
   }
 
@@ -124,7 +124,7 @@ const Upload = ({ navigationItems, categoriesType }) => {
             price,
             count,
             color,
-            category: chooseCategory,
+            categories: [chooseCategory],
             image: uploadMedia['name'],
           }),
         })
