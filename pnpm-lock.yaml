@@ -1,13 +1,13 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@cosmicjs/sdk': ^1.0.9
   '@stripe/stripe-js': ^1.31.0
   classnames: ^2.3.1
-  cosmicjs: ^4.2.9
   eslint: 8.16.0
   eslint-config-next: ^12.1.6
   eslint-config-prettier: 8.5.0
-  formidable: ^2.0.1
+  formidable: ^3.5.0
   fs: ^0.0.1-security
   next: 12.1.6
   next-connect: ^0.12.2
@@ -28,10 +28,10 @@ specifiers:
   webpack: ^5.73.0
 
 dependencies:
+  '@cosmicjs/sdk': 1.0.9
   '@stripe/stripe-js': 1.31.0
   classnames: 2.3.1
-  cosmicjs: 4.2.9
-  formidable: 2.0.1
+  formidable: 3.5.1
   fs: 0.0.1-security
   next: 12.1.6_4lr7wgrejdc22b7ck6oq24c2o4
   next-connect: 0.12.2
@@ -1410,6 +1410,15 @@ packages:
 
   /@bcoe/v8-coverage/0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
+    dev: false
+
+  /@cosmicjs/sdk/1.0.9:
+    resolution: {integrity: sha512-RGDz7TFVklfOsumdLX7nextHTZJWnYn4S0hydwyFVsTnxSuZA2+vgozYVqJjeycZEF7i9lRxNZwQWLDqqJCSJQ==}
+    dependencies:
+      axios: 1.5.0
+      form-data: 4.0.0
+    transitivePeerDependencies:
+      - debug
     dev: false
 
   /@csstools/normalize.css/12.0.0:
@@ -3081,10 +3090,12 @@ packages:
     resolution: {integrity: sha512-LVAaGp/wkkgYJcjmHsoKx4juT1aQvJyPcW09MLCjVTh3V2cc6PnyempiLMNH5iMdfIX/zdbjUx2KDjMLCTdPeA==}
     engines: {node: '>=12'}
 
-  /axios/0.21.4:
-    resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
+  /axios/1.5.0:
+    resolution: {integrity: sha512-D4DdjDo5CY50Qms0qGQTTw6Q44jl7zRwY7bthds06pUGfChBCTcQs+N743eFWGEd6pRTMd6A+I87aWyFV5wiZQ==}
     dependencies:
       follow-redirects: 1.15.0
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -3774,18 +3785,6 @@ packages:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
     dev: false
 
-  /cosmicjs/4.2.9:
-    resolution: {integrity: sha512-tw51AEKezczjEqaXKOcMMUxoAhKNOlkCM3HEjBfkANfPX71PE21PW4Kn50ROSNEpz6Vyiql70FGqrhvX0w+g1w==}
-    engines: {node: '>=6.0'}
-    dependencies:
-      axios: 0.21.4
-      form-data: 3.0.1
-      regenerator-runtime: 0.13.9
-      typescript: 4.6.4
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
   /cosmiconfig/6.0.0:
     resolution: {integrity: sha512-xb3ZL6+L8b9JLLCx3ZdoZy4+2ECphCMo2PwqgP1tlfVq6M6YReyzBJtvWWtbDSpNr9hn96pkCiZqUcFEc+54Qg==}
     engines: {node: '>=8'}
@@ -4211,8 +4210,8 @@ packages:
       minimist: 1.2.6
     dev: false
 
-  /dezalgo/1.0.3:
-    resolution: {integrity: sha512-K7i4zNfT2kgQz3GylDw40ot9GAE47sFZ9EXHFSPP6zONLgH6kWXE0KWJchkbQJLBkRazq4APwZ4OwiFFlT95OQ==}
+  /dezalgo/1.0.4:
+    resolution: {integrity: sha512-rXSP0bf+5n0Qonsb+SVVfNfIsimO4HEtmnIpPHY8Q1UCzKlQrDMfdobr8nJOOsRgWCyMRqeSBQzmWUMq7zvVig==}
     dependencies:
       asap: 2.0.6
       wrappy: 1.0.2
@@ -5241,13 +5240,21 @@ packages:
       mime-types: 2.1.35
     dev: false
 
-  /formidable/2.0.1:
-    resolution: {integrity: sha512-rjTMNbp2BpfQShhFbR3Ruk3qk2y9jKpvMW78nJgx8QKtxjDVrwbZG+wvDOmVbifHyOUOQJXxqEy6r0faRrPzTQ==}
+  /form-data/4.0.0:
+    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
+    engines: {node: '>= 6'}
     dependencies:
-      dezalgo: 1.0.3
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
+    dev: false
+
+  /formidable/3.5.1:
+    resolution: {integrity: sha512-WJWKelbRHN41m5dumb0/k8TeAx7Id/y3a+Z7QfhxP/htI9Js5zYaEDtG8uMgG0vM0lOlqnmjE99/kfpOYi/0Og==}
+    dependencies:
+      dezalgo: 1.0.4
       hexoid: 1.0.0
       once: 1.4.0
-      qs: 6.9.3
     dev: false
 
   /forwarded/0.2.0:
@@ -8303,6 +8310,10 @@ packages:
       ipaddr.js: 1.9.1
     dev: false
 
+  /proxy-from-env/1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+    dev: false
+
   /psl/1.8.0:
     resolution: {integrity: sha512-RIdOzyoavK+hA18OGGWDqUTsCLhtA7IcZ/6NCs4fFJaHBDab+pDDmDIByWFRQJq2Cd7r1OoQxBGKOaztq+hjIQ==}
     dev: false
@@ -8332,11 +8343,6 @@ packages:
     engines: {node: '>=0.6'}
     dependencies:
       side-channel: 1.0.4
-    dev: false
-
-  /qs/6.9.3:
-    resolution: {integrity: sha512-EbZYNarm6138UKKq46tdx08Yo/q9ZhFoAXAI1meAFd2GtbRDhbZY2WQSICskT0c5q99aFzLG1D4nvTk9tqfXIw==}
-    engines: {node: '>=0.6'}
     dev: false
 
   /queue-microtask/1.2.3:
