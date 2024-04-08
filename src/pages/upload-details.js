@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import cn from 'classnames'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/router'
+import { make, register } from 'simple-body-validator'
 import { useStateContext } from '../utils/context/StateContext'
 import Layout from '../components/Layout'
 import Dropdown from '../components/Dropdown'
@@ -20,6 +21,41 @@ import { getToken } from '../utils/token'
 import styles from '../styles/pages/UploadDetails.module.sass'
 import { PageMeta } from '../components/Meta'
 
+
+// Register a rule that checks if the value is an image
+register('image', value => {
+  if (!value instanceof File) {
+      return false
+  }
+  return value.type.match(/^image\/(png|gif|webp|avif|mp4|mp3)$/)
+})
+
+// Register a rule that validates the max size of a file in GB
+register('max_file_size', (value, [ maxSize ]) => {
+  if (!value instanceof File) {
+      return false
+  }
+  return value.size / (1024 * 1024 * 1024)  <= maxSize
+}, (message, [ maxSize ]) => message.replace(':size', maxSize))
+
+
+// https://www.simple-body-validator.com/available-validation-rules
+const validationRules = {
+  uploadedFile: ['bail', 'image', 'max_file_size:1'],
+  image: ['required'],
+  title: ['bail', 'required', 'string', 'min:3', 'max:100'],
+  description: ['bail', 'required', 'string', 'min:10', 'max:500'],
+  price: ['bail', 'required', 'numeric', 'min:1', 'max:999999'],
+  count: ['bail', 'required', 'integer', 'min:1', 'max:999999'],
+  categories: ['required']
+}
+
+const validator = make(createFields, validationRules).setCustomMessages({
+  image: 'The :attribute must have one of the following extensions PNG, GIF, WEBP, AVIF, MP4 or MP3.',
+  max_file_size: 'The size of the :attribute cannot exceed :size GB.',
+  'categories.required': 'You must select a category.'
+})
+
 const Upload = ({ navigationItems, categoriesType }) => {
   const { categories, navigation, cosmicUser } = useStateContext()
   const { push } = useRouter()
@@ -29,9 +65,11 @@ const Upload = ({ navigationItems, categoriesType }) => {
   const [uploadFile, setUploadFile] = useState('')
   const [chooseCategory, setChooseCategory] = useState('')
   const [fillFiledMessage, setFillFiledMessage] = useState(false)
-  const [{ title, count, description, price }, setFields] = useState(
+  const [fields, setFields] = useState(
     () => createFields
   )
+  const { title, count, description, price } = fields
+  const [formErrors, setFormErrors] = useState(validator.errors())
 
   const [visibleAuthModal, setVisibleAuthModal] = useState(false)
 
@@ -57,6 +95,12 @@ const Upload = ({ navigationItems, categoriesType }) => {
   const handleUploadFile = async uploadFile => {
     const formData = new FormData()
     formData.append('file', uploadFile)
+
+    if (!validator.validate('uploadedFile', uploadFile)) {
+      setFormErrors(validator.setErrors({image: validator.errors().first('uploadedFile')}))
+      return
+    }
+    setFormErrors(validator.clearErrors('uploadedFile', 'image'));
 
     const uploadResult = await fetch('/api/upload', {
       method: 'POST',
@@ -109,7 +153,10 @@ const Upload = ({ navigationItems, categoriesType }) => {
       e.preventDefault()
       !cosmicUser.hasOwnProperty('id') && handleOAuth()
 
-      if (cosmicUser && title && color && count && price && uploadMedia) {
+      const validation = validator.setData({...fields, image: uploadMedia?.['name']}).validate()
+      setFormErrors(validator.errors())
+       
+      if (cosmicUser && validation) {
         fillFiledMessage && setFillFiledMessage(false)
 
         const response = await fetch('/api/create', {
@@ -193,10 +240,11 @@ const Upload = ({ navigationItems, categoriesType }) => {
                       <Icon name="upload-file" size="24" />
                     </div>
                     <div className={styles.format}>
-                      PNG, GIF, WEBP, MP4 or MP3. Max 1Gb.
+                      PNG, GIF, WEBP, AVIF, MP4 or MP3. Max 1Gb.
                     </div>
                   </div>
                 </div>
+                {formErrors.has('image') ? <div className={styles.error}>{formErrors.first('image')}</div> : null}
                 <div className={styles.item}>
                   <div className={styles.category}>Item Details</div>
                   <div className={styles.fieldset}>
@@ -210,6 +258,7 @@ const Upload = ({ navigationItems, categoriesType }) => {
                       value={title}
                       required
                     />
+                     {formErrors.has('title') ? <div className={styles.error}>{formErrors.first('title')}</div> : null}
                     <TextInput
                       className={styles.field}
                       label="Description"
@@ -220,6 +269,7 @@ const Upload = ({ navigationItems, categoriesType }) => {
                       value={description}
                       required
                     />
+                    {formErrors.has('description') ? <div className={styles.error}>{formErrors.first('description')}</div> : null}
                     <div className={styles.row}>
                       <div className={styles.col}>
                         <div className={styles.field}>
@@ -231,7 +281,9 @@ const Upload = ({ navigationItems, categoriesType }) => {
                             options={OPTIONS}
                           />
                         </div>
+                        {formErrors.has('color') ? <div className={styles.error}>{formErrors.first('color')}</div> : null}
                       </div>
+
                       <div className={styles.col}>
                         <TextInput
                           className={styles.field}
@@ -243,6 +295,7 @@ const Upload = ({ navigationItems, categoriesType }) => {
                           value={price}
                           required
                         />
+                        {formErrors.has('price') ? <div className={styles.error}>{formErrors.first('price')}</div> : null}
                       </div>
                       <div className={styles.col}>
                         <TextInput
@@ -255,6 +308,7 @@ const Upload = ({ navigationItems, categoriesType }) => {
                           value={count}
                           required
                         />
+                        {formErrors.has('count') ? <div className={styles.error}>{formErrors.first('count')}</div> : null}
                       </div>
                     </div>
                   </div>
@@ -269,6 +323,7 @@ const Upload = ({ navigationItems, categoriesType }) => {
                   handleChoose={handleChooseCategory}
                   items={categoriesType || categories['type']}
                 />
+                {formErrors.has('categories') ? <div className={styles.error}>{formErrors.first('categories')}</div> : null}
               </div>
               <div className={styles.foot}>
                 <button
